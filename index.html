@@ -7,7 +7,7 @@
     <!-- Link to PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1e3a8a">
-    <link rel="apple-touch-icon" href="icon.svg">
+    <link class="apple-touch-icon" href="icon.svg">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -123,7 +123,7 @@
                     <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2">
                         <i class="fa-solid fa-shapes text-brand-600"></i> Browse Directories
                     </h2>
-                    <span id="categoryCount" class="text-xs bg-slate-200/60 text-slate-600 font-semibold px-2.5 py-1 rounded-md">22 Categories Loaded</span>
+                    <span id="categoryCount" class="text-xs bg-slate-200/60 text-slate-600 font-semibold px-2.5 py-1 rounded-md">25 Categories Loaded</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="categoriesGrid">
@@ -337,6 +337,20 @@
                 ]
             },
             {
+                id: "social-media",
+                name: "Social Media Platforms",
+                icon: "fa-share-nodes",
+                desc: "Stay connected, share moments, and network with global communities.",
+                badge: "Socials",
+                links: [
+                    { name: "TikTok", url: "https://www.tiktok.com", target: "_blank", badge: "TikTok", type: "Social Video" },
+                    { name: "Instagram", url: "https://www.instagram.com", target: "_blank", badge: "Instagram", type: "Photo/Video" },
+                    { name: "X (formerly Twitter)", url: "https://x.com", target: "_blank", badge: "X", type: "Microblogging" },
+                    { name: "Facebook South Africa", url: "https://www.facebook.com", target: "_blank", badge: "Facebook", type: "Social Network" },
+                    { name: "LinkedIn Career Network", url: "https://www.linkedin.com", target: "_blank", badge: "LinkedIn", type: "Professional" }
+                ]
+            },
+            {
                 id: "ai-assistant",
                 name: "AI Assistants",
                 icon: "fa-brain",
@@ -412,6 +426,32 @@
                     { name: "Zando Fashion Hub", url: "https://www.zando.co.za", target: "_blank", badge: "Zando", type: "E-Commerce" },
                     { name: "Bash South Africa", url: "https://bash.com", target: "_blank", badge: "Foschini Group", type: "E-Commerce" },
                     { name: "Shein South Africa", url: "https://za.shein.com", target: "_blank", badge: "Shein SA", type: "App/Web" }
+                ]
+            },
+            {
+                id: "music-streaming",
+                name: "Music Streaming Platforms",
+                icon: "fa-music",
+                desc: "Listen to local South African tunes, Amapiano mixes, and global playlists.",
+                badge: "Music",
+                links: [
+                    { name: "Spotify", url: "https://www.spotify.com", target: "_blank", badge: "Spotify", type: "Audio Stream" },
+                    { name: "Apple Music", url: "https://www.apple.com/music/", target: "_blank", badge: "Apple Music", type: "Audio Stream" },
+                    { name: "YouTube Music", url: "https://music.youtube.com", target: "_blank", badge: "YT Music", type: "Video & Audio" },
+                    { name: "Deezer South Africa", url: "https://www.deezer.com", target: "_blank", badge: "Deezer", type: "Audio Stream" }
+                ]
+            },
+            {
+                id: "movie-streaming",
+                name: "Movie & Series Streaming",
+                icon: "fa-film",
+                desc: "Enjoy blockbusters, local movies, soapies, and television productions.",
+                badge: "Movies",
+                links: [
+                    { name: "Netflix South Africa", url: "https://www.netflix.com/za/", target: "_blank", badge: "Netflix", type: "Video Stream" },
+                    { name: "Showmax South Africa", url: "https://www.showmax.com", target: "_blank", badge: "Showmax", type: "Local Video Stream" },
+                    { name: "Amazon Prime Video", url: "https://www.primevideo.com", target: "_blank", badge: "Prime Video", type: "Video Stream" },
+                    { name: "Disney+ South Africa", url: "https://www.disneyplus.com", target: "_blank", badge: "Disney+", type: "Video Stream" }
                 ]
             },
             {
