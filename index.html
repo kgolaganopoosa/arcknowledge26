@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcknowledge | The Ultimate South African Directory & Student Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bce0fd',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            light: '#f43f5e',
+                            DEFAULT: '#e11d48',
+                            dark: '#be123c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-brand-600 to-accent flex items-center justify-center w-10 h-10 rounded-xl shadow-lg shadow-brand-500/20 text-white font-black text-xl tracking-tight">
+                    A
+                </div>
+                <div>
+                    <span class="font-extrabold text-xl bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">Arcknowledge</span>
+                    <span class="text-xs block text-slate-400 font-semibold tracking-wide uppercase -mt-1">South Africa Hub</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="https://github.com" target="_blank" class="p-2 text-slate-400 hover:text-brand-600 transition-colors" title="Contribute on GitHub">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1.5 rounded-full border border-brand-100 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Proudly South African 🇿🇦
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+        
+        <!-- Hero Search Section -->
+        <div class="bg-gradient-to-br from-brand-900 via-brand-900 to-slate-900 rounded-2xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl shadow-brand-900/10">
+            <!-- Decorative Accents -->
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-accent rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-brand-500 rounded-full blur-3xl opacity-20"></div>
+
+            <div class="relative z-10 max-w-2xl">
+                <span class="bg-white/10 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full border border-white/10 uppercase tracking-widest mb-3 inline-block">
+                    Your Ultimate Gateway
+                </span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+                    Unlock anything South African, curated in one vibrant place.
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base mb-6">
+                    Looking for universities, TVET colleges, grocery deliveries, top local tech outlets, study loans, or weekend festivals? Arcknowledge connects you instantly to original, official sources.
+                </p>
+
+                <!-- Dynamic Search -->
+                <div class="relative">
+                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        oninput="filterCategories()"
+                        placeholder="Search for 'universities', 'bursaries', 'flights', 'gaming'..." 
+                        class="w-full pl-12 pr-4 py-3.5 bg-white text-slate-800 rounded-xl font-medium focus:ring-4 focus:ring-brand-500/30 outline-none transition-all shadow-lg placeholder:text-slate-400"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Category Explorer & Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Sidebar / Categories Grid (LHS) -->
+            <div class="lg:col-span-8 flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-brand-600"></i> Browse Directories
+                    </h2>
+                    <span id="categoryCount" class="text-xs bg-slate-200/60 text-slate-600 font-semibold px-2.5 py-1 rounded-md">22 Categories Loaded</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="categoriesGrid">
+                    <!-- Javascript will dynamically inject buttons here -->
+                </div>
+            </div>
+
+            <!-- List Drawer Display Panel (RHS) -->
+            <div class="lg:col-span-4 lg:sticky lg:top-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[600px]" id="drawerContainer">
+                <div class="p-5 bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 flex items-center justify-between">
+                    <div>
+                        <h3 id="drawerTitle" class="font-extrabold text-slate-800 text-lg flex items-center gap-2">
+                            👋 Welcome to Hub
+                        </h3>
+                        <p id="drawerSubtitle" class="text-xs text-slate-500 mt-0.5">Select a category to view direct links</p>
+                    </div>
+                    <span id="drawerBadge" class="bg-brand-100 text-brand-800 text-xs font-bold px-2 py-1 rounded">0 Link(s)</span>
+                </div>
+
+                <!-- Dynamic Content List -->
+                <div class="flex-1 overflow-y-auto p-5 custom-scrollbar flex flex-col gap-3" id="drawerBody">
+                    <div class="my-auto text-center p-6 flex flex-col items-center justify-center text-slate-400">
+                        <i class="fa-solid fa-hand-pointer text-4xl mb-3 text-slate-300 animate-bounce"></i>
+                        <p class="font-semibold text-slate-600">No Category Selected</p>
+                        <p class="text-xs max-w-xs mt-1">Tap any of the category boxes on the left to reveal direct links, download portals, and resources.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-brand-600 flex items-center justify-center w-8 h-8 rounded-lg text-white font-bold text-md">
+                            A
+                        </div>
+                        <span class="font-extrabold text-lg text-white">Arcknowledge</span>
+                    </div>
+                    <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
+                        South Africa's premiere directory platform, pointing you to official, safe links for education, tools, lifestyle, housing, transport, and more.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white text-sm uppercase tracking-wider mb-4">Legals & Frameworks</h4>
+                    <div class="flex flex-col gap-2.5 text-sm">
+                        <button onclick="openModal('privacy')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-shield-halved mr-2 text-brand-500"></i> Privacy Policy (POPIA compliant)</button>
+                        <button onclick="openModal('terms')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-file-contract mr-2 text-brand-500"></i> Terms of Use</button>
+                        <button onclick="openModal('conditions')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-handshake mr-2 text-brand-500"></i> Terms & Conditions</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white text-sm uppercase tracking-wider mb-4">Disclaimer & Safety</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Arcknowledge is an aggregator referencing official platform domain pathways. We do not process payments, accept credentials, or store private user metadata. Verify URLs before performing sensitive actions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>&copy; 2026 Arcknowledge. Created with youthy excellence. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <span class="hover:text-slate-400 cursor-pointer">South Africa</span>
+                    <span>&middot;</span>
+                    <span class="hover:text-slate-400 cursor-pointer">Version 2.0</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h3 id="modalTitle" class="font-bold text-lg text-slate-900">Legal Documents</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto text-sm text-slate-600 leading-relaxed space-y-4 custom-scrollbar" id="modalBody">
+                <!-- Content injected dynamically -->
+            </div>
+            <div class="p-4 border-t border-slate-100 bg-slate-50 text-right">
+                <button onclick="closeModal()" class="px-5 py-2 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors shadow-md shadow-brand-600/10">
+                    I Understand & Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Logic Script -->
+    <script>
+        const directoryData = [
+            {
+                id: "uni",
+                name: "Universities",
+                icon: "fa-university",
+                desc: "Official South African public universities.",
+                badge: "Higher Ed",
+                links: [
+                    { name: "University of Cape Town (UCT)", url: "https://www.uct.ac.za", target: "_blank", badge: "UCT", type: "Web" },
+                    { name: "University of the Witwatersrand (Wits)", url: "https://www.wits.ac.za", target: "_blank", badge: "Wits", type: "Web" },
+                    { name: "University of Pretoria (UP)", url: "https://www.up.ac.za", target: "_blank", badge: "UP", type: "Web" },
+                    { name: "Stellenbosch University (SU)", url: "https://www.sun.ac.za", target: "_blank", badge: "Maties", type: "Web" },
+                    { name: "University of Johannesburg (UJ)", url: "https://www.uj.ac.za", target: "_blank", badge: "UJ", type: "Web" },
+                    { name: "University of KwaZulu-Natal (UKZN)", url: "https://www.ukzn.ac.za", target: "_blank", badge: "UKZN", type: "Web" }
+                ]
+            },
+            {
+                id: "private-college",
+                name: "Private Colleges",
+                icon: "fa-graduation-cap",
+                desc: "Leading registered private higher education providers.",
+                badge: "Private Ed",
+                links: [
+                    { name: "Varsity College", url: "https://www.varsitycollege.co.za", target: "_blank", badge: "IIE", type: "Web" },
+                    { name: "Boston City Campus", url: "https://www.boston.co.za", target: "_blank", badge: "Boston", type: "Web" },
+                    { name: "Damelin College", url: "https://www.damelin.co.za", target: "_blank", badge: "Damelin", type: "Web" },
+                    { name: "MANCOSA", url: "https://www.mancosa.co.za", target: "_blank", badge: "MANCOSA", type: "Web" },
+                    { name: "Regenesys Business School", url: "https://www.regenesys.net", target: "_blank", badge: "Regenesys", type: "Web" }
+                ]
+            },
+            {
+                id: "tvet",
+                name: "TVET Colleges",
+                icon: "fa-gears",
+                desc: "Technical and Vocational Training hubs for skills development.",
+                badge: "Vocational",
+                links: [
+                    { name: "South West Gauteng TVET College", url: "https://www.swgc.co.za", target: "_blank", badge: "SWGC", type: "Web" },
+                    { name: "False Bay TVET College", url: "https://www.falsebaycollege.co.za", target: "_blank", badge: "FBC", type: "Web" },
+                    { name: "College of Cape Town", url: "https://www.cct.edu.za", target: "_blank", badge: "CCT", type: "Web" },
+                    { name: "Tshwane South TVET College", url: "https://www.tsc.edu.za", target: "_blank", badge: "TSC", type: "Web" }
+                ]
+            },
+            {
+                id: "online-school",
+                name: "Online Schools",
+                icon: "fa-laptop-code",
+                desc: "Primary, high-school, and hybrid online learning options.",
+                badge: "Virtual Ed",
+                links: [
+                    { name: "UCT Online High School", url: "https://www.uctonlinehighschool.com", target: "_blank", badge: "UCT OHS", type: "Web" },
+                    { name: "Teneo Online School", url: "https://www.teneoschool.co.za", target: "_blank", badge: "Teneo", type: "Web" },
+                    { name: "CambriLearn South Africa", url: "https://www.cambrilearn.com", target: "_blank", badge: "CambriLearn", type: "Web" },
+                    { name: "Curro Online", url: "https://www.curro.co.za/schools/curro-online/", target: "_blank", badge: "Curro", type: "Web" }
+                ]
+            },
+            {
+                id: "bursary",
+                name: "Bursaries & Student Loans",
+                icon: "fa-hand-holding-dollar",
+                desc: "Tuition funding, student aid schemes, and crowd-sourced fees.",
+                badge: "Financing",
+                links: [
+                    { name: "NSFAS Application Portal", url: "https://www.nsfas.org.za", target: "_blank", badge: "NSFAS Hub", type: "Portal" },
+                    { name: "Fundi Student Loans", url: "https://www.fundi.co.za", target: "_blank", badge: "Fundi", type: "Loan" },
+                    { name: "Feenix Crowdfunding", url: "https://feenix.org", target: "_blank", badge: "Feenix", type: "Donate" },
+                    { name: "Bursaries South Africa Guide", url: "https://www.bursariesportal.co.za", target: "_blank", badge: "Directory", type: "Web" }
+                ]
+            },
+            {
+                id: "accommodation",
+                name: "Student Accommodation",
+                icon: "fa-hotel",
+                desc: "Accredited private student housing and off-campus digs.",
+                badge: "Housing",
+                links: [
+                    { name: "DigsConnect Room Finder", url: "https://www.digsconnect.com", target: "_blank", badge: "DigsConnect", type: "Portal" },
+                    { name: "South Point Accommodation", url: "https://www.staysouthpoint.co.za", target: "_blank", badge: "South Point", type: "Web" },
+                    { name: "Respublica Student Living", url: "https://www.respublica.co.za", target: "_blank", badge: "Respublica", type: "Web" },
+                    { name: "Campus Key Homes", url: "https://www.campuskey.co.za", target: "_blank", badge: "Campus Key", type: "Web" }
+                ]
+            },
+            {
+                id: "textbook",
+                name: "Textbook Stores",
+                icon: "fa-book-open",
+                desc: "New, used, and digital textbook outlets.",
+                badge: "Books",
+                links: [
+                    { name: "Van Schaik Bookstore", url: "https://www.vanschaik.com", target: "_blank", badge: "Van Schaik", type: "Web/Store" },
+                    { name: "Wize Books Portal", url: "https://www.wizebooks.co.za", target: "_blank", badge: "Wize Books", type: "Web" },
+                    { name: "Takealot Textbooks Dept.", url: "https://www.takealot.com/books-co-za/textbooks", target: "_blank", badge: "Takealot", type: "E-Commerce" },
+                    { name: "Snapplify Digital Books", url: "https://snapplify.com", target: "_blank", badge: "eBooks", type: "App" }
+                ]
+            },
+            {
+                id: "ai-assistant",
+                name: "AI Assistants",
+                icon: "fa-brain",
+                desc: "Generative artificial intelligence search and text systems.",
+                badge: "AI Tools",
+                links: [
+                    { name: "ChatGPT (OpenAI)", url: "https://chatgpt.com", target: "_blank", badge: "GPT-4o", type: "Web/App" },
+                    { name: "Claude AI (Anthropic)", url: "https://claude.ai", target: "_blank", badge: "Claude 3.5", type: "Web/App" },
+                    { name: "Microsoft Copilot", url: "https://copilot.microsoft.com", target: "_blank", badge: "Copilot", type: "Productivity" },
+                    { name: "Perplexity AI Search", url: "https://www.perplexity.ai", target: "_blank", badge: "Perplexity", type: "Search Engine" }
+                ]
+            },
+            {
+                id: "search-engine",
+                name: "Search Engines",
+                icon: "fa-globe",
+                desc: "Core entryways to index and crawl global web resources.",
+                badge: "Discovery",
+                links: [
+                    { name: "Google South Africa", url: "https://www.google.co.za", target: "_blank", badge: "Google", type: "Global Standard" },
+                    { name: "DuckDuckGo Privacy Search", url: "https://duckduckgo.com", target: "_blank", badge: "DuckDuckGo", type: "Privacy Focused" },
+                    { name: "Microsoft Bing", url: "https://www.bing.com", target: "_blank", badge: "Bing", type: "Corporate" }
+                ]
+            },
+            {
+                id: "tech-store",
+                name: "Laptop & Gadget Stores",
+                icon: "fa-laptop",
+                desc: "Where to find hardware, accessories, and stationery.",
+                badge: "Shopping",
+                links: [
+                    { name: "Takealot Gadgets Dept", url: "https://www.takealot.com", target: "_blank", badge: "Takealot", type: "E-Commerce" },
+                    { name: "Incredible Connection", url: "https://www.incredible.co.za", target: "_blank", badge: "Incredible", type: "Store" },
+                    { name: "Evetech PC Builder Hub", url: "https://www.evetech.co.za", target: "_blank", badge: "Evetech", type: "Hardware Store" },
+                    { name: "Wootware South Africa", url: "https://www.wootware.co.za", target: "_blank", badge: "Wootware", type: "Online Only" }
+                ]
+            },
+            {
+                id: "bank",
+                name: "Banks & Digital Wallets",
+                icon: "fa-building-columns",
+                desc: "Direct pathways to banking platforms & app portals.",
+                badge: "Fintech",
+                links: [
+                    { name: "Capitec Bank Portal", url: "https://www.capitecbank.co.za", target: "_blank", badge: "Capitec", type: "Web/App" },
+                    { name: "FNB App & Web Banking", url: "https://www.fnb.co.za", target: "_blank", badge: "FNB", type: "Web/App" },
+                    { name: "Standard Bank SA", url: "https://www.standardbank.co.za", target: "_blank", badge: "Standard Bank", type: "Web/App" },
+                    { name: "Nedbank Online Banking", url: "https://www.nedbank.co.za", target: "_blank", badge: "Nedbank", type: "Web/App" },
+                    { name: "TymeBank (Fully Digital)", url: "https://www.tymebank.co.za", target: "_blank", badge: "TymeBank", type: "Digital Only" }
+                ]
+            },
+            {
+                id: "grocery",
+                name: "Grocery Stores",
+                icon: "fa-basket-shopping",
+                desc: "Direct channels to physical pantries and fast delivery apps.",
+                badge: "Daily Need",
+                links: [
+                    { name: "Checkers Sixty60 App", url: "https://www.checkers.co.za/sixty60.html", target: "_blank", badge: "Sixty60", type: "App Deliveries" },
+                    { name: "Pick n Pay asap! Store", url: "https://www.pnp.co.za/asap", target: "_blank", badge: "PnP asap!", type: "App Deliveries" },
+                    { name: "Woolies Dash Platform", url: "https://www.woolworths.co.za", target: "_blank", badge: "Dash", type: "Premium Delivery" },
+                    { name: "Spar2U Home Deliveries", url: "https://www.spar.co.za/SPAR2U", target: "_blank", badge: "Spar2U", type: "App Deliveries" }
+                ]
+            },
+            {
+                id: "clothing",
+                name: "Online Clothing Stores",
+                icon: "fa-shirt",
+                desc: "Trending modern styles, boots, and dynamic streetwear.",
+                badge: "Fashion",
+                links: [
+                    { name: "Superbalist Fashion Portal", url: "https://superbalist.com", target: "_blank", badge: "Superbalist", type: "E-Commerce" },
+                    { name: "Zando Fashion Hub", url: "https://www.zando.co.za", target: "_blank", badge: "Zando", type: "E-Commerce" },
+                    { name: "Bash South Africa", url: "https://bash.com", target: "_blank", badge: "Foschini Group", type: "E-Commerce" },
+                    { name: "Shein South Africa", url: "https://za.shein.com", target: "_blank", badge: "Shein SA", type: "App/Web" }
+                ]
+            },
+            {
+                id: "transport",
+                name: "Transportation & Rides",
+                icon: "fa-train-subway",
+                desc: "Local urban transit systems, ridesharing services, and timelines.",
+                badge: "Commute",
+                links: [
+                    { name: "Gautrain Travel Portal", url: "https://www.gautrain.co.za", target: "_blank", badge: "Gautrain", type: "Transit Link" },
+                    { name: "Uber South Africa", url: "https://www.uber.com/za/en/", target: "_blank", badge: "Uber Rides", type: "App Link" },
+                    { name: "Bolt e-Hailing App", url: "https://bolt.eu/en-za/", target: "_blank", badge: "Bolt Rides", type: "App Link" }
+                ]
+            },
+            {
+                id: "flight",
+                name: "Online Flight Outlets",
+                icon: "fa-plane",
+                desc: "Domestic and international airways flying local paths.",
+                badge: "Travel",
+                links: [
+                    { name: "FlySafair Flights", url: "https://www.flysafair.co.za", target: "_blank", badge: "Low-Cost Carrier", type: "Web" },
+                    { name: "Travelstart Booking Engine", url: "https://www.travelstart.co.za", target: "_blank", badge: "Travelstart", type: "Aggregator" },
+                    { name: "Airlink Aviation", url: "https://www.flyairlink.com", target: "_blank", badge: "Airlink", type: "Web" },
+                    { name: "South African Airways (SAA)", url: "https://www.flysaa.com", target: "_blank", badge: "SAA Flagship", type: "Web" }
+                ]
+            },
+            {
+                id: "hotel",
+                name: "Hotel & Lodge Bookings",
+                icon: "fa-bed",
+                desc: "Local getaway lodges, hotels, and dynamic Airbnbs.",
+                badge: "Stays",
+                links: [
+                    { name: "Booking.com South Africa", url: "https://www.booking.com", target: "_blank", badge: "Booking", type: "Booking System" },
+                    { name: "LekkeSlaap Holiday Rentals", url: "https://www.lekkeslaap.co.za", target: "_blank", badge: "Afrikaans/English", type: "Local Portal" },
+                    { name: "Airbnb South Africa", url: "https://www.airbnb.co.za", target: "_blank", badge: "Airbnb", type: "Self Catering" }
+                ]
+            },
+            {
+                id: "events",
+                name: "Festivals & Events",
+                icon: "fa-champagne-glasses",
+                desc: "Major South African concert hubs, local turn-ups, and ticket sellers.",
+                badge: "Going Out",
+                links: [
+                    { name: "Howler Event Ticketing", url: "https://www.howler.co.za", target: "_blank", badge: "Howler", type: "Ticket Portal" },
+                    { name: "Quicket Ticket Engine", url: "https://www.quicket.co.za", target: "_blank", badge: "Quicket", type: "Ticket Portal" },
+                    { name: "Computicket Box Office", url: "https://computicket.com", target: "_blank", badge: "Computicket", type: "Ticket Portal" }
+                ]
+            },
+            {
+                id: "jobs",
+                name: "Job Portals",
+                icon: "fa-briefcase",
+                desc: "Career aggregators and entry-level talent avenues.",
+                badge: "Careers",
+                links: [
+                    { name: "Pnet Professional Search", url: "https://www.pnet.co.za", target: "_blank", badge: "Pnet", type: "Web" },
+                    { name: "Careers24 Portal", url: "https://www.careers24.com", target: "_blank", badge: "Careers24", type: "Web" },
+                    { name: "Indeed South Africa Hub", url: "https://za.indeed.com", target: "_blank", badge: "Indeed", type: "Aggregator" },
+                    { name: "LinkedIn Career Directory", url: "https://www.linkedin.com", target: "_blank", badge: "LinkedIn", type: "Professional Net" }
+                ]
+            },
+            {
+                id: "cars",
+                name: "Car Companies",
+                icon: "fa-car",
+                desc: "Popular automotive dealerships, brands, and vehicle hubs.",
+                badge: "Motors",
+                links: [
+                    { name: "Toyota South Africa", url: "https://www.toyota.co.za", target: "_blank", badge: "Toyota", type: "Manufacturer" },
+                    { name: "Volkswagen (VW) South Africa", url: "https://www.vw.co.za", target: "_blank", badge: "VW", type: "Manufacturer" },
+                    { name: "Suzuki Auto South Africa", url: "https://www.suzukiauto.co.za", target: "_blank", badge: "Suzuki", type: "Manufacturer" },
+                    { name: "AutoTrader (Used/New)", url: "https://www.autotrader.co.za", target: "_blank", badge: "AutoTrader", type: "Marketplace" }
+                ]
+            },
+            {
+                id: "property",
+                name: "Property & Housing",
+                icon: "fa-house-chimney",
+                desc: "Buy, sell, rent, or lease flats, houses, and industrial buildings.",
+                badge: "Real Estate",
+                links: [
+                    { name: "Property24 Real Estate Hub", url: "https://www.property24.com", target: "_blank", badge: "Property24", type: "Aggregator" },
+                    { name: "Private Property Listings", url: "https://www.privateproperty.co.za", target: "_blank", badge: "Private Property", type: "Web" }
+                ]
+            },
+            {
+                id: "gaming",
+                name: "Gaming Stores & Free Hubs",
+                icon: "fa-gamepad",
+                desc: "Dynamic digital storefronts and repositories of free independent games.",
+                badge: "Entertainment",
+                links: [
+                    { name: "Steam Store Front", url: "https://store.steampowered.com", target: "_blank", badge: "Steam", type: "Game App Store" },
+                    { name: "Epic Games Free Weekly Catalog", url: "https://store.epicgames.com", target: "_blank", badge: "Epic Games", type: "Games Launcher" },
+                    { name: "itch.io Free Indie Games", url: "https://itch.io", target: "_blank", badge: "itch.io", type: "Free Play Store" }
+                ]
+            },
+            {
+                id: "expos",
+                name: "Local Expos & Tech Shows",
+                icon: "fa-masks-theater",
+                desc: "Epic live conventions, gaming arenas, comic markets, and design exhibitions.",
+                badge: "Conventions",
+                links: [
+                    { name: "Comic Con Africa", url: "https://comicconafrica.co.za", target: "_blank", badge: "CCA", type: "Convention Link" },
+                    { name: "Rage Expo Gaming", url: "https://www.rageexpo.co.za", target: "_blank", badge: "rAge", type: "Gaming Show" },
+                    { name: "Decorex South Africa", url: "https://www.decorex.co.za", target: "_blank", badge: "Decorex", type: "Design Show" }
+                ]
+            }
+        ];
+
+        // Policies Mock Database
+        const legalDocs = {
+            privacy: {
+                title: "Protection of Personal Information Act (POPIA) Privacy Policy",
+                content: `
+                    <p class="font-bold text-slate-800 text-md">1. Commitment to Privacy</p>
+                    <p>Arcknowledge operates as an index directory for web references located in South Africa. We respect your constitutional right to privacy and process personal information strictly in compliance with the Protection of Personal Information Act, No. 4 of 2013 ("POPIA").</p>
+                    
+                    <p class="font-bold text-slate-800 text-md">2. Information We Do Not Collect</p>
+                    <p>Since Arcknowledge is a frontend-only platform, <strong>we do not operate background storage systems or active databases tracking user behavior</strong>. We do not require sign-up accounts, emails, telephone numbers, or demographic variables. We do not use persistent tracking cookies targeting individual personas.</p>
+
+                    <p class="font-bold text-slate-800 text-md">3. Outbound Link Navigation Disclaimer</p>
+                    <p>Our website contains direct external hyperlinks targeting outer service directories, universities, state institutions, and vendors. Once you engage a link, you bypass the protective walls of Arcknowledge. We carry zero responsibility for how external frameworks register, trace, or harvest your cookies or identity data. Ensure you review their internal safety protocols upon landing.</p>
+                `
+            },
+            terms: {
+                title: "Terms of Use",
+                content: `
+                    <p class="font-bold text-slate-800 text-md">1. Acceptance of Terms</p>
+                    <p>By using the Arcknowledge portal ("the site"), you agree to abide by these terms of use. If you do not agree to these conditions, you must immediately terminate use of the site.</p>
+                    
+                    <p class="font-bold text-slate-800 text-md">2. Permitted Use Only</p>
+                    <p>You agree to employ this digital directory solely for personal, research-oriented, and informative goals. You are strictly forbidden from performing scraping scripts, system-level DDoS attacks, high-volume automated inquiries, or frame injection attempts targeting Arcknowledge structures.</p>
+
+                    <p class="font-bold text-slate-800 text-md">3. Intellectual Property</p>
+                    <p>The code design, design styling configurations, UI compositions, unique layout frameworks, and digital visual asset groupings remain the exclusive intellectual property of Arcknowledge. Brand labels, logos, and target names linked in categories belong strictly to their certified commercial owners.</p>
+                `
+            },
+            conditions: {
+                title: "General Terms & Conditions",
+                content: `
+                    <p class="font-bold text-slate-800 text-md">1. Directory Information Accuracy</p>
+                    <p>While we make reasonable attempts to verify the legitimacy of official links, Arcknowledge provides all information "as is" and "as available". We offer zero assurances that the channels listed remain free of security breaches, malware, server shutdowns, or broken linkages.</p>
+                    
+                    <p class="font-bold text-slate-800 text-md">2. Financial Transactions Notice</p>
+                    <p>Under no circumstances does Arcknowledge process financial transactions, bank deposits, loan evaluations, tuition requests, or online retail operations directly. All monetary movements occur on external servers and banking networks. Arcknowledge holds no liability for transaction disputes, online payment mistakes, or financial losses.</p>
+
+                    <p class="font-bold text-slate-800 text-md">3. Jurisdiction</p>
+                    <p>These guidelines, privacy rules, and functional terms are governed by the laws of the Republic of South Africa. Any disputes rising from directory actions shall be resolved in the magistrate courts under domestic South African legal rules.</p>
+                `
+            }
+        };
+
+        // Render Category Grid Dynamic Items
+        function renderCategories(filterText = "") {
+            const grid = document.getElementById("categoriesGrid");
+            grid.innerHTML = "";
+            
+            const filtered = directoryData.filter(cat => 
+                cat.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                cat.desc.toLowerCase().includes(filterText.toLowerCase()) ||
+                cat.links.some(l => l.name.toLowerCase().includes(filterText.toLowerCase()))
+            );
+
+            document.getElementById("categoryCount").innerText = `${filtered.length} Categories Found`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        <i class="fa-solid fa-folder-open text-4xl mb-2"></i>
+                        <p class="font-semibold text-slate-600">No matching directories found</p>
+                        <p class="text-xs">Try searching another keyword (e.g. "FNB", "UCT", "Uber").</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(cat => {
+                const button = document.createElement("button");
+                button.className = "group text-left bg-white p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:shadow-md hover:shadow-brand-500/5 transition-all flex items-center gap-4 cursor-pointer focus:ring-2 focus:ring-brand-500/20 outline-none";
+                button.onclick = () => selectCategory(cat.id);
+                
+                button.innerHTML = `
+                    <div class="w-12 h-12 bg-slate-100 group-hover:bg-brand-50 rounded-xl flex items-center justify-center text-slate-600 group-hover:text-brand-600 transition-colors shrink-0">
+                        <i class="fa-solid ${cat.icon} text-xl"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-800 group-hover:text-brand-600 transition-colors text-sm sm:text-base truncate">${cat.name}</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-500 font-semibold px-2 py-0.5 rounded group-hover:bg-brand-100 group-hover:text-brand-800 shrink-0">${cat.links.length} links</span>
+                        </div>
+                        <p class="text-xs text-slate-400 truncate mt-0.5">${cat.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(button);
+            });
+        }
+
+        // Action: Select and Load Category to Drawer
+        let activeCategoryId = null;
+        function selectCategory(id) {
+            activeCategoryId = id;
+            const cat = directoryData.find(c => c.id === id);
+            if (!cat) return;
+
+            // Highlight Drawer Heading
+            document.getElementById("drawerTitle").innerHTML = `<i class="fa-solid ${cat.icon} text-brand-600 mr-2"></i> ${cat.name}`;
+            document.getElementById("drawerSubtitle").innerText = cat.desc;
+            document.getElementById("drawerBadge").innerText = `${cat.links.length} Links Portal`;
+
+            // Style Sidebar elements slightly to show active if needed (CSS classes handled in standard events)
+            
+            // Build Dynamic Links Cards
+            const drawerBody = document.getElementById("drawerBody");
+            drawerBody.innerHTML = "";
+
+            cat.links.forEach(lnk => {
+                const card = document.createElement("div");
+                card.className = "bg-slate-50 hover:bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 transition-all shadow-sm group";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                            <h4 class="font-semibold text-slate-800 group-hover:text-brand-600 transition-colors text-sm leading-snug">${lnk.name}</h4>
+                            <span class="text-[10px] text-slate-400 font-medium">Link Type: ${lnk.type}</span>
+                        </div>
+                        <span class="bg-slate-200/60 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded shrink-0">${lnk.badge}</span>
+                    </div>
+                    <a href="${lnk.url}" target="${lnk.target}" class="w-full bg-white group-hover:bg-brand-600 text-brand-600 group-hover:text-white border border-brand-200 group-hover:border-brand-600 text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-all text-center">
+                        Visit Official Platform <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                `;
+                drawerBody.appendChild(card);
+            });
+
+            // Scroll to view right hand side on smaller viewports dynamically
+            if (window.innerWidth < 1024) {
+                document.getElementById("drawerContainer").scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Live Filtering Search logic
+        function filterCategories() {
+            const text = document.getElementById("searchInput").value;
+            renderCategories(text);
+        }
+
+        // Modal triggers
+        function openModal(type) {
+            const doc = legalDocs[type];
+            if (!doc) return;
+            document.getElementById("modalTitle").innerText = doc.title;
+            document.getElementById("modalBody").innerHTML = doc.content;
+            document.getElementById("modalOverlay").classList.remove("hidden");
+            document.body.classList.add("overflow-hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").classList.add("hidden");
+            document.body.classList.remove("overflow-hidden");
+        }
+
+        // Init App
+        renderCategories();
+    </script>
+</body>
+</html>
