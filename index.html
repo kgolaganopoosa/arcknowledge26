@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arcknowledge | The Ultimate South African Directory & Student Hub</title>
+    <!-- Link to PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <link rel="apple-touch-icon" href="icon.svg">
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -33,7 +38,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -68,9 +73,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-4">
-                <!--<a href="https://github.com" target="_blank" class="p-2 text-slate-400 hover:text-brand-600 transition-colors" title="Contribute on GitHub">
-                    <i class="fab fa-github text-xl"></i>
-                </a>-->
                 <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1.5 rounded-full border border-brand-100 flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Proudly South African 🇿🇦
                 </span>
@@ -214,6 +216,26 @@
                     I Understand & Close
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Dynamic PWA Slide-up Install Banner -->
+    <div id="pwaInstallBanner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-slate-900 border border-slate-800 text-white p-4 rounded-2xl shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform translate-y-24 opacity-0 hidden">
+        <!-- Circular PWA App Icon Design -->
+        <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-slate-800">
+            <div class="w-6 h-6 bg-white rounded-full"></div>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-bold text-sm text-white">Install Arcknowledge</h4>
+            <p class="text-xs text-slate-400">Access local South African directories directly from your home screen.</p>
+        </div>
+        <div class="flex gap-2 shrink-0">
+            <button id="pwaCloseBtn" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white transition-colors">
+                Maybe Later
+            </button>
+            <button id="pwaInstallBtn" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-md">
+                Install
+            </button>
         </div>
     </div>
 
@@ -603,8 +625,6 @@
             document.getElementById("drawerTitle").innerHTML = `<i class="fa-solid ${cat.icon} text-brand-600 mr-2"></i> ${cat.name}`;
             document.getElementById("drawerSubtitle").innerText = cat.desc;
             document.getElementById("drawerBadge").innerText = `${cat.links.length} Links Portal`;
-
-            // Style Sidebar elements slightly to show active if needed (CSS classes handled in standard events)
             
             // Build Dynamic Links Cards
             const drawerBody = document.getElementById("drawerBody");
@@ -654,6 +674,65 @@
             document.getElementById("modalOverlay").classList.add("hidden");
             document.body.classList.remove("overflow-hidden");
         }
+
+        // --- PWA Installation Core Logic ---
+        let deferredPrompt;
+        const pwaInstallBanner = document.getElementById('pwaInstallBanner');
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+        const pwaCloseBtn = document.getElementById('pwaCloseBtn');
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker successfully registered!', reg.scope))
+                    .catch(err => console.error('Service Worker registration failed:', err));
+            });
+        }
+
+        // Listen for standard Browser Install Prompt Event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent standard default mini-infobar on mobile devices
+            e.preventDefault();
+            // Store event globally to trigger programmatically later
+            deferredPrompt = e;
+            // Un-hide the custom Tailwind sliding installer pop-up UI
+            pwaInstallBanner.classList.remove('hidden');
+            setTimeout(() => {
+                pwaInstallBanner.classList.remove('translate-y-24', 'opacity-0');
+                pwaInstallBanner.classList.add('translate-y-0', 'opacity-100');
+            }, 100);
+        });
+
+        // Trigger installation flow on click
+        pwaInstallBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            // Run native prompt
+            deferredPrompt.prompt();
+            // Read user choices
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`PWA installer decision: ${outcome}`);
+            deferredPrompt = null;
+            hideInstallBanner();
+        });
+
+        pwaCloseBtn.addEventListener('click', () => {
+            hideInstallBanner();
+        });
+
+        function hideInstallBanner() {
+            pwaInstallBanner.classList.remove('translate-y-0', 'opacity-100');
+            pwaInstallBanner.classList.add('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                pwaInstallBanner.classList.add('hidden');
+            }, 300);
+        }
+
+        // Hide banner if app has already been successfully installed
+        window.addEventListener('appinstalled', () => {
+            console.log('Arcknowledge successfully installed into user system.');
+            hideInstallBanner();
+        });
 
         // Init App
         renderCategories();
