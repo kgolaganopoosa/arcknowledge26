@@ -4,7 +4,7 @@
   "description": "Your ultimate gateway to official South African student resources, education, shopping, and life utilities.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1e3a8a",
+  "background_color": "#FFFFFF",
   "theme_color": "#1e3a8a",
   "orientation": "portrait-primary",
   "icons": [
