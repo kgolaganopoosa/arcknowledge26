@@ -57,7 +57,7 @@
         }
     </style>
 </head>
-<body class="bg-ramp-lightBg text-ramp-textDark min-h-screen flex flex-col">
+<body class="bg-ramp-lightBg text-ramp-textDark min-h-screen flex flex-col pb-20 sm:pb-24">
 
     <!-- Header / Navigation -->
     <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-ramp-border">
@@ -199,6 +199,55 @@
         </div>
     </footer>
 
+    <!-- Persistent Floating Bottom Menu -->
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-md bg-ramp-dark/90 backdrop-blur-md border border-ramp-darkBorder rounded-2xl shadow-2xl px-6 py-3 flex items-center justify-between text-white">
+        <!-- Left: Home Button -->
+        <button onclick="scrollToTop()" class="flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px] font-bold tracking-wide">Home</span>
+        </button>
+
+        <!-- Center: Search Button -->
+        <button onclick="focusSearch()" class="flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
+            <i class="fa-solid fa-magnifying-glass text-lg"></i>
+            <span class="text-[10px] font-bold tracking-wide">Search</span>
+        </button>
+
+        <!-- Right: Notifications Button with Counter -->
+        <button onclick="handleNotificationClick()" class="relative flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
+            <div class="relative inline-block">
+                <i class="fa-solid fa-bell text-lg"></i>
+                <span id="notifBadge" class="absolute -top-1.5 -right-2 bg-ramp-lime text-ramp-dark font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-ramp-dark">
+                    1
+                </span>
+            </div>
+            <span class="text-[10px] font-bold tracking-wide">Alerts</span>
+        </button>
+    </div>
+
+    <!-- Notification Popup Window Modal -->
+    <div id="notifModal" class="fixed inset-0 bg-ramp-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="relative bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-ramp-border flex flex-col items-center">
+            <!-- Close icon button -->
+            <button onclick="closeNotifModal()" class="absolute top-4 right-4 text-gray-400 hover:text-ramp-dark transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <!-- Lime Speech Bubble Component -->
+            <div class="relative bg-ramp-lime text-black font-semibold text-sm rounded-2xl p-5 shadow-sm leading-relaxed border border-ramp-limeHover">
+                Thanks for choosing Arcknowledge, be informed that Arcknowledge will be moving to a new domain within the next two weeks, kind regards, Management
+                
+                <!-- Speech Bubble Tail pointing downward -->
+                <div class="absolute -bottom-2 left-8 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-ramp-lime"></div>
+            </div>
+
+            <!-- Dismiss Action Button -->
+            <button onclick="closeNotifModal()" class="mt-6 w-full bg-ramp-dark text-ramp-lime py-2.5 rounded-xl font-bold text-xs hover:bg-black transition-colors shadow-md">
+                Got it
+            </button>
+        </div>
+    </div>
+
     <!-- Universal Modal Overlay -->
     <div id="modalOverlay" class="fixed inset-0 bg-ramp-dark/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-ramp-border">
@@ -220,7 +269,7 @@
     </div>
 
     <!-- Dynamic PWA Slide-up Install Banner -->
-    <div id="pwaInstallBanner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-ramp-dark border border-ramp-darkBorder text-white p-4 rounded-2xl shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform translate-y-24 opacity-0 hidden">
+    <div id="pwaInstallBanner" class="fixed bottom-20 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-ramp-dark border border-ramp-darkBorder text-white p-4 rounded-2xl shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform translate-y-24 opacity-0 hidden">
         <!-- Circular PWA App Icon Design -->
         <div class="w-12 h-12 bg-ramp-lime rounded-xl flex items-center justify-center shrink-0 text-ramp-dark font-black text-xl">
             A
@@ -1147,6 +1196,41 @@
         function closeModal() {
             document.getElementById("modalOverlay").classList.add("hidden");
             document.body.classList.remove("overflow-hidden");
+        }
+
+        // Navigation Menu Interactive Actions
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function focusSearch() {
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) {
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+        }
+
+        function handleNotificationClick() {
+            const notifBadge = document.getElementById("notifBadge");
+            if (notifBadge) {
+                notifBadge.style.display = "none";
+            }
+            const notifModal = document.getElementById("notifModal");
+            if (notifModal) {
+                notifModal.classList.remove("hidden");
+                document.body.classList.add("overflow-hidden");
+            }
+        }
+
+        function closeNotifModal() {
+            const notifModal = document.getElementById("notifModal");
+            if (notifModal) {
+                notifModal.classList.add("hidden");
+                document.body.classList.remove("overflow-hidden");
+            }
         }
 
         // --- PWA Installation Core Logic ---
