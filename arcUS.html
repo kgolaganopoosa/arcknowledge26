@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcknowledge | The Ultimate US Directory & Student Hub</title>
+    <!-- Link to PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
+    <link class="apple-touch-icon" href="icon.svg">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bce0fd',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            light: '#f43f5e',
+                            DEFAULT: '#e11d48',
+                            dark: '#be123c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-brand-600 to-accent flex items-center justify-center w-10 h-10 rounded-xl shadow-lg shadow-brand-500/20 text-white font-black text-xl tracking-tight">
+                    A
+                </div>
+                <div>
+                    <span class="font-extrabold text-xl bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">Arcknowledge</span>
+                    <span class="text-xs block text-slate-400 font-semibold tracking-wide uppercase -mt-1">United States Hub</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+
+        <!-- Top Banner -->
+         <a href="https://grok.com" target="_blank">
+            <div class="overflow-hidden rounded-2xl shadow-lg border border-slate-200 bg-white">
+                <img src="grokbanner.png" alt="Grok banner" class="w-full h-auto object-cover">
+            </div>
+        </a>
+
+        <!-- Hero Search Section -->
+        <div class="bg-gradient-to-br from-brand-900 via-brand-900 to-slate-900 rounded-2xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl shadow-brand-900/10">
+            <!-- Decorative Accents -->
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-accent rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-brand-500 rounded-full blur-3xl opacity-20"></div>
+
+            <div class="relative z-10 max-w-2xl">
+                <span class="bg-white/10 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full border border-white/10 uppercase tracking-widest mb-3 inline-block">
+                    Your Ultimate Gateway
+                </span>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+                    Unlock anything American, curated in one vibrant place.
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base mb-6">
+                    Looking for universities, community colleges, grocery deliveries, top local tech outlets, student loans, or weekend festivals? Arcknowledge connects you instantly to original, official sources.
+                </p>
+
+                <!-- Dynamic Search -->
+                <div class="relative">
+                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        oninput="filterCategories()"
+                        placeholder="Search for 'universities', 'FAFSA', 'flights', 'gaming'..." 
+                        class="w-full pl-12 pr-4 py-3.5 bg-white text-slate-800 rounded-xl font-medium focus:ring-4 focus:ring-brand-500/30 outline-none transition-all shadow-lg placeholder:text-slate-400"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Category Explorer & Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Sidebar / Categories Grid (LHS) -->
+            <div class="lg:col-span-8 flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-brand-600"></i> Browse Directories
+                    </h2>
+                    <span id="categoryCount" class="text-xs bg-slate-200/60 text-slate-600 font-semibold px-2.5 py-1 rounded-md">25 Categories Loaded</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="categoriesGrid">
+                    <!-- Javascript will dynamically inject buttons here -->
+                </div>
+            </div>
+
+            <!-- List Drawer Display Panel (RHS) -->
+            <div class="lg:col-span-4 lg:sticky lg:top-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[600px]" id="drawerContainer">
+                <div class="p-5 bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 flex items-center justify-between">
+                    <div>
+                        <h3 id="drawerTitle" class="font-extrabold text-slate-800 text-lg flex items-center gap-2">
+                            👋 Welcome to Hub
+                        </h3>
+                        <p id="drawerSubtitle" class="text-xs text-slate-500 mt-0.5">Select a category to view direct links</p>
+                    </div>
+                    <span id="drawerBadge" class="bg-brand-100 text-brand-800 text-xs font-bold px-2 py-1 rounded">0 Link(s)</span>
+                </div>
+
+                <!-- Dynamic Content List -->
+                <div class="flex-1 overflow-y-auto p-5 custom-scrollbar flex flex-col gap-3" id="drawerBody">
+                    <div class="my-auto text-center p-6 flex flex-col items-center justify-center text-slate-400">
+                        <i class="fa-solid fa-hand-pointer text-4xl mb-3 text-slate-300 animate-bounce"></i>
+                        <p class="font-semibold text-slate-600">No Category Selected</p>
+                        <p class="text-xs max-w-xs mt-1">Tap any of the category boxes on the left to reveal direct links, download portals, and resources.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-brand-600 flex items-center justify-center w-8 h-8 rounded-lg text-white font-bold text-md">
+                            A
+                        </div>
+                        <span class="font-extrabold text-lg text-white">Arcknowledge</span>
+                    </div>
+                    <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
+                        America's premiere directory platform, pointing you to official, safe links for education, tools, lifestyle, housing, transport, and more.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white text-sm uppercase tracking-wider mb-4">Legals & Frameworks</h4>
+                    <div class="flex flex-col gap-2.5 text-sm">
+                        <button onclick="openModal('privacy')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-shield-halved mr-2 text-brand-500"></i> Privacy Policy (CCPA compliant)</button>
+                        <button onclick="openModal('terms')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-file-contract mr-2 text-brand-500"></i> Terms of Use</button>
+                        <button onclick="openModal('conditions')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-handshake mr-2 text-brand-500"></i> Terms & Conditions</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white text-sm uppercase tracking-wider mb-4">Disclaimer & Safety</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Arcknowledge is an aggregator referencing official platform domain pathways. We do not process payments, accept credentials, or store private user metadata. Verify URLs before performing sensitive actions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>&copy; 2026 Arcknowledge. Created with youthy excellence. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <span class="hover:text-slate-400 cursor-pointer">United States</span>
+                    <span>&middot;</span>
+                    <span class="hover:text-slate-400 cursor-pointer">Version 2.0</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Universal Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h3 id="modalTitle" class="font-bold text-lg text-slate-900">Legal Documents</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto text-sm text-slate-600 leading-relaxed space-y-4 custom-scrollbar" id="modalBody">
+                <!-- Content injected dynamically -->
+            </div>
+            <div class="p-4 border-t border-slate-100 bg-slate-50 text-right">
+                <button onclick="closeModal()" class="px-5 py-2 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors shadow-md shadow-brand-600/10">
+                    I Understand & Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic PWA Slide-up Install Banner -->
+    <div id="pwaInstallBanner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-slate-900 border border-slate-800 text-white p-4 rounded-2xl shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform translate-y-24 opacity-0 hidden">
+        <!-- Circular PWA App Icon Design -->
+        <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-slate-800">
+            <div class="w-6 h-6 bg-white rounded-full"></div>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-bold text-sm text-white">Install Arcknowledge</h4>
+            <p class="text-xs text-slate-400">Access local American directories directly from your home screen.</p>
+        </div>
+        <div class="flex gap-2 shrink-0">
+            <button id="pwaCloseBtn" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white transition-colors">
+                Maybe Later
+            </button>
+            <button id="pwaInstallBtn" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-md">
+                Install
+            </button>
+        </div>
+    </div>
+
+    <!-- App Logic Script -->
+    <script>
+        const directoryData = [
+            {
+                id: "uni",
+                name: "Universities",
+                icon: "fa-university",
+                desc: "Official American top higher education institutions.",
+                badge: "Higher Ed",
+                links: [
+                    { name: "Harvard University", url: "https://www.harvard.edu", target: "_blank", badge: "MA", type: "Private Ivy" },
+                    { name: "Stanford University", url: "https://www.stanford.edu", target: "_blank", badge: "CA", type: "Private Uni" },
+                    { name: "Massachusetts Institute of Technology (MIT)", url: "https://www.mit.edu", target: "_blank", badge: "MA", type: "Private Tech" },
+                    { name: "University of California, Berkeley (UC Berkeley)", url: "https://www.berkeley.edu", target: "_blank", badge: "CA", type: "Public Uni" },
+                    { name: "Columbia University", url: "https://www.columbia.edu", target: "_blank", badge: "NY", type: "Private Ivy" },
+                    { name: "University of California, Los Angeles (UCLA)", url: "https://www.ucla.edu", target: "_blank", badge: "CA", type: "Public Uni" },
+                    { name: "Princeton University", url: "https://www.princeton.edu", target: "_blank", badge: "NJ", type: "Private Ivy" },
+                    { name: "Yale University", url: "https://www.yale.edu", target: "_blank", badge: "CT", type: "Private Ivy" },
+                    { name: "University of Michigan, Ann Arbor", url: "https://umich.edu", target: "_blank", badge: "MI", type: "Public Uni" },
+                    { name: "New York University (NYU)", url: "https://www.nyu.edu", target: "_blank", badge: "NY", type: "Private Uni" },
+                    { name: "University of Texas at Austin", url: "https://www.utexas.edu", target: "_blank", badge: "TX", type: "Public Uni" },
+                    { name: "Cornell University", url: "https://www.cornell.edu", target: "_blank", badge: "NY", type: "Private Ivy" },
+                    { name: "University of Florida", url: "https://www.ufl.edu", target: "_blank", badge: "FL", type: "Public Uni" },
+                    { name: "University of Washington", url: "https://www.washington.edu", target: "_blank", badge: "WA", type: "Public Uni" },
+                    { name: "University of Illinois Urbana-Champaign", url: "https://illinois.edu", target: "_blank", badge: "IL", type: "Public Uni" },
+                    { name: "Georgia Institute of Technology", url: "https://www.gatech.edu", target: "_blank", badge: "GA", type: "Public Tech" },
+                    { name: "University of Pennsylvania", url: "https://www.upenn.edu", target: "_blank", badge: "PA", type: "Private Ivy" },
+                    { name: "University of North Carolina at Chapel Hill", url: "https://www.unc.edu", target: "_blank", badge: "NC", type: "Public Uni" },
+                    { name: "University of Southern California (USC)", url: "https://www.usc.edu", target: "_blank", badge: "CA", type: "Private Uni" },
+                    { name: "Ohio State University", url: "https://www.osu.edu", target: "_blank", badge: "OH", type: "Public Uni" },
+                    { name: "Purdue University", url: "https://www.purdue.edu", target: "_blank", badge: "IN", type: "Public Uni" },
+                    { name: "University of Wisconsin-Madison", url: "https://www.wisc.edu", target: "_blank", badge: "WI", type: "Public Uni" },
+                    { name: "Arizona State University (ASU)", url: "https://www.asu.edu", target: "_blank", badge: "AZ", type: "Public Uni" },
+                    { name: "Pennsylvania State University (Penn State)", url: "https://www.psu.edu", target: "_blank", badge: "PA", type: "Public Uni" },
+                    { name: "Texas A&M University", url: "https://www.tamu.edu", target: "_blank", badge: "TX", type: "Public Uni" },
+                    { name: "University of Virginia", url: "https://www.virginia.edu", target: "_blank", badge: "VA", type: "Public Uni" }
+                ]
+            },
+            {
+                id: "private-college",
+                name: "Private Colleges",
+                icon: "fa-graduation-cap",
+                desc: "Leading private higher education providers and liberal arts colleges in the USA.",
+                badge: "Private Ed",
+                links: [
+                    { name: "Williams College", url: "https://www.williams.edu", target: "_blank", badge: "MA", type: "Liberal Arts" },
+                    { name: "Amherst College", url: "https://www.amherst.edu", target: "_blank", badge: "MA", type: "Liberal Arts" },
+                    { name: "Swarthmore College", url: "https://www.swarthmore.edu", target: "_blank", badge: "PA", type: "Liberal Arts" },
+                    { name: "Pomona College", url: "https://www.pomona.edu", target: "_blank", badge: "CA", type: "Liberal Arts" },
+                    { name: "Wellesley College", url: "https://www.wellesley.edu", target: "_blank", badge: "MA", type: "Women's College" },
+                    { name: "Bowdoin College", url: "https://www.bowdoin.edu", target: "_blank", badge: "ME", type: "Liberal Arts" },
+                    { name: "Carleton College", url: "https://www.carleton.edu", target: "_blank", badge: "MN", type: "Liberal Arts" },
+                    { name: "Claremont McKenna College", url: "https://www.cmc.edu", target: "_blank", badge: "CA", type: "Liberal Arts" },
+                    { name: "Middlebury College", url: "https://www.middlebury.edu", target: "_blank", badge: "VT", type: "Liberal Arts" },
+                    { name: "Davidson College", url: "https://www.davidson.edu", target: "_blank", badge: "NC", type: "Liberal Arts" },
+                    { name: "Smith College", url: "https://www.smith.edu", target: "_blank", badge: "MA", type: "Women's College" },
+                    { name: "Vassar College", url: "https://www.vassar.edu", target: "_blank", badge: "NY", type: "Liberal Arts" },
+                    { name: "Colby College", url: "https://www.colby.edu", target: "_blank", badge: "ME", type: "Liberal Arts" },
+                    { name: "Bates College", url: "https://www.bates.edu", target: "_blank", badge: "ME", type: "Liberal Arts" },
+                    { name: "Hamilton College", url: "https://www.hamilton.edu", target: "_blank", badge: "NY", type: "Liberal Arts" },
+                    { name: "Wesleyan University", url: "https://www.wesleyan.edu", target: "_blank", badge: "CT", type: "Liberal Arts" },
+                    { name: "Harvey Mudd College", url: "https://www.hmc.edu", target: "_blank", badge: "CA", type: "STEM & Arts" },
+                    { name: "Grinnell College", url: "https://www.grinnell.edu", target: "_blank", badge: "IA", type: "Liberal Arts" },
+                    { name: "Colgate University", url: "https://www.colgate.edu", target: "_blank", badge: "NY", type: "Liberal Arts" },
+                    { name: "Haverford College", url: "https://www.haverford.edu", target: "_blank", badge: "PA", type: "Liberal Arts" },
+                    { name: "Oberlin College", url: "https://www.oberlin.edu", target: "_blank", badge: "OH", type: "Arts & Science" },
+                    { name: "Macalester College", url: "https://www.macalester.edu", target: "_blank", badge: "MN", type: "Liberal Arts" },
+                    { name: "Bryn Mawr College", url: "https://www.brynmawr.edu", target: "_blank", badge: "PA", type: "Women's College" },
+                    { name: "Colorado College", url: "https://www.coloradocollege.edu", target: "_blank", badge: "CO", type: "Liberal Arts" }
+                ]
+            },
+            {
+                id: "tvet",
+                name: "TVET Colleges",
+                icon: "fa-gears",
+                desc: "Technical institutes, trade schools, and Community Colleges for vocational training.",
+                badge: "Vocational",
+                links: [
+                    { name: "Santa Monica College", url: "https://www.smc.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Northern Virginia Community College (NOVA)", url: "https://www.nvcc.edu", target: "_blank", badge: "VA", type: "Community College" },
+                    { name: "Valencia College", url: "https://valenciacollege.edu", target: "_blank", badge: "FL", type: "Community College" },
+                    { name: "Miami Dade College", url: "https://www.mdc.edu", target: "_blank", badge: "FL", type: "Community College" },
+                    { name: "Lone Star College System", url: "https://www.lonestar.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "Houston Community College", url: "https://www.hccs.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "De Anza College", url: "https://www.deanza.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Pasadena City College", url: "https://pasadena.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Borough of Manhattan Community College (CUNY BMCC)", url: "https://www.bmcc.cuny.edu", target: "_blank", badge: "NY", type: "Community College" },
+                    { name: "Austin Community College", url: "https://www.austincc.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "City Colleges of Chicago", url: "https://www.ccc.edu", target: "_blank", badge: "IL", type: "Community College" },
+                    { name: "Santa Barbara City College", url: "https://www.sbcc.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Wake Technical Community College", url: "https://www.waketech.edu", target: "_blank", badge: "NC", type: "Community College" },
+                    { name: "Fox Valley Technical College", url: "https://www.fvtc.edu", target: "_blank", badge: "WI", type: "Technical Institute" },
+                    { name: "Pikes Peak State College", url: "https://pikespeak.edu", target: "_blank", badge: "CO", type: "Community College" },
+                    { name: "Ivy Tech Community College", url: "https://www.ivytech.edu", target: "_blank", badge: "IN", type: "Community College" },
+                    { name: "Columbus State Community College", url: "https://www.cscc.edu", target: "_blank", badge: "OH", type: "Community College" },
+                    { name: "Kirkwood Community College", url: "https://www.kirkwood.edu", target: "_blank", badge: "IA", type: "Community College" },
+                    { name: "Portland Community College", url: "https://www.pcc.edu", target: "_blank", badge: "OR", type: "Community College" },
+                    { name: "Maricopa Community Colleges", url: "https://www.maricopa.edu", target: "_blank", badge: "AZ", type: "Community College" },
+                    { name: "Universal Technical Institute (UTI)", url: "https://www.uti.edu", target: "_blank", badge: "National", type: "Trade School" },
+                    { name: "Lincoln Tech", url: "https://www.lincolntech.edu", target: "_blank", badge: "National", type: "Trade School" },
+                    { name: "Midwest Technical Institute", url: "https://www.midwesttech.edu", target: "_blank", badge: "Midwest", type: "Trade School" },
+                    { name: "Ranken Technical College", url: "https://ranken.edu", target: "_blank", badge: "MO", type: "Technical College" },
+                    { name: "Texas State Technical College", url: "https://www.tstc.edu", target: "_blank", badge: "TX", type: "Technical College" },
+                    { name: "Dunwoody College of Technology", url: "https://dunwoody.edu", target: "_blank", badge: "MN", type: "Technical College" },
+                    { name: "Thaddeus Stevens College of Technology", url: "https://stevenscollege.edu", target: "_blank", badge: "PA", type: "Technical College" },
+                    { name: "San Joaquin Valley College", url: "https://www.sjvc.edu", target: "_blank", badge: "CA", type: "Technical College" },
+                    { name: "Front Range Community College", url: "https://www.frontrange.edu", target: "_blank", badge: "CO", type: "Community College" },
+                    { name: "Mesa Community College", url: "https://www.mesacc.edu", target: "_blank", badge: "AZ", type: "Community College" },
+                    { name: "Salt Lake Community College", url: "https://www.slcc.edu", target: "_blank", badge: "UT", type: "Community College" },
+                    { name: "Northern Essex Community College", url: "https://www.necc.mass.edu", target: "_blank", badge: "MA", type: "Community College" },
+                    { name: "Bunker Hill Community College", url: "https://www.bhcc.edu", target: "_blank", badge: "MA", type: "Community College" },
+                    { name: "Macomb Community College", url: "https://www.macomb.edu", target: "_blank", badge: "MI", type: "Community College" },
+                    { name: "Oakland Community College", url: "https://www.oaklandcc.edu", target: "_blank", badge: "MI", type: "Community College" },
+                    { name: "Sinclair Community College", url: "https://www.sinclair.edu", target: "_blank", badge: "OH", type: "Community College" },
+                    { name: "Cuyahoga Community College (Tri-C)", url: "https://www.tri-c.edu", target: "_blank", badge: "OH", type: "Community College" },
+                    { name: "Dallas College", url: "https://www.dallascollege.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "San Jacinto College", url: "https://www.sanjac.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "Alamo Colleges District", url: "https://www.alamo.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "El Paso Community College", url: "https://www.epcc.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "South Texas College", url: "https://www.southtexascollege.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "Tarrant County College", url: "https://www.tccd.edu", target: "_blank", badge: "TX", type: "Community College" },
+                    { name: "Orange Coast College", url: "https://orangecoastcollege.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Irvine Valley College", url: "https://www.ivc.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Diablo Valley College", url: "https://www.dvc.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Foothill College", url: "https://foothill.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "San Diego Mesa College", url: "https://www.sdmesa.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "American River College", url: "https://arc.losrios.edu", target: "_blank", badge: "CA", type: "Community College" },
+                    { name: "Long Beach City College", url: "https://www.lbcc.edu", target: "_blank", badge: "CA", type: "Community College" }
+                ]
+            },
+            {
+                id: "online-school",
+                name: "Online Schools",
+                icon: "fa-laptop-code",
+                desc: "Primary, high-school, and hybrid online learning options in the US.",
+                badge: "Virtual Ed",
+                links: [
+                    { name: "K12 Powered Online Schools (Stride)", url: "https://www.k12.com", target: "_blank", badge: "United States", type: "K-12 Curriculum" },
+                    { name: "Connections Academy", url: "https://www.connectionsacademy.com", target: "_blank", badge: "United States", type: "Public Online School" },
+                    { name: "Stanford Online High School", url: "https://onlinehighschool.stanford.edu", target: "_blank", badge: "United States", type: "Gifted High School" },
+                    { name: "Florida Virtual School (FLVS)", url: "https://www.flvs.net", target: "_blank", badge: "Florida / US", type: "State Virtual School" },
+                    { name: "Penn Foster High School", url: "https://www.pennfoster.edu/high-school", target: "_blank", badge: "United States", type: "Self-Paced Diploma" },
+                    { name: "Laurel Springs School", url: "https://laurelsprings.com", target: "_blank", badge: "Global/US", type: "Private Online School" },
+                    { name: "University of Nebraska High School", url: "https://highschool.nebraska.edu", target: "_blank", badge: "United States", type: "Accredited Online HS" },
+                    { name: "Indiana University High School", url: "https://iuhs.indiana.edu", target: "_blank", badge: "United States", type: "Online High School" },
+                    { name: "Apex Learning Virtual School", url: "https://www.apexlearningvs.com", target: "_blank", badge: "United States", type: "Online Courses" },
+                    { name: "Western Governors University (WGU)", url: "https://www.wgu.edu", target: "_blank", badge: "United States", type: "Online University" },
+                    { name: "Southern New Hampshire University (SNHU)", url: "https://www.snhu.edu", target: "_blank", badge: "United States", type: "Online College" },
+                    { name: "Arizona State University Online", url: "https://asuonline.asu.edu", target: "_blank", badge: "United States", type: "Digital Campus" },
+                    { name: "Liberty University Online", url: "https://www.liberty.edu/online/", target: "_blank", badge: "United States", type: "Online University" },
+                    { name: "University of Maryland Global Campus (UMGC)", url: "https://www.umgc.edu", target: "_blank", badge: "United States", type: "Adult Online Ed" },
+                    { name: "Purdue Global", url: "https://www.purdueglobal.edu", target: "_blank", badge: "United States", type: "Public Online Uni" },
+                    { name: "Walden University", url: "https://www.waldenu.edu", target: "_blank", badge: "United States", type: "Degree Programs" },
+                    { name: "Capella University", url: "https://www.capella.edu", target: "_blank", badge: "United States", type: "FlexPath Learning" },
+                    { name: "Grand Canyon University Online", url: "https://www.gcu.edu/degree-programs/online-degrees", target: "_blank", badge: "United States", type: "Online Degree" },
+                    { name: "Crimson Global Academy", url: "https://www.crimsonglobalacademy.com", target: "_blank", badge: "Global", type: "AP & A-Levels" },
+                    { name: "K12 International Academy", url: "https://www.icademy.com", target: "_blank", badge: "Global", type: "US Curriculum" },
+                    { name: "Wolsey Hall Oxford", url: "https://wolseyhall.org.uk", target: "_blank", badge: "Global", type: "Home Study" }
+                ]
+            },
+            {
+                id: "bursary",
+                name: "Bursaries & Student Loans",
+                icon: "fa-hand-holding-dollar",
+                desc: "FAFSA Federal financial aid, scholarships, and private student loan providers.",
+                badge: "Financing",
+                links: [
+                    { name: "FAFSA (Federal Student Aid)", url: "https://studentaid.gov", target: "_blank", badge: "US Government", type: "Federal Student Aid" },
+                    { name: "College Board Scholarship Search", url: "https://bigfuture.collegeboard.org/scholarship-search", target: "_blank", badge: "Directory", type: "Scholarship Database" },
+                    { name: "Fastweb Scholarship Portal", url: "https://www.fastweb.com", target: "_blank", badge: "Database", type: "Free Search" },
+                    { name: "Sallie Mae Student Loans", url: "https://www.salliemae.com", target: "_blank", badge: "Private Lender", type: "Student Loan" },
+                    { name: "Discover Student Loans", url: "https://www.discover.com/student-loans/", target: "_blank", badge: "Private Lender", type: "Student Loan" },
+                    { name: "Earnest Student Loans", url: "https://www.earnest.com", target: "_blank", badge: "Private Lender", type: "Low Rate Loans" },
+                    { name: "SoFi Student Loans & Refinance", url: "https://www.sofi.com/student-loans/", target: "_blank", badge: "Private Lender", type: "Fintech Loans" },
+                    { name: "Scholarships.com", url: "https://www.scholarships.com", target: "_blank", badge: "Database", type: "Scholarship Finder" },
+                    { name: "College Ave Student Loans", url: "https://www.collegeavestudentloans.com", target: "_blank", badge: "Private Lender", type: "Education Finance" },
+                    { name: "Citizens Bank Student Loans", url: "https://www.citizensbank.com/student-loans/", target: "_blank", badge: "Bank", type: "Student Loan" },
+                    { name: "Federal Pell Grants", url: "https://studentaid.gov/understand-aid/types/grants/pell", target: "_blank", badge: "US Government", type: "Federal Grant" },
+                    { name: "Federal Direct Subsidized & Unsubsidized Loans", url: "https://studentaid.gov/understand-aid/types/loans/subsidized-unsubsidized", target: "_blank", badge: "US Government", type: "Federal Loan" },
+                    { name: "MPOWER Financing (International Students)", url: "https://www.mpowerfinancing.com", target: "_blank", badge: "Private", type: "No-Cosigner Loans" },
+                    { name: "Nelnet Loan Servicing", url: "https://nelnet.com", target: "_blank", badge: "Federal Servicer", type: "Loan Management" },
+                    { name: "MOHELA Student Loan Servicing", url: "https://www.mohela.com", target: "_blank", badge: "Federal Servicer", type: "Loan Management" },
+                    { name: "Aidvantage", url: "https://aidvantage.com", target: "_blank", badge: "Federal Servicer", type: "Loan Management" },
+                    { name: "ECSI Student Financial Services", url: "https://www.ecsi.net", target: "_blank", badge: "Private Servicer", type: "Campus Servicing" },
+                    { name: "Bold.org Scholarships", url: "https://bold.org", target: "_blank", badge: "Independent", type: "Exclusive Grants" },
+                    { name: "Niche Scholarships Finder", url: "https://www.niche.com/colleges/scholarships/", target: "_blank", badge: "Directory", type: "Scholarship Search" },
+                    { name: "Chegg Scholarships Portal", url: "https://www.chegg.com/scholarships", target: "_blank", badge: "Corporate", type: "Scholarship Database" },
+                    { name: "Ascent Student Loans", url: "https://www.ascentfunding.com", target: "_blank", badge: "Private Lender", type: "Education Loans" }
+                ]
+            },
+            {
+                id: "accommodation",
+                name: "Student Accommodation",
+                icon: "fa-hotel",
+                desc: "Accredited private student housing and off-campus apartments in the US.",
+                badge: "Housing",
+                links: [
+                    { name: "American Campus Communities (ACC)", url: "https://www.americancampus.com", target: "_blank", badge: "National", type: "Student Communities" },
+                    { name: "CollegeStudentApartments", url: "https://www.collegestudentapartments.com", target: "_blank", badge: "National", type: "Housing Search" },
+                    { name: "Apartments.com Student Section", url: "https://www.apartments.com/off-campus-housing/", target: "_blank", badge: "National", type: "Aggregator" },
+                    { name: "RentCollegePads", url: "https://www.rentcollegepads.com", target: "_blank", badge: "Campus Focus", type: "Off-Campus Search" },
+                    { name: "Zillow Rentals", url: "https://www.zillow.com/rentals/", target: "_blank", badge: "National", type: "Home & Apartment Rentals" },
+                    { name: "Landmark Properties", url: "https://www.landmarkproperties.com", target: "_blank", badge: "National", type: "Student Housing Leader" },
+                    { name: "The Scion Group", url: "https://thesciongroup.com", target: "_blank", badge: "National", type: "Student Living" },
+                    { name: "Uloop Off-Campus Housing", url: "https://www.uloop.com/housing/", target: "_blank", badge: "University Network", type: "Student Sublets" },
+                    { name: "ForRentUniversity", url: "https://www.forrentuniversity.com", target: "_blank", badge: "National", type: "Off-Campus Finder" },
+                    { name: "Student.com US Housing", url: "https://www.student.com/us", target: "_blank", badge: "Global/US", type: "Booking Platform" },
+                    { name: "June Homes", url: "https://junehomes.com", target: "_blank", badge: "Metro Cities", type: "Flexible Co-Living" },
+                    { name: "Roomster Roommate Finder", url: "https://www.roomster.com", target: "_blank", badge: "National", type: "Roommate Matching" },
+                    { name: "Sublet.com Student Housing", url: "https://www.sublet.com", target: "_blank", badge: "National", type: "Short-Term Rentals" },
+                    { name: "Craigslist Housing Directory", url: "https://www.craigslist.org", target: "_blank", badge: "Local Classifieds", type: "Peer Rentals" }
+                ]
+            },
+            {
+                id: "furniture",
+                name: "Furniture Stores",
+                icon: "fa-couch",
+                desc: "American furniture, homeware, and decor stores for dorms and homes.",
+                badge: "Home",
+                links: [
+                    { name: "IKEA USA", url: "https://www.ikea.com/us/en/", target: "_blank", badge: "National", type: "Flat-Pack Furniture" },
+                    { name: "Target Home & Dorm", url: "https://www.target.com/c/home/-/N-5xt1o", target: "_blank", badge: "National", type: "Affordable Decor" },
+                    { name: "Wayfair", url: "https://www.wayfair.com", target: "_blank", badge: "Online Leader", type: "Furniture & Decor" },
+                    { name: "Bed Bath & Beyond", url: "https://www.bedbathandbeyond.com", target: "_blank", badge: "Online Retail", type: "Dorm & Home Essentials" },
+                    { name: "Ashley Furniture HomeStore", url: "https://www.ashleyfurniture.com", target: "_blank", badge: "National", type: "Retail Furniture" },
+                    { name: "Rooms To Go", url: "https://www.roomstogo.com", target: "_blank", badge: "National", type: "Furnishings" },
+                    { name: "Crate & Barrel", url: "https://www.crateandbarrel.com", target: "_blank", badge: "National", type: "Premium Home" },
+                    { name: "Pottery Barn", url: "https://www.potterybarn.com", target: "_blank", badge: "National", type: "Furniture & Decor" },
+                    { name: "West Elm", url: "https://www.westelm.com", target: "_blank", badge: "National", type: "Modern Furniture" },
+                    { name: "CB2", url: "https://www.cb2.com", target: "_blank", badge: "National", type: "Modern Design" },
+                    { name: "Bob's Discount Furniture", url: "https://www.mybobs.com", target: "_blank", badge: "National", type: "Budget Furniture" },
+                    { name: "Big Lots Home", url: "https://www.biglots.com/c/home/_/N-1349079549", target: "_blank", badge: "National", type: "Discount Outlet" },
+                    { name: "HomeGoods", url: "https://www.homegoods.com", target: "_blank", badge: "National", type: "Home Decor" },
+                    { name: "Walmart Home", url: "https://www.walmart.com/cp/home/4044", target: "_blank", badge: "National", type: "Budget Essentials" },
+                    { name: "Overstock", url: "https://www.overstock.com", target: "_blank", badge: "Online", type: "Furniture & Rugs" }
+                ]
+            },
+            {
+                id: "textbook",
+                name: "Textbook Stores",
+                icon: "fa-book-open",
+                desc: "New, used, and digital textbook outlets in the United States.",
+                badge: "Books",
+                links: [
+                    { name: "Chegg Books & Rental", url: "https://www.chegg.com/books", target: "_blank", badge: "National", type: "Rentals & E-Books" },
+                    { name: "Barnes & Noble College", url: "https://www.bncollege.com", target: "_blank", badge: "National", type: "Campus Bookstores" },
+                    { name: "Amazon Textbooks Store", url: "https://www.amazon.com/b?node=465600", target: "_blank", badge: "Online Leader", type: "E-Commerce" },
+                    { name: "AbeBooks Textbook Central", url: "https://www.abebooks.com/books/Textbooks/", target: "_blank", badge: "Global/US", type: "Used & Rare" },
+                    { name: "eCampus.com", url: "https://www.ecampus.com", target: "_blank", badge: "National", type: "Textbook Buy & Rent" },
+                    { name: "BookFinder.com", url: "https://www.bookfinder.com", target: "_blank", badge: "Aggregator", type: "Price Comparison" },
+                    { name: "ThriftBooks Textbooks", url: "https://www.thriftbooks.com", target: "_blank", badge: "National", type: "Used Books" },
+                    { name: "VitalSource Bookshelf", url: "https://www.vitalsource.com", target: "_blank", badge: "Digital", type: "eTextbooks Platform" },
+                    { name: "CampusBookRentals", url: "https://www.campusbookrentals.com", target: "_blank", badge: "Online", type: "Textbook Rental" },
+                    { name: "ValoreBooks", url: "https://www.valorebooks.com", target: "_blank", badge: "Online", type: "Marketplace" },
+                    { name: "McGraw Hill Higher Ed", url: "https://www.mheducation.com", target: "_blank", badge: "Publisher", type: "Educational Books" },
+                    { name: "Pearson Higher Education", url: "https://www.pearson.com", target: "_blank", badge: "Publisher", type: "Academic Books" },
+                    { name: "Cengage Learning", url: "https://www.cengage.com", target: "_blank", badge: "Publisher", type: "Courseware & Books" }
+                ]
+            },
+            {
+                id: "social-media",
+                name: "Social Media Platforms",
+                icon: "fa-share-nodes",
+                desc: "Stay connected, share moments, and network with global communities.",
+                badge: "Socials",
+                links: [
+                    { name: "TikTok", url: "https://www.tiktok.com", target: "_blank", badge: "Entertainment", type: "Video Sharing" },
+                    { name: "Instagram", url: "https://www.instagram.com", target: "_blank", badge: "Lifestyle", type: "Photo & Reels" },
+                    { name: "X (formerly Twitter)", url: "https://x.com", target: "_blank", badge: "Real-Time", type: "Microblogging" },
+                    { name: "Facebook", url: "https://www.facebook.com", target: "_blank", badge: "Community", type: "Social Network" },
+                    { name: "LinkedIn Career Network", url: "https://www.linkedin.com", target: "_blank", badge: "Networking", type: "Professional Hub" },
+                    { name: "Pinterest Ideas", url: "https://www.pinterest.com", target: "_blank", badge: "Inspiration", type: "Visual Board" },
+                    { name: "Reddit Forums", url: "https://www.reddit.com", target: "_blank", badge: "Communities", type: "Discussions" },
+                    { name: "Snapchat", url: "https://www.snapchat.com", target: "_blank", badge: "Stories", type: "Short-Form Media" },
+                    { name: "Threads", url: "https://www.threads.net", target: "_blank", badge: "Text Sharing", type: "Microblogging" },
+                    { name: "Telegram", url: "https://telegram.org", target: "_blank", badge: "Channels", type: "Messaging & Groups" },
+                    { name: "Discord", url: "https://discord.com", target: "_blank", badge: "Communities", type: "Voice & Chat" },
+                    { name: "WhatsApp", url: "https://www.whatsapp.com", target: "_blank", badge: "Messaging", type: "Community Chats" },
+                    { name: "BeReal", url: "https://bereal.com", target: "_blank", badge: "Daily Moments", type: "Photo Sharing" },
+                    { name: "Tumblr", url: "https://www.tumblr.com", target: "_blank", badge: "Creative", type: "Microblogging" }
+                ]
+            },
+            {
+                id: "app-stores",
+                name: "App Stores",
+                icon: "fa-mobile-screen-button",
+                desc: "Official app marketplaces for downloading mobile apps, games, and digital tools.",
+                badge: "Apps",
+                links: [
+                    { name: "Google Play Store", url: "https://play.google.com", target: "_blank", badge: "Android", type: "App Marketplace" },
+                    { name: "Apple App Store", url: "https://www.apple.com/app-store/", target: "_blank", badge: "iOS", type: "App Marketplace" },
+                    { name: "Microsoft Store", url: "https://apps.microsoft.com", target: "_blank", badge: "Windows", type: "App Marketplace" },
+                    { name: "Samsung Galaxy Store", url: "https://www.samsung.com/us/apps/galaxy-store/", target: "_blank", badge: "Samsung", type: "App Marketplace" },
+                    { name: "Huawei AppGallery", url: "https://appgallery.huawei.com", target: "_blank", badge: "Huawei", type: "App Marketplace" },
+                    { name: "Amazon Appstore", url: "https://www.amazon.com/appstore", target: "_blank", badge: "Amazon", type: "App Marketplace" },
+                    { name: "Aptoide", url: "https://en.aptoide.com", target: "_blank", badge: "Alternative Android", type: "App Marketplace" },
+                    { name: "F-Droid", url: "https://f-droid.org", target: "_blank", badge: "Open Source", type: "App Marketplace" },
+                    { name: "GetJar", url: "https://www.getjar.com", target: "_blank", badge: "Classic Mobile", type: "App Marketplace" },
+                    { name: "APKMirror", url: "https://www.apkmirror.com", target: "_blank", badge: "APK Downloads", type: "App Archive" },
+                    { name: "Uptodown", url: "https://en.uptodown.com", target: "_blank", badge: "Android Apps", type: "App Marketplace" },
+                    { name: "Aurora Store", url: "https://auroraoss.com", target: "_blank", badge: "Anonymous Play", type: "App Marketplace" }
+                ]
+            },
+            {
+                id: "barbershop",
+                name: "Barbershops & Salons",
+                icon: "fa-scissors",
+                desc: "American barbershop chains, hair salons, beauty studios, and grooming services.",
+                badge: "Grooming",
+                links: [
+                    { name: "Great Clips", url: "https://www.greatclips.com", target: "_blank", badge: "National", type: "Barber & Salon Chain" },
+                    { name: "Supercuts", url: "https://www.supercuts.com", target: "_blank", badge: "National", type: "Hair Salon" },
+                    { name: "Sport Clips Haircuts", url: "https://sportclips.com", target: "_blank", badge: "National", type: "Men's Haircuts" },
+                    { name: "Ulta Beauty Salon", url: "https://www.ulta.com/beauty-services", target: "_blank", badge: "National", type: "Beauty & Hair Studio" },
+                    { name: "Floyd's 99 Barbershop", url: "https://www.floydsbarbershop.com", target: "_blank", badge: "National", type: "Barbershop" },
+                    { name: "Drybar Hair Salons", url: "https://www.drybar.com", target: "_blank", badge: "National", type: "Blowout Bar" },
+                    { name: "Roosters Men's Grooming Center", url: "https://www.roostersmgc.com", target: "_blank", badge: "National", type: "Grooming Club" },
+                    { name: "Regis Salons", url: "https://www.regissalons.com", target: "_blank", badge: "National", type: "Hair Salon" },
+                    { name: "Booksy Barber & Salon Finder", url: "https://booksy.com/en-us/", target: "_blank", badge: "App/Directory", type: "Booking Service" },
+                    { name: "StyleSeat Beauty Finder", url: "https://www.styleseat.com", target: "_blank", badge: "App/Directory", type: "Booking Service" },
+                    { name: "Vbgrooming Studios", url: "https://www.vbgrooming.com", target: "_blank", badge: "National", type: "Barber Studio" },
+                    { name: "The Art of Shaving Barbershops", url: "https://www.theartofshaving.com", target: "_blank", badge: "National", type: "Luxury Grooming" },
+                    { name: "Boardroom Styling Lounge", url: "https://boardroomgrooming.com", target: "_blank", badge: "National", type: "Men's Lounge" },
+                    { name: "18|8 Fine Men's Salons", url: "https://eighteeneight.com", target: "_blank", badge: "National", type: "Salon for Men" },
+                    { name: "Sola Salon Studios", url: "https://www.solasalonstudios.com", target: "_blank", badge: "National", type: "Independent Salons" }
+                ]
+            },
+            {
+                id: "restaurants",
+                name: "Restaurants",
+                icon: "fa-utensils",
+                desc: "American restaurant chains, food delivery platforms, and dining discovery sites.",
+                badge: "Food",
+                links: [
+                    { name: "Yelp US Dining Guide", url: "https://www.yelp.com", target: "_blank", badge: "Dining Discovery", type: "Restaurant Reviews" },
+                    { name: "OpenTable USA", url: "https://www.opentable.com", target: "_blank", badge: "Table Booking", type: "Reservation Platform" },
+                    { name: "Resy Dining Guide", url: "https://resy.com", target: "_blank", badge: "Reservations", type: "Restaurant Booking" },
+                    { name: "DoorDash", url: "https://www.doordash.com", target: "_blank", badge: "Food Delivery", type: "Delivery App" },
+                    { name: "Uber Eats USA", url: "https://www.ubereats.com", target: "_blank", badge: "Food Delivery", type: "Delivery App" },
+                    { name: "Grubhub", url: "https://www.grubhub.com", target: "_blank", badge: "Food Delivery", type: "Delivery App" },
+                    { name: "Chipotle Mexican Grill", url: "https://www.chipotle.com", target: "_blank", badge: "Fast Casual", type: "Restaurant Chain" },
+                    { name: "Olive Garden", url: "https://www.olivegarden.com", target: "_blank", badge: "Casual Dining", type: "Restaurant Chain" },
+                    { name: "Chick-fil-A", url: "https://www.chick-fil-a.com", target: "_blank", badge: "Chicken & Shakes", type: "Restaurant Chain" },
+                    { name: "The Cheesecake Factory", url: "https://www.thecheesecakefactory.com", target: "_blank", badge: "American Dining", type: "Restaurant Chain" },
+                    { name: "Applebee's Grill & Bar", url: "https://www.applebees.com", target: "_blank", badge: "Neighborhood Grill", type: "Restaurant Chain" },
+                    { name: "Panera Bread", url: "https://www.panerabread.com", target: "_blank", badge: "Bakery & Cafe", type: "Restaurant Chain" },
+                    { name: "Texas Roadhouse", url: "https://www.texasroadhouse.com", target: "_blank", badge: "Steakhouse", type: "Restaurant Chain" },
+                    { name: "Domino's Pizza", url: "https://www.dominos.com", target: "_blank", badge: "Pizza Delivery", type: "Restaurant Chain" },
+                    { name: "Buffalo Wild Wings", url: "https://www.buffalowildwings.com", target: "_blank", badge: "Sports Bar", type: "Restaurant Chain" }
+                ]
+            },
+            {
+                id: "ai-assistant",
+                name: "AI Assistants",
+                icon: "fa-brain",
+                desc: "Generative artificial intelligence search and text systems.",
+                badge: "AI Tools",
+                links: [
+                    { name: "Grok (xAI)", url: "https://grok.com", target: "_blank", badge: "xAI", type: "Conversational AI" },
+                    { name: "ChatGPT (OpenAI)", url: "https://chatgpt.com", target: "_blank", badge: "OpenAI", type: "Conversational" },
+                    { name: "Claude AI (Anthropic)", url: "https://claude.ai", target: "_blank", badge: "Anthropic", type: "Analytical Writing" },
+                    { name: "Gemini AI (Google)", url: "https://gemini.google.com", target: "_blank", badge: "Google Ecosystem", type: "Multimodal Assistant" },
+                    { name: "Microsoft Copilot", url: "https://copilot.microsoft.com", target: "_blank", badge: "Microsoft", type: "Productivity AI" },
+                    { name: "Perplexity AI Search", url: "https://www.perplexity.ai", target: "_blank", badge: "Research Engine", type: "Answers with Sources" },
+                    { name: "DeepSeek AI", url: "https://www.deepseek.com", target: "_blank", badge: "DeepSeek", type: "Reasoning Engine" },
+                    { name: "Poe AI Aggregator", url: "https://poe.com", target: "_blank", badge: "Quora Hub", type: "Multi-Bot Access" },
+                    { name: "You.com AI Search", url: "https://you.com", target: "_blank", badge: "Search + AI", type: "Assistant" },
+                    { name: "Pi by Inflection", url: "https://pi.ai", target: "_blank", badge: "Inflection", type: "Companion AI" },
+                    { name: "Character.AI", url: "https://character.ai", target: "_blank", badge: "Creative", type: "Roleplay AI" }
+                ]
+            },
+            {
+                id: "search-engine",
+                name: "Search Engines",
+                icon: "fa-globe",
+                desc: "Core entryways to index and crawl global web resources.",
+                badge: "Discovery",
+                links: [
+                    { name: "Google USA", url: "https://www.google.com", target: "_blank", badge: "Global Standard", type: "Search Engine" },
+                    { name: "DuckDuckGo Privacy Search", url: "https://duckduckgo.com", target: "_blank", badge: "Privacy Focused", type: "Search Engine" },
+                    { name: "Microsoft Bing", url: "https://www.bing.com", target: "_blank", badge: "Enterprise", type: "Search Engine" },
+                    { name: "Ecosia (Tree Planting)", url: "https://www.ecosia.org", target: "_blank", badge: "Eco-Friendly", type: "Search Engine" },
+                    { name: "Yahoo! Search", url: "https://search.yahoo.com", target: "_blank", badge: "Traditional", type: "Web Search" },
+                    { name: "Baidu Engine", url: "https://www.baidu.com", target: "_blank", badge: "East Asian", type: "Web Portal" },
+                    { name: "Yandex Global", url: "https://yandex.com", target: "_blank", badge: "Eastern Europe", type: "Search Engine" }
+                ]
+            },
+            {
+                id: "tech-store",
+                name: "Laptop & Gadget Stores",
+                icon: "fa-laptop",
+                desc: "Where to find hardware, electronics, and tech accessories in the US.",
+                badge: "Shopping",
+                links: [
+                    { name: "Best Buy", url: "https://www.bestbuy.com", target: "_blank", badge: "National Retail", type: "Electronics Retailer" },
+                    { name: "Amazon US Electronics", url: "https://www.amazon.com", target: "_blank", badge: "E-Commerce", type: "General Marketplace" },
+                    { name: "Micro Center", url: "https://www.microcenter.com", target: "_blank", badge: "PC Specialist", type: "Brick & Mortar" },
+                    { name: "B&H Photo Video Tech", url: "https://www.bhphotovideo.com", target: "_blank", badge: "NY/Online", type: "Tech & Camera Hub" },
+                    { name: "Newegg", url: "https://www.newegg.com", target: "_blank", badge: "Online Store", type: "PC Components" },
+                    { name: "Apple Store", url: "https://www.apple.com", target: "_blank", badge: "National Retail", type: "Hardware Brand" },
+                    { name: "Dell Official Store", url: "https://www.dell.com", target: "_blank", badge: "Online Direct", type: "PC Manufacturer" },
+                    { name: "Lenovo Direct USA", url: "https://www.lenovo.com/us/en/", target: "_blank", badge: "Online Direct", type: "Laptops & PCs" },
+                    { name: "HP Official Store", url: "https://www.hp.com/us-en/home.html", target: "_blank", badge: "Online Direct", type: "Tech Hardware" }
+                ]
+            },
+            {
+                id: "bank",
+                name: "Banks & Digital Wallets",
+                icon: "fa-building-columns",
+                desc: "Direct pathways to US banking platforms & digital payment apps.",
+                badge: "Fintech",
+                links: [
+                    { name: "JPMorgan Chase Bank", url: "https://www.chase.com", target: "_blank", badge: "National Leader", type: "Major US Bank" },
+                    { name: "Bank of America", url: "https://www.bankofamerica.com", target: "_blank", badge: "National Bank", type: "Major US Bank" },
+                    { name: "Wells Fargo", url: "https://www.wellsfargo.com", target: "_blank", badge: "National Bank", type: "Major US Bank" },
+                    { name: "Citibank Online", url: "https://www.citibank.com", target: "_blank", badge: "Global/US", type: "Major US Bank" },
+                    { name: "Capital One Financial", url: "https://www.capitalone.com", target: "_blank", badge: "Digital First", type: "National Bank" },
+                    { name: "Chime Mobile Banking", url: "https://www.chime.com", target: "_blank", badge: "Fintech", type: "Neobank" },
+                    { name: "Venmo Digital Wallet", url: "https://venmo.com", target: "_blank", badge: "Peer-to-Peer", type: "Digital Wallet" },
+                    { name: "PayPal USA", url: "https://www.paypal.com/us/home", target: "_blank", badge: "Global/US", type: "Digital Payments" },
+                    { name: "Cash App", url: "https://cash.app", target: "_blank", badge: "Mobile First", type: "Digital Wallet" }
+                ]
+            },
+            {
+                id: "forex-investments",
+                name: "Forex Brokers & Bitcoin Investments",
+                icon: "fa-chart-line",
+                desc: "US licensed stock brokers, trading platforms, and cryptocurrency exchanges.",
+                badge: "Investments",
+                links: [
+                    { name: "Robinhood", url: "https://robinhood.com", target: "_blank", badge: "Commission-Free", type: "Trading App" },
+                    { name: "Charles Schwab", url: "https://www.schwab.com", target: "_blank", badge: "Major Brokerage", type: "Stock Broker" },
+                    { name: "Fidelity Investments", url: "https://www.fidelity.com", target: "_blank", badge: "Investment Leader", type: "Brokerage" },
+                    { name: "E*TRADE by Morgan Stanley", url: "https://us.etrade.com", target: "_blank", badge: "Online Trading", type: "Broker" },
+                    { name: "Interactive Brokers US", url: "https://www.interactivebrokers.com", target: "_blank", badge: "Advanced Trading", type: "Brokerage" },
+                    { name: "OANDA US (Forex)", url: "https://www.oanda.com/us-en/", target: "_blank", badge: "CFTC Registered", type: "Forex Broker" },
+                    { name: "FOREX.com US", url: "https://www.forex.com/us/", target: "_blank", badge: "CFTC Registered", type: "Forex Broker" },
+                    { name: "Coinbase USA", url: "https://www.coinbase.com", target: "_blank", badge: "Crypto Exchange", type: "Crypto Platform" },
+                    { name: "Kraken Crypto Exchange", url: "https://www.kraken.com", target: "_blank", badge: "Crypto Exchange", type: "Crypto Platform" },
+                    { name: "Gemini Crypto Exchange", url: "https://www.gemini.com", target: "_blank", badge: "US Regulated", type: "Crypto Exchange" },
+                    { name: "Binance.US", url: "https://www.binance.us", target: "_blank", badge: "Crypto Exchange", type: "Crypto Platform" },
+                    { name: "Webull Financial", url: "https://www.webull.com", target: "_blank", badge: "Stocks & Crypto", type: "Trading Platform" },
+                    { name: "Tastytrade", url: "https://tastytrade.com", target: "_blank", badge: "Options & Futures", type: "Brokerage" },
+                    { name: "TD Ameritrade (Charles Schwab)", url: "https://www.tdameritrade.com", target: "_blank", badge: "Online Trading", type: "Broker" },
+                    { name: "eToro USA", url: "https://www.etoro.com/en-us/", target: "_blank", badge: "Social Trading", type: "Broker" }
+                ]
+            },
+            {
+                id: "grocery",
+                name: "Grocery Stores",
+                icon: "fa-basket-shopping",
+                desc: "Direct channels to US supermarket pantries and fast grocery delivery apps.",
+                badge: "Daily Need",
+                links: [
+                    { name: "Instacart Grocery Delivery", url: "https://www.instacart.com", target: "_blank", badge: "Fast Delivery", type: "Grocery Marketplace" },
+                    { name: "Walmart Grocery & Delivery", url: "https://www.walmart.com/grocery", target: "_blank", badge: "National Retail", type: "Curbside & Delivery" },
+                    { name: "Whole Foods Market (Amazon)", url: "https://www.wholefoodsmarket.com", target: "_blank", badge: "Organic Leader", type: "Supermarket" },
+                    { name: "Trader Joe's", url: "https://www.traderjoes.com", target: "_blank", badge: "Neighborhood", type: "Specialty Grocery" },
+                    { name: "Target Circle 360 / Shipt", url: "https://www.target.com", target: "_blank", badge: "Same-Day", type: "Grocery Delivery" },
+                    { name: "Kroger Supermarkets", url: "https://www.kroger.com", target: "_blank", badge: "National Chain", type: "Grocery Retail" },
+                    { name: "ALDI USA", url: "https://www.aldi.us", target: "_blank", badge: "Budget Friendly", type: "Discount Supermarket" },
+                    { name: "Costco Wholesale Grocery", url: "https://www.costco.com", target: "_blank", badge: "Mass Membership", type: "Wholesale Club" }
+                ]
+            },
+            {
+                id: "clothing",
+                name: "Online Clothing Stores",
+                icon: "fa-shirt",
+                desc: "Trending modern styles, boots, and dynamic American streetwear.",
+                badge: "Fashion",
+                links: [
+                    { name: "ASOS US", url: "https://www.asos.com/us/", target: "_blank", badge: "Online Fashion", type: "Fashion Store" },
+                    { name: "Nordstrom", url: "https://www.nordstrom.com", target: "_blank", badge: "Department Store", type: "Apparel Retailer" },
+                    { name: "Urban Outfitters", url: "https://www.urbanoutfitters.com", target: "_blank", badge: "Youth Culture", type: "Streetwear & Apparel" },
+                    { name: "Nike US Store", url: "https://www.nike.com", target: "_blank", badge: "Sportswear", type: "Athletic Fashion" },
+                    { name: "PacSun", url: "https://www.pacsun.com", target: "_blank", badge: "Casual Style", type: "Youth Fashion" },
+                    { name: "Zara USA", url: "https://www.zara.com/us/", target: "_blank", badge: "Fast Fashion", type: "Global Retail" },
+                    { name: "H&M USA", url: "https://www2.hm.com/en_us/index.html", target: "_blank", badge: "Budget Fashion", type: "Global Retail" },
+                    { name: "Old Navy", url: "https://oldnavy.gap.com", target: "_blank", badge: "Everyday Basics", type: "Apparel Retailer" },
+                    { name: "American Eagle Outfitters", url: "https://www.ae.com", target: "_blank", badge: "Jeans & Casual", type: "Fashion Retailer" },
+                    { name: "Shein US", url: "https://us.shein.com", target: "_blank", badge: "Fast Fashion", type: "Online Marketplace" },
+                    { name: "Temu USA", url: "https://www.temu.com", target: "_blank", badge: "Mega Marketplace", type: "Discount Fashion" },
+                    { name: "Lululemon", url: "https://shop.lululemon.com", target: "_blank", badge: "Athleisure", type: "Premium Activewear" },
+                    { name: "GAP USA", url: "https://www.gap.com", target: "_blank", badge: "American Classic", type: "Apparel Brand" },
+                    { name: "Forever 21", url: "https://www.forever21.com", target: "_blank", badge: "Trendy Wear", type: "Budget Fashion" },
+                    { name: "Express", url: "https://www.express.com", target: "_blank", badge: "Modern Apparel", type: "Fashion Store" },
+                    { name: "Macy's Fashion", url: "https://www.macys.com", target: "_blank", badge: "Department Store", type: "Apparel Retailer" }
+                ]
+            },
+            {
+                id: "music-streaming",
+                name: "Music Streaming Platforms",
+                icon: "fa-music",
+                desc: "Listen to local music, trending hip-hop, podcasts, and global playlists.",
+                badge: "Music",
+                links: [
+                    { name: "Spotify", url: "https://www.spotify.com", target: "_blank", badge: "Global Leader", type: "Audio Streaming" },
+                    { name: "Apple Music", url: "https://www.apple.com/music/", target: "_blank", badge: "Premium Sound", type: "Audio Streaming" },
+                    { name: "YouTube Music", url: "https://music.youtube.com", target: "_blank", badge: "Google Service", type: "Music Videos/Audio" },
+                    { name: "Amazon Music Unlimited", url: "https://music.amazon.com", target: "_blank", badge: "HD Playback", type: "Audio Streaming" },
+                    { name: "Tidal Music", url: "https://tidal.com", target: "_blank", badge: "Audiophile Sound", type: "Hi-Res Audio" },
+                    { name: "Pandora Radio", url: "https://www.pandora.com", target: "_blank", badge: "US Favorite", type: "Personalized Radio" },
+                    { name: "SoundCloud Platform", url: "https://soundcloud.com", target: "_blank", badge: "Indie Artists", type: "Social Audio Hub" }
+                ]
+            },
+            {
+                id: "movie-streaming",
+                name: "Movie & Series Streaming",
+                icon: "fa-film",
+                desc: "Enjoy Hollywood blockbusters, trending series, and television productions.",
+                badge: "Movies",
+                links: [
+                    { name: "Netflix USA", url: "https://www.netflix.com", target: "_blank", badge: "Global Leader", type: "Video Streaming" },
+                    { name: "Hulu", url: "https://www.hulu.com", target: "_blank", badge: "US TV Shows", type: "On-Demand SVOD" },
+                    { name: "Max (formerly HBO Max)", url: "https://www.max.com", target: "_blank", badge: "HBO & Warner", type: "Video Streaming" },
+                    { name: "Disney+", url: "https://www.disneyplus.com", target: "_blank", badge: "Marvel & Pixels", type: "Video Streaming" },
+                    { name: "Amazon Prime Video", url: "https://www.primevideo.com", target: "_blank", badge: "Amazon Prime", type: "Video Streaming" },
+                    { name: "Peacock (NBCUniversal)", url: "https://www.peacocktv.com", target: "_blank", badge: "Live Sports & NBC", type: "Free/Premium SVOD" },
+                    { name: "Paramount+", url: "https://www.paramountplus.com", target: "_blank", badge: "CBS & Movies", type: "Video Streaming" }
+                ]
+            },
+            {
+                id: "fm-stations",
+                name: "FM Stations",
+                icon: "fa-radio",
+                desc: "American FM radio networks and digital audio stations across news, talk, and hits.",
+                badge: "Radio",
+                links: [
+                    { name: "NPR (National Public Radio)", url: "https://www.npr.org", target: "_blank", badge: "News & Talk", type: "Public Broadcaster" },
+                    { name: "iHeartRadio US Hub", url: "https://www.iheart.com", target: "_blank", badge: "National FM Hub", type: "Radio Streaming" },
+                    { name: "SiriusXM Satellite Radio", url: "https://www.siriusxm.com", target: "_blank", badge: "Satellite & App", type: "Digital Radio" },
+                    { name: "HOT 97 (WQHT New York)", url: "https://www.hot97.com", target: "_blank", badge: "Hip Hop & R&B", type: "Commercial FM" },
+                    { name: "POWER 106 (KPWR Los Angeles)", url: "https://www.power106.com", target: "_blank", badge: "Hip Hop", type: "Commercial FM" },
+                    { name: "102.7 KIIS FM Los Angeles", url: "https://kiisfm.iheart.com", target: "_blank", badge: "Top 40 Hits", type: "Commercial FM" },
+                    { name: "Z100 (WHTZ New York)", url: "https://z100.iheart.com", target: "_blank", badge: "Top 40 Hits", type: "Commercial FM" },
+                    { name: "Audacy Radio Network", url: "https://www.audacy.com", target: "_blank", badge: "Live Stations", type: "Radio Platform" },
+                    { name: "WFAN Sports Radio New York", url: "https://www.audacy.com/wfan", target: "_blank", badge: "Sports Talk", type: "Commercial FM" },
+                    { name: "KEXP 90.3 FM Seattle", url: "https://kexp.org", target: "_blank", badge: "Indie Music", type: "Public Radio" },
+                    { name: "WNYC New York Public Radio", url: "https://www.wnyc.org", target: "_blank", badge: "News & Culture", type: "Public Broadcaster" },
+                    { name: "104.3 MYfm Los Angeles", url: "https://1043myfm.iheart.com", target: "_blank", badge: "Adult Contemporary", type: "Commercial FM" },
+                    { name: "Chicago's 103.5 KISS FM", url: "https://1035kissfm.iheart.com", target: "_blank", badge: "Top 40", type: "Commercial FM" },
+                    { name: "93.3 FLZ Tampa", url: "https://933flz.iheart.com", target: "_blank", badge: "Hit Music", type: "Commercial FM" },
+                    { name: "103.7 KEYN Wichita", url: "https://www.audacy.com/keyn", target: "_blank", badge: "Classic Hits", type: "Regional FM" }
+                ]
+            },
+            {
+                id: "transport",
+                name: "Transportation & Rides",
+                icon: "fa-train-subway",
+                desc: "American transit systems, intercity trains, and ridesharing services.",
+                badge: "Commute",
+                links: [
+                    { name: "Uber USA", url: "https://www.uber.com", target: "_blank", badge: "Global/US Leader", type: "E-Hailing Rides" },
+                    { name: "Lyft Rideshare", url: "https://www.lyft.com", target: "_blank", badge: "National App", type: "E-Hailing Rides" },
+                    { name: "Amtrak National Rail", url: "https://www.amtrak.com", target: "_blank", badge: "Intercity Trains", type: "Passenger Rail" },
+                    { name: "Greyhound Bus Lines", url: "https://www.greyhound.com", target: "_blank", badge: "Intercity Bus", type: "Coach Services" },
+                    { name: "FlixBus USA", url: "https://www.flixbus.com", target: "_blank", badge: "Affordable Bus", type: "Coach Travel" },
+                    { name: "NYC MTA Transit", url: "https://new.mta.info", target: "_blank", badge: "New York City", type: "Subway & Bus" },
+                    { name: "LA Metro Transit", url: "https://www.metro.net", target: "_blank", badge: "Los Angeles", type: "Urban Rail & Bus" },
+                    { name: "CTA Chicago Transit", url: "https://www.transitchicago.com", target: "_blank", badge: "Chicago", type: "Urban Rail & Bus" }
+                ]
+            },
+            {
+                id: "flight",
+                name: "Online Flight Outlets",
+                icon: "fa-plane",
+                desc: "US domestic and international airlines flying global paths.",
+                badge: "Travel",
+                links: [
+                    { name: "Delta Air Lines", url: "https://www.delta.com", target: "_blank", badge: "Major Carrier", type: "Airline" },
+                    { name: "United Airlines", url: "https://www.united.com", target: "_blank", badge: "Major Carrier", type: "Airline" },
+                    { name: "American Airlines", url: "https://www.aa.com", target: "_blank", badge: "Major Carrier", type: "Airline" },
+                    { name: "Southwest Airlines", url: "https://www.southwest.com", target: "_blank", badge: "Low-Cost Leader", type: "Airline" },
+                    { name: "JetBlue Airways", url: "https://www.jetblue.com", target: "_blank", badge: "Budget Friendly", type: "Airline" },
+                    { name: "Alaska Airlines", url: "https://www.alaskaair.com", target: "_blank", badge: "West Coast Network", type: "Airline" },
+                    { name: "Google Flights Aggregator", url: "https://www.google.com/travel/flights", target: "_blank", badge: "Search Engine", type: "Flight Finder" },
+                    { name: "Hopper App Bookings", url: "https://www.hopper.com", target: "_blank", badge: "Mobile Booking", type: "Price Predictor" }
+                ]
+            },
+            {
+                id: "resorts",
+                name: "Resorts, Lodges & Tourist Attractions",
+                icon: "fa-campground",
+                desc: "Top American resorts, national parks, and iconic landmarks.",
+                badge: "Explore US",
+                links: [
+                    { name: "National Park Service (NPS)", url: "https://www.nps.gov", target: "_blank", badge: "Official Portal", type: "Park Directory" },
+                    { name: "Yellowstone National Park", url: "https://www.nps.gov/yell", target: "_blank", badge: "WY/MT/ID", type: "National Park" },
+                    { name: "Grand Canyon National Park", url: "https://www.nps.gov/grca", target: "_blank", badge: "Arizona", type: "Natural Wonder" },
+                    { name: "Yosemite National Park", url: "https://www.nps.gov/yose", target: "_blank", badge: "California", type: "National Park" },
+                    { name: "Walt Disney World Resort", url: "https://disneyworld.disney.go.com", target: "_blank", badge: "Florida", type: "Theme Park Resort" },
+                    { name: "Universal Studios Hollywood", url: "https://www.universalstudioshollywood.com", target: "_blank", badge: "California", type: "Theme Park" },
+                    { name: "Visit The USA Official Guide", url: "https://www.visittheusa.com", target: "_blank", badge: "Official Tourism", type: "Travel Guide" },
+                    { name: "Las Vegas Strip Resorts", url: "https://www.visitlasvegas.com", target: "_blank", badge: "Nevada", type: "Resort Region" },
+                    { name: "Great Smoky Mountains Park", url: "https://www.nps.gov/grsm", target: "_blank", badge: "NC/TN", type: "National Park" },
+                    { name: "Zion National Park", url: "https://www.nps.gov/zion", target: "_blank", badge: "Utah", type: "Wildlife & Canyons" },
+                    { name: "Statue of Liberty & Ellis Island", url: "https://www.nps.gov/stli", target: "_blank", badge: "New York", type: "Historic Landmark" },
+                    { name: "Vail Ski Resort", url: "https://www.vail.com", target: "_blank", badge: "Colorado", type: "Mountain Resort" },
+                    { name: "Aspen Snowmass Resort", url: "https://www.aspensnowmass.com", target: "_blank", badge: "Colorado", type: "Ski Resort" },
+                    { name: "The Broadmoor Resort", url: "https://www.broadmoor.com", target: "_blank", badge: "Luxury Getaway", type: "Historic Resort" },
+                    { name: "Big Sky Resort", url: "https://bigskyresort.com", target: "_blank", badge: "Montana", type: "Ski & Outdoor Resort" },
+                    { name: "Amangiri Resort", url: "https://www.aman.com/resorts/amangiri", target: "_blank", badge: "Utah Desert", type: "Luxury Lodge" },
+                    { name: "The Breakers Palm Beach", url: "https://www.thebreakers.com", target: "_blank", badge: "Florida Coast", type: "Beach Resort" },
+                    { name: "Universal Orlando Resort", url: "https://www.universalorlando.com", target: "_blank", badge: "Florida", type: "Theme Park Resort" },
+                    { name: "Smokey Mountain Lodges", url: "https://www.smokymountains.com/lodging/", target: "_blank", badge: "Tennessee", type: "Lodge Directory" }
+                ]
+            },
+            {
+                id: "hotel",
+                name: "Hotel & Lodge Bookings",
+                icon: "fa-bed",
+                desc: "American hotel chains, resort stays, and vacation rentals.",
+                badge: "Stays",
+                links: [
+                    { name: "Marriott Bonvoy Hotels", url: "https://www.marriott.com", target: "_blank", badge: "Global Leader", type: "Hotel Chain" },
+                    { name: "Hilton Honors Portfolio", url: "https://www.hilton.com", target: "_blank", badge: "Global Leader", type: "Hotel Chain" },
+                    { name: "Hyatt Hotels & Resorts", url: "https://www.hyatt.com", target: "_blank", badge: "Premium Stays", type: "Hotel Chain" },
+                    { name: "Booking.com USA", url: "https://www.booking.com", target: "_blank", badge: "Aggregator", type: "Accommodation Finder" },
+                    { name: "Airbnb USA", url: "https://www.airbnb.com", target: "_blank", badge: "Vacation Rentals", type: "Home Rentals" },
+                    { name: "VRBO Vacation Rentals", url: "https://www.vrbo.com", target: "_blank", badge: "Family Homes", type: "Vacation Stays" },
+                    { name: "Hotels.com", url: "https://www.hotels.com", target: "_blank", badge: "Reward Stays", type: "Hotel Finder" },
+                    { name: "Expedia Hotels & Flights", url: "https://www.expedia.com", target: "_blank", badge: "All-in-One", type: "Travel Booking" }
+                ]
+            },
+            {
+                id: "events",
+                name: "Festivals & Events",
+                icon: "fa-champagne-glasses",
+                desc: "Major US concert hubs, music festivals, and ticket platforms.",
+                badge: "Going Out",
+                links: [
+                    { name: "Ticketmaster USA", url: "https://www.ticketmaster.com", target: "_blank", badge: "Concerts & Sports", type: "Primary Ticket Outlet" },
+                    { name: "Live Nation Events", url: "https://www.livenation.com", target: "_blank", badge: "Live Shows", type: "Concert Promoter" },
+                    { name: "SeatGeek Tickets", url: "https://seatgeek.com", target: "_blank", badge: "Marketplace", type: "Ticket Search Engine" },
+                    { name: "StubHub Marketplace", url: "https://www.stubhub.com", target: "_blank", badge: "Resale Leader", type: "Ticket Exchange" },
+                    { name: "Coachella Music Festival", url: "https://www.coachella.com", target: "_blank", badge: "California", type: "Music Festival" },
+                    { name: "Lollapalooza Chicago", url: "https://www.lollapalooza.com", target: "_blank", badge: "Chicago", type: "Music Festival" },
+                    { name: "Bonnaroo Music & Arts", url: "https://www.bonnaroo.com", target: "_blank", badge: "Tennessee", type: "Music Festival" },
+                    { name: "Ultra Music Festival Miami", url: "https://ultramusicfestival.com", target: "_blank", badge: "Electronic", type: "Music Festival" },
+                    { name: "SXSW (South by Southwest)", url: "https://www.sxsw.com", target: "_blank", badge: "Austin TX", type: "Tech, Film & Music" },
+                    { name: "Comic-Con International San Diego", url: "https://www.comic-con.org", target: "_blank", badge: "Pop Culture", type: "Convention" },
+                    { name: "New York Comic Con", url: "https://www.newyorkcomiccon.com", target: "_blank", badge: "Pop Culture", type: "Convention" },
+                    { name: "E3 / Summer Game Fest", url: "https://summergamefest.com", target: "_blank", badge: "Gaming Expo", type: "Expo" },
+                    { name: "Art Basel Miami Beach", url: "https://www.artbasel.com/miami-beach", target: "_blank", badge: "Art Festival", type: "Exhibition" },
+                    { name: "House of Vans Brooklyn", url: "https://www.vans.com", target: "_blank", badge: "Lifestyle", type: "Event" }
+                ]
+            },
+            {
+                id: "jobs",
+                name: "Job Portals",
+                icon: "fa-briefcase",
+                desc: "American career aggregators and job discovery platforms.",
+                badge: "Careers",
+                links: [
+                    { name: "Indeed USA", url: "https://www.indeed.com", target: "_blank", badge: "National Leader", type: "Job Board" },
+                    { name: "LinkedIn Jobs Directory", url: "https://www.linkedin.com/jobs", target: "_blank", badge: "Professional", type: "Career Platform" },
+                    { name: "Glassdoor Jobs & Reviews", url: "https://www.glassdoor.com", target: "_blank", badge: "Reviews & Salaries", type: "Job Search" },
+                    { name: "ZipRecruiter", url: "https://www.ziprecruiter.com", target: "_blank", badge: "One-Click Apply", type: "Job Marketplace" },
+                    { name: "Monster Jobs", url: "https://www.monster.com", target: "_blank", badge: "National Board", type: "Job Search" },
+                    { name: "CareerBuilder", url: "https://www.careerbuilder.com", target: "_blank", badge: "National Database", type: "Job Board" },
+                    { name: "Handshake (Student & Grad Jobs)", url: "https://joinhandshake.com", target: "_blank", badge: "College Focus", type: "Early Career Hub" },
+                    { name: "USAJOBS (Federal Government)", url: "https://www.usajobs.gov", target: "_blank", badge: "US Government", type: "Public Sector Jobs" },
+                    { name: "SimplyHired", url: "https://www.simplyhired.com", target: "_blank", badge: "Aggregator", type: "Job Board" },
+                    { name: "WayUp Early Careers", url: "https://www.wayup.com", target: "_blank", badge: "Internships", type: "Student Careers" },
+                    { name: "Dice Tech Jobs", url: "https://www.dice.com", target: "_blank", badge: "Technology", type: "Tech Job Board" },
+                    { name: "Snagajob (Part-Time & Hourly)", url: "https://www.snagajob.com", target: "_blank", badge: "Hourly Jobs", type: "Job Search" },
+                    { name: "HigherEdJobs", url: "https://www.higheredjobs.com", target: "_blank", badge: "Education", type: "Academic Careers" },
+                    { name: "K12JobSpot", url: "https://www.k12jobspot.com", target: "_blank", badge: "Education", type: "Teaching Jobs" },
+                    { name: "Idealist Non-Profit Jobs", url: "https://www.idealist.org", target: "_blank", badge: "Non-Profit", type: "Social Impact Jobs" }
+                ]
+            },
+            {
+                id: "cars",
+                name: "Car Companies",
+                icon: "fa-car",
+                desc: "Popular American car brands, manufacturers, and vehicle marketplaces.",
+                badge: "Motors",
+                links: [
+                    { name: "Ford Motor Company", url: "https://www.ford.com", target: "_blank", badge: "Ford", type: "US Manufacturer" },
+                    { name: "Chevrolet USA", url: "https://www.chevrolet.com", target: "_blank", badge: "GM", type: "US Manufacturer" },
+                    { name: "Tesla Motors", url: "https://www.tesla.com", target: "_blank", badge: "EV Leader", type: "US Manufacturer" },
+                    { name: "Toyota USA", url: "https://www.toyota.com", target: "_blank", badge: "Toyota", type: "Manufacturer" },
+                    { name: "Honda USA", url: "https://automobiles.honda.com", target: "_blank", badge: "Honda", type: "Manufacturer" },
+                    { name: "Jeep Official USA", url: "https://www.jeep.com", target: "_blank", badge: "Stellantis", type: "US Manufacturer" },
+                    { name: "RAM Trucks", url: "https://www.ramtrucks.com", target: "_blank", badge: "Trucks", type: "US Manufacturer" },
+                    { name: "BMW USA", url: "https://www.bmwusa.com", target: "_blank", badge: "BMW", type: "Manufacturer" },
+                    { name: "Mercedes-Benz USA", url: "https://www.mbusa.com", target: "_blank", badge: "Mercedes", type: "Manufacturer" },
+                    { name: "Subaru USA", url: "https://www.subaru.com", target: "_blank", badge: "Subaru", type: "Manufacturer" },
+                    { name: "Hyundai USA", url: "https://www.hyundaiusa.com", target: "_blank", badge: "Hyundai", type: "Manufacturer" },
+                    { name: "Kia USA", url: "https://www.kia.com/us/en", target: "_blank", badge: "Kia", type: "Manufacturer" },
+                    { name: "Nissan USA", url: "https://www.nissanusa.com", target: "_blank", badge: "Nissan", type: "Manufacturer" },
+                    { name: "GMC Trucks & SUVs", url: "https://www.gmc.com", target: "_blank", badge: "GM", type: "US Manufacturer" },
+                    { name: "AutoTrader USA", url: "https://www.autotrader.com", target: "_blank", badge: "Marketplace", type: "Vehicle Listings" },
+                    { name: "CarMax Dealerships", url: "https://www.carmax.com", target: "_blank", badge: "Used Leader", type: "Car Retailer" },
+                    { name: "Carvana Online Car Buying", url: "https://www.carvana.com", target: "_blank", badge: "Online Direct", type: "Vehicle Platform" },
+                    { name: "Cars.com", url: "https://www.cars.com", target: "_blank", badge: "Marketplace", type: "Vehicle Search" }
+                ]
+            },
+            {
+                id: "property",
+                name: "Property & Housing",
+                icon: "fa-house-chimney",
+                desc: "Buy, sell, rent, or lease homes and apartments across the US.",
+                badge: "Real Estate",
+                links: [
+                    { name: "Zillow Real Estate", url: "https://www.zillow.com", target: "_blank", badge: "National Leader", type: "Real Estate Search" },
+                    { name: "Realtor.com", url: "https://www.realtor.com", target: "_blank", badge: "Official Portal", type: "Property Search" },
+                    { name: "Trulia Real Estate & Rentals", url: "https://www.trulia.com", target: "_blank", badge: "Neighborhood Insights", type: "Property Portal" },
+                    { name: "Redfin Real Estate", url: "https://www.redfin.com", target: "_blank", badge: "Tech Brokerage", type: "Home Finder" },
+                    { name: "Apartments.com", url: "https://www.apartments.com", target: "_blank", badge: "Rental Leader", type: "Apartment Search" },
+                    { name: "Rent.com", url: "https://www.rent.com", target: "_blank", badge: "Rentals Focus", type: "Rental Finder" },
+                    { name: "Coldwell Banker Real Estate", url: "https://www.coldwellbanker.com", target: "_blank", badge: "National Agency", type: "Brokerage" },
+                    { name: "HousingHub US", url: "https://www.housinghub.com", target: "_blank", badge: "National", type: "Property Portal" },
+                    { name: "Home24 Furniture & Decor", url: "https://www.home24.com", target: "_blank", badge: "National", type: "Home & Decor" },
+                    { name: "CoreLogic Property Data", url: "https://www.corelogic.com", target: "_blank", badge: "Data", type: "Property Insights" },
+                    { name: "PropData Systems", url: "https://www.propdata.com", target: "_blank", badge: "Data", type: "Market Reports" },
+                    { name: "ApartmentList Rentals", url: "https://www.apartmentlist.com", target: "_blank", badge: "Rentals", type: "Rental Agency" },
+                    { name: "Rentals.com USA", url: "https://www.rentals.com", target: "_blank", badge: "Online", type: "Rental Listings" },
+                    { name: "Compass Real Estate", url: "https://www.compass.com", target: "_blank", badge: "Agency", type: "Property Group" },
+                    { name: "Keller Williams Realty", url: "https://www.kw.com", target: "_blank", badge: "Agency", type: "Property Group" }
+                ]
+            },
+            {
+                id: "gaming",
+                name: "Gaming Stores & Free Hubs",
+                icon: "fa-gamepad",
+                desc: "Dynamic digital storefronts and repositories of free independent games.",
+                badge: "Entertainment",
+                links: [
+                    { name: "Steam Store Front", url: "https://store.steampowered.com", target: "_blank", badge: "Valve", type: "Desktop App Store" },
+                    { name: "Epic Games Weekly Catalog", url: "https://store.epicgames.com", target: "_blank", badge: "Epic Launcher", type: "Desktop App Store" },
+                    { name: "itch.io Indie Games", url: "https://itch.io", target: "_blank", badge: "Indie Portal", type: "Free Play Library" },
+                    { name: "PlayStation Store US", url: "https://store.playstation.com/en-us/", target: "_blank", badge: "Console Store", type: "Digital Shop" },
+                    { name: "Xbox Store Front USA", url: "https://www.xbox.com/en-US/", target: "_blank", badge: "Console & PC", type: "Digital Shop" },
+                    { name: "Nintendo eShop USA", url: "https://www.nintendo.com/us/store/", target: "_blank", badge: "Switch", type: "Digital Shop" },
+                    { name: "GOG (Good Old Games)", url: "https://www.gog.com", target: "_blank", badge: "DRM Free", type: "Desktop App Store" }
+                ]
+            },
+            {
+                id: "expos",
+                name: "Local Expos & Tech Shows",
+                icon: "fa-masks-theater",
+                desc: "Epic live conventions, gaming arenas, comic markets, and tech exhibitions in the US.",
+                badge: "Conventions",
+                links: [
+                    { name: "CES (Consumer Electronics Show)", url: "https://www.ces.tech", target: "_blank", badge: "Las Vegas", type: "Global Tech Expo" },
+                    { name: "San Diego Comic-Con", url: "https://www.comic-con.org", target: "_blank", badge: "San Diego", type: "Pop Culture Expo" },
+                    { name: "PAX West & East Gaming", url: "https://www.paxsite.com", target: "_blank", badge: "Seattle / Boston", type: "Gaming Expo" },
+                    { name: "SXSW Interactive Expo", url: "https://www.sxsw.com/exhibits/", target: "_blank", badge: "Austin TX", type: "Tech & Film Expo" },
+                    { name: "Anime NYC", url: "https://animenyc.com", target: "_blank", badge: "New York", type: "Anime Convention" },
+                    { name: "Design Miami", url: "https://designmiami.com", target: "_blank", badge: "Miami", type: "Design Festival" },
+                    { name: "TechCrunch Disrupt", url: "https://techcrunch.com/events/techcrunch-disrupt/", target: "_blank", badge: "San Francisco", type: "Tech Startup Expo" },
+                    { name: "RSA Conference Security Summit", url: "https://www.rsaconference.com", target: "_blank", badge: "San Francisco", type: "Cybersecurity Expo" },
+                    { name: "DreamHack USA", url: "https://dreamhack.com", target: "_blank", badge: "Dallas / Atlanta", type: "Gaming & Esports Festival" },
+                    { name: "E-Commerce World Summit US", url: "https://www.ecommerceexpo.co.uk", target: "_blank", badge: "New York", type: "Business Expo" },
+                    { name: "CreativeMornings USA", url: "https://creativemornings.com", target: "_blank", badge: "Multi-City", type: "Creative Meetup" },
+                    { name: "NY x DESIGN Week", url: "https://nycxdesign.org", target: "_blank", badge: "New York", type: "Design Festival" }
+                ]
+            }
+        ];
+
+        // Policies Mock Database
+        const legalDocs = {
+            privacy: {
+                title: "California Consumer Privacy Act (CCPA) Privacy Policy",
+                content: `
+                    <p class="font-bold text-slate-800 text-md">1. Commitment to Privacy</p>
+                    <p>Arcknowledge operates as an index directory for web references located in the United States. We respect your right to privacy and process personal information in compliance with applicable United States state and federal privacy standards, including the California Consumer Privacy Act ("CCPA").</p>
+                    
+                    <p class="font-bold text-slate-800 text-md">2. Information We Do Not Collect</p>
+                    <p>Since Arcknowledge is a frontend-only platform, <strong>we do not operate background storage systems or active databases tracking user behavior</strong>. We do not require sign-up accounts, emails, telephone numbers, or demographic variables. We do not sell user personal data.</p>
+
+                    <p class="font-bold text-slate-800 text-md">3. Outbound Link Navigation Disclaimer</p>
+                    <p>Our website contains direct external hyperlinks targeting outer service directories, universities, state institutions, and vendors. Once you engage a link, you bypass the protective walls of Arcknowledge. We carry zero responsibility for how external frameworks register, trace, or harvest your cookies or identity data. Ensure you review their internal safety protocols upon landing.</p>
+                `
+            },
+            terms: {
+                title: "Terms of Use",
+                content: `
+                    <p class="font-bold text-slate-800 text-md">1. Acceptance of Terms</p>
+                    <p>By using the Arcknowledge portal ("the site"), you agree to abide by these terms of use. If you do not agree to these conditions, you must immediately terminate use of the site.</p>
+                    
+                    <p class="font-bold text-slate-800 text-md">2. Permitted Use Only</p>
+                    <p>You agree to employ this digital directory solely for personal, research-oriented, and informative goals. You are strictly forbidden from performing scraping scripts, system-level DDoS attacks, high-volume automated inquiries, or frame injection attempts targeting Arcknowledge structures.</p>
+
+                    <p class="font-bold text-slate-800 text-md">3. Intellectual Property</p>
+                    <p>The code design, design styling configurations, UI compositions, unique layout frameworks, and digital visual asset groupings remain the exclusive intellectual property of Arcknowledge. Brand labels, logos, and target names linked in categories belong strictly to their certified commercial owners.</p>
+                `
+            },
+            conditions: {
+                title: "General Terms & Conditions",
+                content: `
+                    <p class="font-bold text-slate-800 text-md">1. Directory Information Accuracy</p>
+                    <p>While we make reasonable attempts to verify the legitimacy of official links, Arcknowledge provides all information "as is" and "as available". We offer zero assurances that the channels listed remain free of security breaches, malware, server shutdowns, or broken linkages.</p>
+                    
+                    <p class="font-bold text-slate-800 text-md">2. Financial Transactions Notice</p>
+                    <p>Under no circumstances does Arcknowledge process financial transactions, bank deposits, loan evaluations, tuition requests, or online retail operations directly. All monetary movements occur on external servers and banking networks. Arcknowledge holds no liability for transaction disputes, online payment mistakes, or financial losses.</p>
+
+                    <p class="font-bold text-slate-800 text-md">3. Jurisdiction</p>
+                    <p>These guidelines, privacy rules, and functional terms are governed by the laws of the United States of America. Any disputes rising from directory actions shall be resolved under applicable state and federal courts in the United States.</p>
+                `
+            }
+        };
+
+        // Render Category Grid Dynamic Items
+        function renderCategories(filterText = "") {
+            const grid = document.getElementById("categoriesGrid");
+            grid.innerHTML = "";
+            
+            const filtered = directoryData.filter(cat => 
+                cat.name.toLowerCase().includes(filterText.toLowerCase()) || 
+                cat.desc.toLowerCase().includes(filterText.toLowerCase()) ||
+                cat.links.some(l => l.name.toLowerCase().includes(filterText.toLowerCase()))
+            );
+
+            document.getElementById("categoryCount").innerText = `${filtered.length} Categories Found`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        <i class="fa-solid fa-folder-open text-4xl mb-2"></i>
+                        <p class="font-semibold text-slate-600">No matching directories found</p>
+                        <p class="text-xs">Try searching another keyword (e.g. "Chase", "Harvard", "Uber").</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(cat => {
+                const button = document.createElement("button");
+                button.className = "group text-left bg-white p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:shadow-md hover:shadow-brand-500/5 transition-all flex items-center gap-4 cursor-pointer focus:ring-2 focus:ring-brand-500/20 outline-none";
+                button.onclick = () => selectCategory(cat.id);
+                
+                button.innerHTML = `
+                    <div class="w-12 h-12 bg-slate-100 group-hover:bg-brand-50 rounded-xl flex items-center justify-center text-slate-600 group-hover:text-brand-600 transition-colors shrink-0">
+                        <i class="fa-solid ${cat.icon} text-xl"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-800 group-hover:text-brand-600 transition-colors text-sm sm:text-base truncate">${cat.name}</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-500 font-semibold px-2 py-0.5 rounded group-hover:bg-brand-100 group-hover:text-brand-800 shrink-0">${cat.links.length} links</span>
+                        </div>
+                        <p class="text-xs text-slate-400 truncate mt-0.5">${cat.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(button);
+            });
+        }
+
+        // Action: Select and Load Category to Drawer
+        let activeCategoryId = null;
+        function selectCategory(id) {
+            activeCategoryId = id;
+            const cat = directoryData.find(c => c.id === id);
+            if (!cat) return;
+
+            // Highlight Drawer Heading
+            document.getElementById("drawerTitle").innerHTML = `<i class="fa-solid ${cat.icon} text-brand-600 mr-2"></i> ${cat.name}`;
+            document.getElementById("drawerSubtitle").innerText = cat.desc;
+            document.getElementById("drawerBadge").innerText = `${cat.links.length} Links Portal`;
+            
+            // Build Dynamic Links Cards
+            const drawerBody = document.getElementById("drawerBody");
+            drawerBody.innerHTML = "";
+
+            cat.links.forEach(lnk => {
+                const card = document.createElement("div");
+                card.className = "bg-slate-50 hover:bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 transition-all shadow-sm group";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div>
+                            <h4 class="font-semibold text-slate-800 group-hover:text-brand-600 transition-colors text-sm leading-snug">${lnk.name}</h4>
+                            <span class="text-[10px] text-slate-400 font-medium">Link Type: ${lnk.type}</span>
+                        </div>
+                        <span class="bg-slate-200/60 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded shrink-0">${lnk.badge}</span>
+                    </div>
+                    <a href="${lnk.url}" target="${lnk.target}" class="w-full bg-white group-hover:bg-brand-600 text-brand-600 group-hover:text-white border border-brand-200 group-hover:border-brand-600 text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-all text-center">
+                        Visit Official Platform <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                `;
+                drawerBody.appendChild(card);
+            });
+
+            // Scroll to view right hand side on smaller viewports dynamically
+            if (window.innerWidth < 1024) {
+                document.getElementById("drawerContainer").scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Live Filtering Search logic
+        function filterCategories() {
+            const text = document.getElementById("searchInput").value;
+            renderCategories(text);
+        }
+
+        // Modal triggers
+        function openModal(type) {
+            const doc = legalDocs[type];
+            if (!doc) return;
+            document.getElementById("modalTitle").innerText = doc.title;
+            document.getElementById("modalBody").innerHTML = doc.content;
+            document.getElementById("modalOverlay").classList.remove("hidden");
+            document.body.classList.add("overflow-hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("modalOverlay").classList.add("hidden");
+            document.body.classList.remove("overflow-hidden");
+        }
+
+        // --- PWA Installation Core Logic ---
+        let deferredPrompt;
+        const pwaInstallBanner = document.getElementById('pwaInstallBanner');
+        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+        const pwaCloseBtn = document.getElementById('pwaCloseBtn');
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker successfully registered!', reg.scope))
+                    .catch(err => console.error('Service Worker registration failed:', err));
+            });
+        }
+
+        // Listen for standard Browser Install Prompt Event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent standard default mini-infobar on mobile devices
+            e.preventDefault();
+            // Store event globally to trigger programmatically later
+            deferredPrompt = e;
+            // Un-hide the custom Tailwind sliding installer pop-up UI
+            pwaInstallBanner.classList.remove('hidden');
+            setTimeout(() => {
+                pwaInstallBanner.classList.remove('translate-y-24', 'opacity-0');
+                pwaInstallBanner.classList.add('translate-y-0', 'opacity-100');
+            }, 100);
+        });
+
+        // Trigger installation flow on click
+        pwaInstallBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            // Run native prompt
+            deferredPrompt.prompt();
+            // Read user choices
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`PWA installer decision: ${outcome}`);
+            deferredPrompt = null;
+            hideInstallBanner();
+        });
+
+        pwaCloseBtn.addEventListener('click', () => {
+            hideInstallBanner();
+        });
+
+        function hideInstallBanner() {
+            pwaInstallBanner.classList.remove('translate-y-0', 'opacity-100');
+            pwaInstallBanner.classList.add('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                pwaInstallBanner.classList.add('hidden');
+            }, 300);
+        }
+
+        // Hide banner if app has already been successfully installed
+        window.addEventListener('appinstalled', () => {
+            console.log('Arcknowledge successfully installed into user system.');
+            hideInstallBanner();
+        });
+
+        // Initial Render
+        renderCategories();
+    </script>
+</body>
+</html>
