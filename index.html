@@ -6,7 +6,7 @@
     <title>Arcknowledge | The Ultimate South African Directory & Student Hub</title>
     <!-- Link to PWA Manifest -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e3a8a">
+    <meta name="theme-color" content="#121316">
     <link class="apple-touch-icon" href="icon.svg">
     
     <!-- Tailwind CSS CDN -->
@@ -16,19 +16,16 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0f7ff',
-                            100: '#e0effe',
-                            200: '#bce0fd',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                        },
-                        accent: {
-                            light: '#f43f5e',
-                            DEFAULT: '#e11d48',
-                            dark: '#be123c',
+                        ramp: {
+                            lime: '#C2F012', // Ramp's signature neon lime
+                            limeHover: '#b1de0e',
+                            dark: '#121316', // Dark background
+                            cardDark: '#1C1E22',
+                            lightBg: '#F9FAFB',
+                            border: '#E5E7EB',
+                            darkBorder: '#2D3036',
+                            textDark: '#0D0E10',
+                            textMuted: '#6B7280'
                         }
                     }
                 }
@@ -41,6 +38,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap');
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F9FAFB;
+            color: #0D0E10;
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -58,18 +57,18 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-ramp-lightBg text-ramp-textDark min-h-screen flex flex-col">
 
     <!-- Header / Navigation -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100">
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-ramp-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-tr from-brand-600 to-accent flex items-center justify-center w-10 h-10 rounded-xl shadow-lg shadow-brand-500/20 text-white font-black text-xl tracking-tight">
+                <div class="bg-ramp-lime text-ramp-dark flex items-center justify-center w-10 h-10 rounded-lg font-black text-xl tracking-tight shadow-sm">
                     A
                 </div>
                 <div>
-                    <span class="font-extrabold text-xl bg-gradient-to-r from-brand-600 to-accent bg-clip-text text-transparent">Arcknowledge</span>
-                    <span class="text-xs block text-slate-400 font-semibold tracking-wide uppercase -mt-1">South Africa Hub</span>
+                    <span class="font-bold text-xl tracking-tight text-ramp-dark">Arcknowledge</span>
+                    <span class="text-[10px] block text-ramp-textMuted font-bold tracking-widest uppercase -mt-1">South Africa Hub</span>
                 </div>
             </div>
         </div>
@@ -79,38 +78,37 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
 
         <!-- Top Banner -->
-         <a href="" target="">
-            <div class="overflow-hidden rounded-2xl shadow-lg border border-slate-200 bg-white">
+         <a href="https://grok.com" target="_blank">
+            <div class="overflow-hidden rounded-xl shadow-sm border border-ramp-border bg-white transition-all hover:border-gray-400">
                 <img src="grokbanner.png" alt="Grok banner" class="w-full h-auto object-cover">
             </div>
         </a>
 
         <!-- Hero Search Section -->
-        <div class="bg-gradient-to-br from-brand-900 via-brand-900 to-slate-900 rounded-2xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl shadow-brand-900/10">
-            <!-- Decorative Accents -->
-            <div class="absolute -right-10 -top-10 w-40 h-40 bg-accent rounded-full blur-3xl opacity-20"></div>
-            <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-brand-500 rounded-full blur-3xl opacity-20"></div>
+        <div class="bg-ramp-dark rounded-2xl p-6 sm:p-10 text-white relative overflow-hidden shadow-xl border border-ramp-darkBorder">
+            <!-- Ramp Design Glow Accents -->
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-ramp-lime/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 max-w-2xl">
-                <span class="bg-white/10 text-brand-200 text-xs font-semibold px-3 py-1 rounded-full border border-white/10 uppercase tracking-widest mb-3 inline-block">
+                <span class="bg-ramp-lime/15 text-ramp-lime text-xs font-bold px-3 py-1 rounded-full border border-ramp-lime/20 uppercase tracking-widest mb-3 inline-block">
                     Your Ultimate Gateway
                 </span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-white">
                     Unlock anything South African, curated in one vibrant place.
                 </h1>
-                <p class="text-slate-300 text-sm sm:text-base mb-6">
+                <p class="text-gray-400 text-sm sm:text-base mb-6 leading-relaxed">
                     Looking for universities, TVET colleges, grocery deliveries, top local tech outlets, study loans, or weekend festivals? Arcknowledge connects you instantly to original, official sources.
                 </p>
 
                 <!-- Dynamic Search -->
                 <div class="relative">
-                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
                     <input 
                         type="text" 
                         id="searchInput" 
                         oninput="filterCategories()"
                         placeholder="Search for 'universities', 'bursaries', 'flights', 'gaming'..." 
-                        class="w-full pl-12 pr-4 py-3.5 bg-white text-slate-800 rounded-xl font-medium focus:ring-4 focus:ring-brand-500/30 outline-none transition-all shadow-lg placeholder:text-slate-400"
+                        class="w-full pl-12 pr-4 py-3.5 bg-ramp-cardDark border border-ramp-darkBorder text-white rounded-xl font-medium focus:ring-2 focus:ring-ramp-lime focus:border-ramp-lime outline-none transition-all shadow-inner placeholder:text-gray-500"
                     >
                 </div>
             </div>
@@ -121,11 +119,11 @@
             
             <!-- Sidebar / Categories Grid (LHS) -->
             <div class="lg:col-span-8 flex flex-col gap-4">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                    <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-shapes text-brand-600"></i> Browse Directories
+                <div class="flex items-center justify-between border-b border-ramp-border pb-3">
+                    <h2 class="font-bold text-lg text-ramp-dark flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-ramp-dark"></i> Browse Directories
                     </h2>
-                    <span id="categoryCount" class="text-xs bg-slate-200/60 text-slate-600 font-semibold px-2.5 py-1 rounded-md">25 Categories Loaded</span>
+                    <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">25 Categories Loaded</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="categoriesGrid">
@@ -134,23 +132,23 @@
             </div>
 
             <!-- List Drawer Display Panel (RHS) -->
-            <div class="lg:col-span-4 lg:sticky lg:top-24 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[600px]" id="drawerContainer">
-                <div class="p-5 bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 flex items-center justify-between">
+            <div class="lg:col-span-4 lg:sticky lg:top-24 bg-white rounded-2xl border border-ramp-border shadow-sm overflow-hidden flex flex-col h-[600px]" id="drawerContainer">
+                <div class="p-5 bg-gray-50/80 border-b border-ramp-border flex items-center justify-between">
                     <div>
-                        <h3 id="drawerTitle" class="font-extrabold text-slate-800 text-lg flex items-center gap-2">
+                        <h3 id="drawerTitle" class="font-extrabold text-ramp-dark text-lg flex items-center gap-2">
                             👋 Welcome to Hub
                         </h3>
-                        <p id="drawerSubtitle" class="text-xs text-slate-500 mt-0.5">Select a category to view direct links</p>
+                        <p id="drawerSubtitle" class="text-xs text-ramp-textMuted mt-0.5">Select a category to view direct links</p>
                     </div>
-                    <span id="drawerBadge" class="bg-brand-100 text-brand-800 text-xs font-bold px-2 py-1 rounded">0 Link(s)</span>
+                    <span id="drawerBadge" class="bg-ramp-dark text-ramp-lime text-xs font-bold px-2 py-1 rounded">0 Link(s)</span>
                 </div>
 
                 <!-- Dynamic Content List -->
                 <div class="flex-1 overflow-y-auto p-5 custom-scrollbar flex flex-col gap-3" id="drawerBody">
-                    <div class="my-auto text-center p-6 flex flex-col items-center justify-center text-slate-400">
-                        <i class="fa-solid fa-hand-pointer text-4xl mb-3 text-slate-300 animate-bounce"></i>
-                        <p class="font-semibold text-slate-600">No Category Selected</p>
-                        <p class="text-xs max-w-xs mt-1">Tap any of the category boxes on the left to reveal direct links, download portals, and resources.</p>
+                    <div class="my-auto text-center p-6 flex flex-col items-center justify-center text-gray-400">
+                        <i class="fa-solid fa-hand-pointer text-4xl mb-3 text-gray-300 animate-bounce"></i>
+                        <p class="font-semibold text-ramp-dark">No Category Selected</p>
+                        <p class="text-xs max-w-xs mt-1 text-ramp-textMuted">Tap any of the category boxes on the left to reveal direct links, download portals, and resources.</p>
                     </div>
                 </div>
             </div>
@@ -160,61 +158,61 @@
     </main>
 
     <!-- Footer Area -->
-    <footer class="bg-slate-900 text-slate-400 py-12 mt-12 border-t border-slate-800">
+    <footer class="bg-ramp-dark text-gray-400 py-12 mt-12 border-t border-ramp-darkBorder">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="bg-brand-600 flex items-center justify-center w-8 h-8 rounded-lg text-white font-bold text-md">
+                        <div class="bg-ramp-lime text-ramp-dark flex items-center justify-center w-8 h-8 rounded-lg font-bold text-md">
                             A
                         </div>
                         <span class="font-extrabold text-lg text-white">Arcknowledge</span>
                     </div>
-                    <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
+                    <p class="text-sm text-gray-400 max-w-sm leading-relaxed">
                         South Africa's premiere directory platform, pointing you to official, safe links for education, tools, lifestyle, housing, transport, and more.
                     </p>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-white text-sm uppercase tracking-wider mb-4">Legals & Frameworks</h4>
+                    <h4 class="font-bold text-white text-xs uppercase tracking-widest mb-4">Legals & Frameworks</h4>
                     <div class="flex flex-col gap-2.5 text-sm">
-                        <button onclick="openModal('privacy')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-shield-halved mr-2 text-brand-500"></i> Privacy Policy (POPIA compliant)</button>
-                        <button onclick="openModal('terms')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-file-contract mr-2 text-brand-500"></i> Terms of Use</button>
-                        <button onclick="openModal('conditions')" class="text-left hover:text-white transition-colors cursor-pointer"><i class="fa-solid fa-handshake mr-2 text-brand-500"></i> Terms & Conditions</button>
+                        <button onclick="openModal('privacy')" class="text-left hover:text-ramp-lime transition-colors cursor-pointer"><i class="fa-solid fa-shield-halved mr-2 text-ramp-lime"></i> Privacy Policy (POPIA compliant)</button>
+                        <button onclick="openModal('terms')" class="text-left hover:text-ramp-lime transition-colors cursor-pointer"><i class="fa-solid fa-file-contract mr-2 text-ramp-lime"></i> Terms of Use</button>
+                        <button onclick="openModal('conditions')" class="text-left hover:text-ramp-lime transition-colors cursor-pointer"><i class="fa-solid fa-handshake mr-2 text-ramp-lime"></i> Terms & Conditions</button>
                     </div>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-white text-sm uppercase tracking-wider mb-4">Disclaimer & Safety</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">
+                    <h4 class="font-bold text-white text-xs uppercase tracking-widest mb-4">Disclaimer & Safety</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">
                         Arcknowledge is an aggregator referencing official platform domain pathways. We do not process payments, accept credentials, or store private user metadata. Verify URLs before performing sensitive actions.
                     </p>
                 </div>
             </div>
 
-            <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="border-t border-ramp-darkBorder pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
                 <p>&copy; 2026 Arcknowledge. Created with youthy excellence. All rights reserved.</p>
                 <div class="flex gap-4">
-                    <span class="hover:text-slate-400 cursor-pointer">South Africa</span>
+                    <span class="hover:text-gray-300 cursor-pointer">South Africa</span>
                     <span>&middot;</span>
-                    <span class="hover:text-slate-400 cursor-pointer">Version 2.0</span>
+                    <span class="hover:text-gray-300 cursor-pointer">Version 2.0</span>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Universal Modal Overlay -->
-    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
-            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                <h3 id="modalTitle" class="font-bold text-lg text-slate-900">Legal Documents</h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors">
+    <div id="modalOverlay" class="fixed inset-0 bg-ramp-dark/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-ramp-border">
+            <div class="p-6 border-b border-ramp-border flex items-center justify-between bg-gray-50">
+                <h3 id="modalTitle" class="font-bold text-lg text-ramp-dark">Legal Documents</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-ramp-dark transition-colors">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="p-6 overflow-y-auto text-sm text-slate-600 leading-relaxed space-y-4 custom-scrollbar" id="modalBody">
+            <div class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4 custom-scrollbar" id="modalBody">
                 <!-- Content injected dynamically -->
             </div>
-            <div class="p-4 border-t border-slate-100 bg-slate-50 text-right">
-                <button onclick="closeModal()" class="px-5 py-2 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors shadow-md shadow-brand-600/10">
+            <div class="p-4 border-t border-ramp-border bg-gray-50 text-right">
+                <button onclick="closeModal()" class="px-5 py-2 bg-ramp-dark text-ramp-lime rounded-xl font-bold hover:bg-black transition-colors shadow-md">
                     I Understand & Close
                 </button>
             </div>
@@ -222,20 +220,20 @@
     </div>
 
     <!-- Dynamic PWA Slide-up Install Banner -->
-    <div id="pwaInstallBanner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-slate-900 border border-slate-800 text-white p-4 rounded-2xl shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform translate-y-24 opacity-0 hidden">
+    <div id="pwaInstallBanner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-ramp-dark border border-ramp-darkBorder text-white p-4 rounded-2xl shadow-2xl z-50 flex items-center gap-4 transition-all duration-300 transform translate-y-24 opacity-0 hidden">
         <!-- Circular PWA App Icon Design -->
-        <div class="w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-slate-800">
-            <div class="w-6 h-6 bg-white rounded-full"></div>
+        <div class="w-12 h-12 bg-ramp-lime rounded-xl flex items-center justify-center shrink-0 text-ramp-dark font-black text-xl">
+            A
         </div>
         <div class="flex-1">
             <h4 class="font-bold text-sm text-white">Install Arcknowledge</h4>
-            <p class="text-xs text-slate-400">Access local South African directories directly from your home screen.</p>
+            <p class="text-xs text-gray-400">Access local South African directories directly from your home screen.</p>
         </div>
         <div class="flex gap-2 shrink-0">
-            <button id="pwaCloseBtn" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white transition-colors">
+            <button id="pwaCloseBtn" class="px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-colors">
                 Maybe Later
             </button>
-            <button id="pwaInstallBtn" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-md">
+            <button id="pwaInstallBtn" class="bg-ramp-lime hover:bg-ramp-limeHover text-ramp-dark text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all shadow-md">
                 Install
             </button>
         </div>
@@ -1007,39 +1005,39 @@
             privacy: {
                 title: "Protection of Personal Information Act (POPIA) Privacy Policy",
                 content: `
-                    <p class="font-bold text-slate-800 text-md">1. Commitment to Privacy</p>
+                    <p class="font-bold text-ramp-dark text-md">1. Commitment to Privacy</p>
                     <p>Arcknowledge operates as an index directory for web references located in South Africa. We respect your constitutional right to privacy and process personal information strictly in compliance with the Protection of Personal Information Act, No. 4 of 2013 ("POPIA").</p>
                     
-                    <p class="font-bold text-slate-800 text-md">2. Information We Do Not Collect</p>
+                    <p class="font-bold text-ramp-dark text-md">2. Information We Do Not Collect</p>
                     <p>Since Arcknowledge is a frontend-only platform, <strong>we do not operate background storage systems or active databases tracking user behavior</strong>. We do not require sign-up accounts, emails, telephone numbers, or demographic variables. We do not use persistent tracking cookies targeting individual personas.</p>
 
-                    <p class="font-bold text-slate-800 text-md">3. Outbound Link Navigation Disclaimer</p>
+                    <p class="font-bold text-ramp-dark text-md">3. Outbound Link Navigation Disclaimer</p>
                     <p>Our website contains direct external hyperlinks targeting outer service directories, universities, state institutions, and vendors. Once you engage a link, you bypass the protective walls of Arcknowledge. We carry zero responsibility for how external frameworks register, trace, or harvest your cookies or identity data. Ensure you review their internal safety protocols upon landing.</p>
                 `
             },
             terms: {
                 title: "Terms of Use",
                 content: `
-                    <p class="font-bold text-slate-800 text-md">1. Acceptance of Terms</p>
+                    <p class="font-bold text-ramp-dark text-md">1. Acceptance of Terms</p>
                     <p>By using the Arcknowledge portal ("the site"), you agree to abide by these terms of use. If you do not agree to these conditions, you must immediately terminate use of the site.</p>
                     
-                    <p class="font-bold text-slate-800 text-md">2. Permitted Use Only</p>
+                    <p class="font-bold text-ramp-dark text-md">2. Permitted Use Only</p>
                     <p>You agree to employ this digital directory solely for personal, research-oriented, and informative goals. You are strictly forbidden from performing scraping scripts, system-level DDoS attacks, high-volume automated inquiries, or frame injection attempts targeting Arcknowledge structures.</p>
 
-                    <p class="font-bold text-slate-800 text-md">3. Intellectual Property</p>
+                    <p class="font-bold text-ramp-dark text-md">3. Intellectual Property</p>
                     <p>The code design, design styling configurations, UI compositions, unique layout frameworks, and digital visual asset groupings remain the exclusive intellectual property of Arcknowledge. Brand labels, logos, and target names linked in categories belong strictly to their certified commercial owners.</p>
                 `
             },
             conditions: {
                 title: "General Terms & Conditions",
                 content: `
-                    <p class="font-bold text-slate-800 text-md">1. Directory Information Accuracy</p>
+                    <p class="font-bold text-ramp-dark text-md">1. Directory Information Accuracy</p>
                     <p>While we make reasonable attempts to verify the legitimacy of official links, Arcknowledge provides all information "as is" and "as available". We offer zero assurances that the channels listed remain free of security breaches, malware, server shutdowns, or broken linkages.</p>
                     
-                    <p class="font-bold text-slate-800 text-md">2. Financial Transactions Notice</p>
+                    <p class="font-bold text-ramp-dark text-md">2. Financial Transactions Notice</p>
                     <p>Under no circumstances does Arcknowledge process financial transactions, bank deposits, loan evaluations, tuition requests, or online retail operations directly. All monetary movements occur on external servers and banking networks. Arcknowledge holds no liability for transaction disputes, online payment mistakes, or financial losses.</p>
 
-                    <p class="font-bold text-slate-800 text-md">3. Jurisdiction</p>
+                    <p class="font-bold text-ramp-dark text-md">3. Jurisdiction</p>
                     <p>These guidelines, privacy rules, and functional terms are governed by the laws of the Republic of South Africa. Any disputes rising from directory actions shall be resolved in the magistrate courts under domestic South African legal rules.</p>
                 `
             }
@@ -1060,9 +1058,9 @@
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full py-12 text-center text-slate-400">
+                    <div class="col-span-full py-12 text-center text-gray-400">
                         <i class="fa-solid fa-folder-open text-4xl mb-2"></i>
-                        <p class="font-semibold text-slate-600">No matching directories found</p>
+                        <p class="font-semibold text-ramp-dark">No matching directories found</p>
                         <p class="text-xs">Try searching another keyword (e.g. "FNB", "UCT", "Uber").</p>
                     </div>
                 `;
@@ -1071,19 +1069,19 @@
 
             filtered.forEach(cat => {
                 const button = document.createElement("button");
-                button.className = "group text-left bg-white p-4 rounded-xl border border-slate-200 hover:border-brand-500 hover:shadow-md hover:shadow-brand-500/5 transition-all flex items-center gap-4 cursor-pointer focus:ring-2 focus:ring-brand-500/20 outline-none";
+                button.className = "group text-left bg-white p-4 rounded-xl border border-ramp-border hover:border-ramp-dark hover:shadow-md transition-all flex items-center gap-4 cursor-pointer focus:ring-2 focus:ring-ramp-dark outline-none";
                 button.onclick = () => selectCategory(cat.id);
                 
                 button.innerHTML = `
-                    <div class="w-12 h-12 bg-slate-100 group-hover:bg-brand-50 rounded-xl flex items-center justify-center text-slate-600 group-hover:text-brand-600 transition-colors shrink-0">
+                    <div class="w-12 h-12 bg-gray-100 group-hover:bg-ramp-dark rounded-xl flex items-center justify-center text-ramp-dark group-hover:text-ramp-lime transition-colors shrink-0">
                         <i class="fa-solid ${cat.icon} text-xl"></i>
                     </div>
                     <div class="overflow-hidden">
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-slate-800 group-hover:text-brand-600 transition-colors text-sm sm:text-base truncate">${cat.name}</span>
-                            <span class="text-[10px] bg-slate-100 text-slate-500 font-semibold px-2 py-0.5 rounded group-hover:bg-brand-100 group-hover:text-brand-800 shrink-0">${cat.links.length} links</span>
+                            <span class="font-bold text-ramp-dark group-hover:text-black transition-colors text-sm sm:text-base truncate">${cat.name}</span>
+                            <span class="text-[10px] bg-gray-100 text-gray-600 font-bold px-2 py-0.5 rounded group-hover:bg-ramp-lime group-hover:text-ramp-dark shrink-0">${cat.links.length} links</span>
                         </div>
-                        <p class="text-xs text-slate-400 truncate mt-0.5">${cat.desc}</p>
+                        <p class="text-xs text-ramp-textMuted truncate mt-0.5">${cat.desc}</p>
                     </div>
                 `;
                 grid.appendChild(button);
@@ -1098,7 +1096,7 @@
             if (!cat) return;
 
             // Highlight Drawer Heading
-            document.getElementById("drawerTitle").innerHTML = `<i class="fa-solid ${cat.icon} text-brand-600 mr-2"></i> ${cat.name}`;
+            document.getElementById("drawerTitle").innerHTML = `<i class="fa-solid ${cat.icon} text-ramp-dark mr-2"></i> ${cat.name}`;
             document.getElementById("drawerSubtitle").innerText = cat.desc;
             document.getElementById("drawerBadge").innerText = `${cat.links.length} Links Portal`;
             
@@ -1108,16 +1106,16 @@
 
             cat.links.forEach(lnk => {
                 const card = document.createElement("div");
-                card.className = "bg-slate-50 hover:bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 transition-all shadow-sm group";
+                card.className = "bg-gray-50/70 hover:bg-white border border-ramp-border rounded-xl p-4 transition-all shadow-sm group hover:border-gray-300";
                 card.innerHTML = `
                     <div class="flex items-start justify-between gap-3 mb-3">
                         <div>
-                            <h4 class="font-semibold text-slate-800 group-hover:text-brand-600 transition-colors text-sm leading-snug">${lnk.name}</h4>
-                            <span class="text-[10px] text-slate-400 font-medium">Link Type: ${lnk.type}</span>
+                            <h4 class="font-bold text-ramp-dark group-hover:text-black transition-colors text-sm leading-snug">${lnk.name}</h4>
+                            <span class="text-[10px] text-ramp-textMuted font-medium">Link Type: ${lnk.type}</span>
                         </div>
-                        <span class="bg-slate-200/60 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded shrink-0">${lnk.badge}</span>
+                        <span class="bg-gray-200 text-ramp-dark text-[10px] font-bold px-2 py-0.5 rounded shrink-0">${lnk.badge}</span>
                     </div>
-                    <a href="${lnk.url}" target="${lnk.target}" class="w-full bg-white group-hover:bg-brand-600 text-brand-600 group-hover:text-white border border-brand-200 group-hover:border-brand-600 text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 transition-all text-center">
+                    <a href="${lnk.url}" target="${lnk.target}" class="w-full bg-white group-hover:bg-ramp-dark text-ramp-dark group-hover:text-ramp-lime border border-ramp-border group-hover:border-ramp-dark text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all text-center shadow-sm">
                         Visit Official Platform <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                     </a>
                 `;
