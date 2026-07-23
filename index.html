@@ -1049,6 +1049,21 @@
             }
         ];
 
+        // Favorites Management
+        let favorites = JSON.parse(localStorage.getItem('arcknowledge_favorites') || '[]');
+
+        function toggleFavorite(id, event) {
+            if (event) event.stopPropagation();
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            localStorage.setItem('arcknowledge_favorites', JSON.stringify(favorites));
+            const filterText = document.getElementById("searchInput").value;
+            renderCategories(filterText);
+        }
+
         // Policies Mock Database
         const legalDocs = {
             privacy: {
@@ -1097,13 +1112,22 @@
             const grid = document.getElementById("categoriesGrid");
             grid.innerHTML = "";
             
-            const filtered = directoryData.filter(cat => 
+            let filtered = directoryData.filter(cat => 
                 cat.name.toLowerCase().includes(filterText.toLowerCase()) || 
                 cat.desc.toLowerCase().includes(filterText.toLowerCase()) ||
                 cat.links.some(l => l.name.toLowerCase().includes(filterText.toLowerCase()))
             );
 
-            document.getElementById("categoryCount").innerText = `${filtered.length} Categories Found`;
+            // Sort to put favorites at the top
+            filtered.sort((a, b) => {
+                const aIsFav = favorites.includes(a.id);
+                const bIsFav = favorites.includes(b.id);
+                if (aIsFav && !bIsFav) return -1;
+                if (!aIsFav && bIsFav) return 1;
+                return 0;
+            });
+
+            document.getElementById("categoryCount").innerText = `${filtered.length} Categories Loaded`;
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
@@ -1118,20 +1142,31 @@
 
             filtered.forEach(cat => {
                 const button = document.createElement("button");
-                button.className = "group text-left bg-white p-4 rounded-xl border border-ramp-border hover:border-ramp-dark hover:shadow-md transition-all flex items-center gap-4 cursor-pointer focus:ring-2 focus:ring-ramp-dark outline-none";
+                button.className = "group text-left bg-white p-4 rounded-xl border border-ramp-border hover:border-ramp-dark hover:shadow-md transition-all flex items-center justify-between gap-3 cursor-pointer focus:ring-2 focus:ring-ramp-dark outline-none";
                 button.onclick = () => selectCategory(cat.id);
                 
+                const isFav = favorites.includes(cat.id);
+
                 button.innerHTML = `
-                    <div class="w-12 h-12 bg-gray-100 group-hover:bg-ramp-dark rounded-xl flex items-center justify-center text-ramp-dark group-hover:text-ramp-lime transition-colors shrink-0">
-                        <i class="fa-solid ${cat.icon} text-xl"></i>
-                    </div>
-                    <div class="overflow-hidden">
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-ramp-dark group-hover:text-black transition-colors text-sm sm:text-base truncate">${cat.name}</span>
-                            <span class="text-[10px] bg-gray-100 text-gray-600 font-bold px-2 py-0.5 rounded group-hover:bg-ramp-lime group-hover:text-ramp-dark shrink-0">${cat.links.length} links</span>
+                    <div class="flex items-center gap-4 overflow-hidden flex-1">
+                        <div class="w-12 h-12 bg-gray-100 group-hover:bg-ramp-dark rounded-xl flex items-center justify-center text-ramp-dark group-hover:text-ramp-lime transition-colors shrink-0">
+                            <i class="fa-solid ${cat.icon} text-xl"></i>
                         </div>
-                        <p class="text-xs text-ramp-textMuted truncate mt-0.5">${cat.desc}</p>
+                        <div class="overflow-hidden">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-ramp-dark group-hover:text-black transition-colors text-sm sm:text-base truncate">${cat.name}</span>
+                                <span class="text-[10px] bg-gray-100 text-gray-600 font-bold px-2 py-0.5 rounded group-hover:bg-ramp-lime group-hover:text-ramp-dark shrink-0">${cat.links.length} links</span>
+                            </div>
+                            <p class="text-xs text-ramp-textMuted truncate mt-0.5">${cat.desc}</p>
+                        </div>
                     </div>
+                    <button 
+                        onclick="toggleFavorite('${cat.id}', event)" 
+                        title="${isFav ? 'Remove from favorites' : 'Add to favorites'}" 
+                        class="p-2 text-orange-400 hover:text-orange-500 hover:scale-110 transition-all shrink-0 cursor-pointer"
+                    >
+                        <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-star text-lg text-orange-400"></i>
+                    </button>
                 `;
                 grid.appendChild(button);
             });
@@ -1183,117 +1218,41 @@
             renderCategories(text);
         }
 
+        // Navigation helpers
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function focusSearch() {
+            document.getElementById("searchInput").focus();
+            scrollToTop();
+        }
+
         // Modal triggers
+        function handleNotificationClick() {
+            document.getElementById("notifModal").classList.remove("hidden");
+        }
+
+        function closeNotifModal() {
+            document.getElementById("notifModal").classList.add("hidden");
+        }
+
         function openModal(type) {
             const doc = legalDocs[type];
             if (!doc) return;
             document.getElementById("modalTitle").innerText = doc.title;
             document.getElementById("modalBody").innerHTML = doc.content;
             document.getElementById("modalOverlay").classList.remove("hidden");
-            document.body.classList.add("overflow-hidden");
         }
 
         function closeModal() {
             document.getElementById("modalOverlay").classList.add("hidden");
-            document.body.classList.remove("overflow-hidden");
         }
 
-        // Navigation Menu Interactive Actions
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function focusSearch() {
-            const searchInput = document.getElementById("searchInput");
-            if (searchInput) {
-                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => {
-                    searchInput.focus();
-                }, 300);
-            }
-        }
-
-        function handleNotificationClick() {
-            const notifBadge = document.getElementById("notifBadge");
-            if (notifBadge) {
-                notifBadge.style.display = "none";
-            }
-            const notifModal = document.getElementById("notifModal");
-            if (notifModal) {
-                notifModal.classList.remove("hidden");
-                document.body.classList.add("overflow-hidden");
-            }
-        }
-
-        function closeNotifModal() {
-            const notifModal = document.getElementById("notifModal");
-            if (notifModal) {
-                notifModal.classList.add("hidden");
-                document.body.classList.remove("overflow-hidden");
-            }
-        }
-
-        // --- PWA Installation Core Logic ---
-        let deferredPrompt;
-        const pwaInstallBanner = document.getElementById('pwaInstallBanner');
-        const pwaInstallBtn = document.getElementById('pwaInstallBtn');
-        const pwaCloseBtn = document.getElementById('pwaCloseBtn');
-
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker successfully registered!', reg.scope))
-                    .catch(err => console.error('Service Worker registration failed:', err));
-            });
-        }
-
-        // Listen for standard Browser Install Prompt Event
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent standard default mini-infobar on mobile devices
-            e.preventDefault();
-            // Store event globally to trigger programmatically later
-            deferredPrompt = e;
-            // Un-hide the custom Tailwind sliding installer pop-up UI
-            pwaInstallBanner.classList.remove('hidden');
-            setTimeout(() => {
-                pwaInstallBanner.classList.remove('translate-y-24', 'opacity-0');
-                pwaInstallBanner.classList.add('translate-y-0', 'opacity-100');
-            }, 100);
+        // Initial Load
+        window.addEventListener("DOMContentLoaded", () => {
+            renderCategories();
         });
-
-        // Trigger installation flow on click
-        pwaInstallBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            // Run native prompt
-            deferredPrompt.prompt();
-            // Read user choices
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`PWA installer decision: ${outcome}`);
-            deferredPrompt = null;
-            hideInstallBanner();
-        });
-
-        pwaCloseBtn.addEventListener('click', () => {
-            hideInstallBanner();
-        });
-
-        function hideInstallBanner() {
-            pwaInstallBanner.classList.remove('translate-y-0', 'opacity-100');
-            pwaInstallBanner.classList.add('translate-y-24', 'opacity-0');
-            setTimeout(() => {
-                pwaInstallBanner.classList.add('hidden');
-            }, 300);
-        }
-
-        // Hide banner if app has already been successfully installed
-        window.addEventListener('appinstalled', () => {
-            console.log('Arcknowledge successfully installed into user system.');
-            hideInstallBanner();
-        });
-
-        // Init App
-        renderCategories();
     </script>
 </body>
 </html>
