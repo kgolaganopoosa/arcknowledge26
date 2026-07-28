@@ -71,6 +71,10 @@
                     <span class="text-[10px] block text-ramp-textMuted font-bold tracking-widest uppercase -mt-1">South Africa Hub</span>
                 </div>
             </div>
+            <button onclick="openStudentPortalModal()" class="inline-flex items-center gap-2 rounded-full border border-ramp-border bg-white px-3 py-2 text-sm font-semibold text-ramp-dark hover:border-ramp-dark hover:bg-ramp-lime/10 transition-colors shadow-sm">
+                <i class="fa-solid fa-graduation-cap text-ramp-dark"></i>
+                <span>Student Portals</span>
+            </button>
         </div>
     </header>
 
@@ -200,7 +204,7 @@
     </footer>
 
     <!-- Persistent Floating Bottom Menu -->
-    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-md bg-ramp-dark/90 backdrop-blur-md border border-ramp-darkBorder rounded-2xl shadow-2xl px-6 py-3 flex items-center justify-between text-white">
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-md bg-ramp-dark/90 backdrop-blur-md border border-ramp-darkBorder rounded-2xl shadow-2xl px-6 py-3 flex items-center justify-center gap-8 text-white">
         <!-- Left: Home Button -->
         <button onclick="scrollToTop()" class="flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
             <i class="fa-solid fa-house text-lg"></i>
@@ -212,40 +216,6 @@
             <i class="fa-solid fa-magnifying-glass text-lg"></i>
             <span class="text-[10px] font-bold tracking-wide">Search</span>
         </button>
-
-        <!-- Right: Notifications Button with Counter -->
-        <button onclick="handleNotificationClick()" class="relative flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
-            <div class="relative inline-block">
-                <i class="fa-solid fa-bell text-lg"></i>
-                <span id="notifBadge" class="absolute -top-1.5 -right-2 bg-ramp-lime text-ramp-dark font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-ramp-dark">
-                    1
-                </span>
-            </div>
-            <span class="text-[10px] font-bold tracking-wide">Alerts</span>
-        </button>
-    </div>
-
-    <!-- Notification Popup Window Modal -->
-    <div id="notifModal" class="fixed inset-0 bg-ramp-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="relative bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-ramp-border flex flex-col items-center">
-            <!-- Close icon button -->
-            <button onclick="closeNotifModal()" class="absolute top-4 right-4 text-gray-400 hover:text-ramp-dark transition-colors">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            
-            <!-- Lime Speech Bubble Component -->
-            <div class="relative bg-ramp-lime text-black font-semibold text-sm rounded-2xl p-5 shadow-sm leading-relaxed border border-ramp-limeHover">
-                Thanks for choosing Arcknowledge, be informed that Arcknowledge will be moving to a new domain within the next two weeks, kind regards, Management
-                
-                <!-- Speech Bubble Tail pointing downward -->
-                <div class="absolute -bottom-2 left-8 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-ramp-lime"></div>
-            </div>
-
-            <!-- Dismiss Action Button -->
-            <button onclick="closeNotifModal()" class="mt-6 w-full bg-ramp-dark text-ramp-lime py-2.5 rounded-xl font-bold text-xs hover:bg-black transition-colors shadow-md">
-                Got it
-            </button>
-        </div>
     </div>
 
     <!-- Universal Modal Overlay -->
@@ -265,6 +235,28 @@
                     I Understand & Close
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Student Portal Modal -->
+    <div id="studentPortalModal" class="fixed inset-0 bg-ramp-dark/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden border border-ramp-border">
+            <div class="p-5 border-b border-ramp-border flex items-center justify-between bg-gray-50">
+                <div>
+                    <h3 class="font-bold text-lg text-ramp-dark">Student Portals</h3>
+                    <p class="text-sm text-ramp-textMuted mt-1">Search and favorite university and college access points across South Africa.</p>
+                </div>
+                <button onclick="closeStudentPortalModal()" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-ramp-dark transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-5 border-b border-ramp-border bg-white">
+                <div class="relative">
+                    <i class="fa fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input id="portalSearchInput" type="text" oninput="filterStudentPortals()" placeholder="Search by university, college, or province..." class="w-full pl-11 pr-4 py-3 border border-ramp-border rounded-xl focus:ring-2 focus:ring-ramp-lime focus:border-ramp-lime outline-none">
+                </div>
+            </div>
+            <div class="p-5 overflow-y-auto custom-scrollbar" id="studentPortalList"></div>
         </div>
     </div>
 
@@ -290,6 +282,160 @@
 
     <!-- App Logic Script -->
     <script>
+        const studentPortalData = [
+            { id: "uct", name: "University of Cape Town", type: "Public University", province: "Western Cape", url: "https://www.uct.ac.za" },
+            { id: "wits", name: "University of the Witwatersrand", type: "Public University", province: "Gauteng", url: "https://www.wits.ac.za" },
+            { id: "up", name: "University of Pretoria", type: "Public University", province: "Gauteng", url: "https://www.up.ac.za" },
+            { id: "sun", name: "Stellenbosch University", type: "Public University", province: "Western Cape", url: "https://www.sun.ac.za" },
+            { id: "uj", name: "University of Johannesburg", type: "Public University", province: "Gauteng", url: "https://www.uj.ac.za" },
+            { id: "ukzn", name: "University of KwaZulu-Natal", type: "Public University", province: "KwaZulu-Natal", url: "https://www.ukzn.ac.za" },
+            { id: "unisa", name: "University of South Africa", type: "Public University", province: "Gauteng", url: "https://www.unisa.ac.za" },
+            { id: "nwu", name: "North-West University", type: "Public University", province: "North West", url: "https://www.nwu.ac.za" },
+            { id: "ufs", name: "University of the Free State", type: "Public University", province: "Free State", url: "https://www.ufs.ac.za" },
+            { id: "uwc", name: "University of the Western Cape", type: "Public University", province: "Western Cape", url: "https://www.uwc.ac.za" },
+            { id: "nmu", name: "Nelson Mandela University", type: "Public University", province: "Eastern Cape", url: "https://www.mandela.ac.za" },
+            { id: "ru", name: "Rhodes University", type: "Public University", province: "Eastern Cape", url: "https://www.ru.ac.za" },
+            { id: "ufh", name: "University of Fort Hare", type: "Public University", province: "Eastern Cape", url: "https://www.ufh.ac.za" },
+            { id: "ul", name: "University of Limpopo", type: "Public University", province: "Limpopo", url: "https://www.ul.ac.za" },
+            { id: "univen", name: "University of Venda", type: "Public University", province: "Limpopo", url: "https://www.univen.ac.za" },
+            { id: "smu", name: "Sefako Makgatho Health Sciences University", type: "Public University", province: "Gauteng", url: "https://www.smu.ac.za" },
+            { id: "tut", name: "Tshwane University of Technology", type: "Public University", province: "Gauteng", url: "https://www.tut.ac.za" },
+            { id: "cput", name: "Cape Peninsula University of Technology", type: "Public University", province: "Western Cape", url: "https://www.cput.ac.za" },
+            { id: "dut", name: "Durban University of Technology", type: "Public University", province: "KwaZulu-Natal", url: "https://www.dut.ac.za" },
+            { id: "cut", name: "Central University of Technology", type: "Public University", province: "Free State", url: "https://www.cut.ac.za" },
+            { id: "vut", name: "Vaal University of Technology", type: "Public University", province: "Gauteng", url: "https://www.vut.ac.za" },
+            { id: "ump", name: "University of Mpumalanga", type: "Public University", province: "Mpumalanga", url: "https://www.ump.ac.za" },
+            { id: "spu", name: "Sol Plaatje University", type: "Public University", province: "Northern Cape", url: "https://www.spu.ac.za" },
+            { id: "wsu", name: "Walter Sisulu University", type: "Public University", province: "Eastern Cape", url: "https://www.wsu.ac.za" },
+            { id: "unizulu", name: "University of Zululand", type: "Public University", province: "KwaZulu-Natal", url: "https://www.unizulu.ac.za" },
+            { id: "mut", name: "Mangosuthu University of Technology", type: "Public University", province: "KwaZulu-Natal", url: "https://www.mut.ac.za" },
+            { id: "varsitycollege", name: "Varsity College", type: "Private College", province: "National", url: "https://www.varsitycollege.co.za" },
+            { id: "rosebankcollege", name: "Rosebank College", type: "Private College", province: "National", url: "https://www.rosebankcollege.co.za" },
+            { id: "boston", name: "Boston City Campus", type: "Private College", province: "National", url: "https://www.boston.co.za" },
+            { id: "damelin", name: "Damelin College", type: "Private College", province: "National", url: "https://www.damelin.co.za" },
+            { id: "mancosa", name: "MANCOSA", type: "Private College", province: "National", url: "https://www.mancosa.co.za" },
+            { id: "milpark", name: "Milpark Education", type: "Private College", province: "National", url: "https://www.milpark.ac.za" },
+            { id: "stadio", name: "Stadio Higher Education", type: "Private College", province: "National", url: "https://stadio.ac.za" },
+            { id: "eduvos", name: "Eduvos", type: "Private College", province: "National", url: "https://www.eduvos.com" },
+            { id: "ctu", name: "CTU Training Solutions", type: "Private College", province: "National", url: "https://ctutraining.ac.za" },
+            { id: "richfield", name: "Richfield Graduate Institute", type: "Private College", province: "National", url: "https://www.richfield.ac.za" },
+            { id: "aie", name: "AIE (Academic Institute of Excellence)", type: "Private College", province: "National", url: "https://www.aie.ac" },
+            { id: "vega", name: "Vega School", type: "Private College", province: "National", url: "https://www.vegaschool.com" },
+            { id: "afda", name: "AFDA Film School", type: "Private College", province: "National", url: "https://www.afda.co.za" },
+            { id: "sacap", name: "SACAP", type: "Private College", province: "National", url: "https://www.psychologyschool.co.za" },
+            { id: "inscape", name: "Inscape Education Group", type: "Private College", province: "National", url: "https://www.inscape.ac" },
+            { id: "regent", name: "Regent Business School", type: "Private College", province: "National", url: "https://www.regent.ac.za" },
+            { id: "imm", name: "IMM Graduate School", type: "Private College", province: "National", url: "https://www.imm.ac.za" },
+            { id: "redandyellow", name: "Red & Yellow Creative School", type: "Private College", province: "National", url: "https://www.redandyellow.co.za" },
+            { id: "oxbridge", name: "Oxbridge Academy", type: "Private College", province: "National", url: "https://www.oxbridgeacademy.edu.za" },
+            { id: "lyceum", name: "Lyceum College", type: "Private College", province: "National", url: "https://www.lyceum.co.za" },
+            { id: "regenesys", name: "Regenesys Business School", type: "Private College", province: "National", url: "https://www.regenesys.net" },
+            { id: "iie", name: "The Independent Institute of Education", type: "Private College", province: "National", url: "https://www.iie.ac.za" }
+        ];
+
+        let favoriteStudentPortals = JSON.parse(localStorage.getItem('arcknowledge_student_portals') || '[]');
+
+        function renderStudentPortalList(filterText = '') {
+            const listContainer = document.getElementById('studentPortalList');
+            if (!listContainer) return;
+
+            const query = (filterText || '').toLowerCase().trim();
+            let filtered = studentPortalData.filter(item =>
+                item.name.toLowerCase().includes(query) ||
+                item.type.toLowerCase().includes(query) ||
+                item.province.toLowerCase().includes(query)
+            );
+
+            filtered.sort((a, b) => {
+                const aFav = favoriteStudentPortals.includes(a.id);
+                const bFav = favoriteStudentPortals.includes(b.id);
+                if (aFav && !bFav) return -1;
+                if (!aFav && bFav) return 1;
+                return 0;
+            });
+
+            listContainer.innerHTML = '';
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="py-10 text-center text-gray-400">
+                        <i class="fa-solid fa-school-circle-xmark text-4xl mb-3"></i>
+                        <p class="font-semibold text-ramp-dark">No matching student portals found</p>
+                        <p class="text-sm mt-1">Try another university, college, or province name.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const summary = document.createElement('div');
+            summary.className = 'flex items-center justify-between mb-4 text-sm text-ramp-textMuted';
+            summary.innerHTML = `
+                <span>Showing ${filtered.length} portals</span>
+                <button onclick="clearFavoriteStudentPortals()" class="text-orange-500 font-semibold hover:text-orange-600 transition-colors">Clear favorites</button>
+            `;
+            listContainer.appendChild(summary);
+
+            const cards = document.createElement('div');
+            cards.className = 'space-y-3';
+
+            filtered.forEach(item => {
+                const isFav = favoriteStudentPortals.includes(item.id);
+                const card = document.createElement('div');
+                card.className = 'flex flex-col gap-3 rounded-xl border border-ramp-border bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between';
+                card.innerHTML = `
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <h4 class="font-bold text-ramp-dark truncate">${item.name}</h4>
+                            <span class="text-[10px] bg-gray-100 text-gray-600 font-bold px-2 py-0.5 rounded">${item.type}</span>
+                        </div>
+                        <p class="text-sm text-ramp-textMuted mt-1">${item.province}</p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button onclick="toggleStudentPortalFavorite('${item.id}', event)" class="p-2 rounded-full border border-orange-200 bg-orange-50 hover:bg-orange-100 transition-colors" title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">
+                            <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-star text-orange-500"></i>
+                        </button>
+                        <a href="${item.url}" target="_blank" class="inline-flex items-center justify-center rounded-xl bg-ramp-dark px-3 py-2 text-sm font-semibold text-ramp-lime hover:bg-black transition-colors">
+                            Open Portal
+                        </a>
+                    </div>
+                `;
+                cards.appendChild(card);
+            });
+
+            listContainer.appendChild(cards);
+        }
+
+        function toggleStudentPortalFavorite(id, event) {
+            if (event) event.stopPropagation();
+            if (favoriteStudentPortals.includes(id)) {
+                favoriteStudentPortals = favoriteStudentPortals.filter(itemId => itemId !== id);
+            } else {
+                favoriteStudentPortals.push(id);
+            }
+            localStorage.setItem('arcknowledge_student_portals', JSON.stringify(favoriteStudentPortals));
+            renderStudentPortalList(document.getElementById('portalSearchInput')?.value || '');
+        }
+
+        function clearFavoriteStudentPortals() {
+            favoriteStudentPortals = [];
+            localStorage.removeItem('arcknowledge_student_portals');
+            renderStudentPortalList(document.getElementById('portalSearchInput')?.value || '');
+        }
+
+        function openStudentPortalModal() {
+            document.getElementById('studentPortalModal').classList.remove('hidden');
+            document.getElementById('portalSearchInput').value = '';
+            renderStudentPortalList();
+        }
+
+        function closeStudentPortalModal() {
+            document.getElementById('studentPortalModal').classList.add('hidden');
+        }
+
+        function filterStudentPortals() {
+            renderStudentPortalList(document.getElementById('portalSearchInput').value);
+        }
+
         const directoryData = [
             {
                 id: "uni",
@@ -548,6 +694,36 @@
                 ]
             },
             {
+                id: "south-african-libraries",
+                name: "South African Libraries",
+                icon: "fa-book-open-reader",
+                desc: "National, provincial, and municipal library services for study, research, and reading access.",
+                badge: "Libraries",
+                links: [
+                    { name: "National Library of South Africa", url: "https://www.nlsa.ac.za", target: "_blank", badge: "National", type: "Library Service" },
+                    { name: "Cape Town City Libraries", url: "https://www.capetown.gov.za/Family%20and%20home/See-all-city-facilities/Our-service-facilities/Libraries", target: "_blank", badge: "Western Cape", type: "Municipal Libraries" },
+                    { name: "Johannesburg Public Library Services", url: "https://www.joburg.org.za/services_/Pages/Library%20and%20Information%20Services/Library%20Services.aspx", target: "_blank", badge: "Gauteng", type: "Public Libraries" },
+                    { name: "eThekwini Municipal Libraries", url: "https://www.durban.gov.za/City_Services/library/Pages/default.aspx", target: "_blank", badge: "KwaZulu-Natal", type: "Municipal Libraries" },
+                    { name: "South African Library for the Blind", url: "https://www.salb.org.za", target: "_blank", badge: "Accessible Reading", type: "Special Library" }
+                ]
+            },
+            {
+                id: "search-engine",
+                name: "Search Engines",
+                icon: "fa-globe",
+                desc: "Core entryways to index and crawl global web resources.",
+                badge: "Discovery",
+                links: [
+                    { name: "Google South Africa", url: "https://www.google.co.za", target: "_blank", badge: "Global Standard", type: "Search Engine" },
+                    { name: "DuckDuckGo Privacy Search", url: "https://duckduckgo.com", target: "_blank", badge: "Privacy Focused", type: "Search Engine" },
+                    { name: "Microsoft Bing", url: "https://www.bing.com", target: "_blank", badge: "Enterprise", type: "Search Engine" },
+                    { name: "Ecosia (Tree Planting)", url: "https://www.ecosia.org", target: "_blank", badge: "Eco-Friendly", type: "Search Engine" },
+                    { name: "Yahoo! Search", url: "https://search.yahoo.com", target: "_blank", badge: "Traditional", type: "Web Search" },
+                    { name: "Baidu Engine", url: "https://www.baidu.com", target: "_blank", badge: "East Asian", type: "Web Portal" },
+                    { name: "Yandex Global", url: "https://yandex.com", target: "_blank", badge: "Eastern Europe", type: "Search Engine" }
+                ]
+            },
+            {
                 id: "social-media",
                 name: "Social Media Platforms",
                 icon: "fa-share-nodes",
@@ -657,22 +833,6 @@
                     { name: "You.com AI Search", url: "https://you.com", target: "_blank", badge: "Search + AI", type: "Assistant" },
                     { name: "Pi by Inflection", url: "https://pi.ai", target: "_blank", badge: "Inflection", type: "Companion AI" },
                     { name: "Character.AI", url: "https://character.ai", target: "_blank", badge: "Creative", type: "Roleplay AI" }
-                ]
-            },
-            {
-                id: "search-engine",
-                name: "Search Engines",
-                icon: "fa-globe",
-                desc: "Core entryways to index and crawl global web resources.",
-                badge: "Discovery",
-                links: [
-                    { name: "Google South Africa", url: "https://www.google.co.za", target: "_blank", badge: "Global Standard", type: "Search Engine" },
-                    { name: "DuckDuckGo Privacy Search", url: "https://duckduckgo.com", target: "_blank", badge: "Privacy Focused", type: "Search Engine" },
-                    { name: "Microsoft Bing", url: "https://www.bing.com", target: "_blank", badge: "Enterprise", type: "Search Engine" },
-                    { name: "Ecosia (Tree Planting)", url: "https://www.ecosia.org", target: "_blank", badge: "Eco-Friendly", type: "Search Engine" },
-                    { name: "Yahoo! Search", url: "https://search.yahoo.com", target: "_blank", badge: "Traditional", type: "Web Search" },
-                    { name: "Baidu Engine", url: "https://www.baidu.com", target: "_blank", badge: "East Asian", type: "Web Portal" },
-                    { name: "Yandex Global", url: "https://yandex.com", target: "_blank", badge: "Eastern Europe", type: "Search Engine" }
                 ]
             },
             {
@@ -933,6 +1093,25 @@
                     { name: "Rage Expo", url: "https://www.rageexpo.co.za", target: "_blank", badge: "Gaming & Tech", type: "Expo" },
                     { name: "Design Indaba", url: "https://www.designindaba.com", target: "_blank", badge: "Design Festival", type: "Festival" },
                     { name: "House of Vans", url: "https://www.houseofvans.com", target: "_blank", badge: "Lifestyle", type: "Event" }
+                ]
+            },
+            {
+                id: "cv-builders",
+                name: "Free CV Builder Websites",
+                icon: "fa-file-lines",
+                desc: "Free and freemium resume builders for students, graduates, and job seekers.",
+                badge: "Careers",
+                links: [
+                    { name: "Canva Resume Builder", url: "https://www.canva.com/resumes", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "Novorésumé", url: "https://novoresume.com", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "Kickresume", url: "https://www.kickresume.com", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "Resume.io", url: "https://resume.io", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "FlowCV", url: "https://flowcv.io", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "VisualCV", url: "https://www.visualcv.com", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "Zety", url: "https://zety.com", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "Indeed Resume Builder", url: "https://www.indeed.com/create-resume", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "MyPerfectResume", url: "https://www.myperfectresume.com", target: "_blank", badge: "Free Tier", type: "Resume Builder" },
+                    { name: "Hloom Resume Builder", url: "https://www.hloom.com", target: "_blank", badge: "Free Tier", type: "Resume Builder" }
                 ]
             },
             {
@@ -1229,14 +1408,6 @@
         }
 
         // Modal triggers
-        function handleNotificationClick() {
-            document.getElementById("notifModal").classList.remove("hidden");
-        }
-
-        function closeNotifModal() {
-            document.getElementById("notifModal").classList.add("hidden");
-        }
-
         function openModal(type) {
             const doc = legalDocs[type];
             if (!doc) return;
@@ -1252,6 +1423,7 @@
         // Initial Load
         window.addEventListener("DOMContentLoaded", () => {
             renderCategories();
+            renderStudentPortalList();
         });
     </script>
 </body>
