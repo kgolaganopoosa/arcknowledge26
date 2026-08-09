@@ -101,7 +101,7 @@
                     Unlock anything South African, curated in one vibrant place.
                 </h1>
                 <p class="text-gray-400 text-sm sm:text-base mb-6 leading-relaxed">
-                    Looking for universities, TVET colleges, grocery deliveries, top local tech outlets, study loans, or student accommodation? Arcknowledge connects you instantly to original, official sources.
+                    Looking for universities, job portals, TVET colleges, grocery deliveries, top local tech outlets, study loans, or student accommodation? Arcknowledge connects you instantly to original, official sources.
                 </p>
 
                 <!-- Dynamic Search -->
@@ -111,7 +111,7 @@
                         type="text" 
                         id="searchInput" 
                         oninput="filterCategories()"
-                        placeholder="Search for 'universities', 'bursaries', 'tvet', 'gadgets'..." 
+                        placeholder="Search for 'jobs', 'universities', 'bursaries', 'tvet'..." 
                         class="w-full pl-12 pr-4 py-3.5 bg-ramp-cardDark border border-ramp-darkBorder text-white rounded-xl font-medium focus:ring-2 focus:ring-ramp-lime focus:border-ramp-lime outline-none transition-all shadow-inner placeholder:text-gray-500"
                     >
                 </div>
@@ -127,7 +127,7 @@
                     <h2 class="font-bold text-lg text-ramp-dark flex items-center gap-2">
                         <i class="fa-solid fa-shapes text-ramp-dark"></i> Browse Directories
                     </h2>
-                    <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">8 Categories Loaded</span>
+                    <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">9 Categories Loaded</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="categoriesGrid">
@@ -173,7 +173,7 @@
                         <span class="font-extrabold text-lg text-white">Arcknowledge</span>
                     </div>
                     <p class="text-sm text-gray-400 max-w-sm leading-relaxed">
-                        South Africa's premiere directory platform, pointing you to official, safe links for education, tools, lifestyle, housing, transport, and more.
+                        South Africa's premiere directory platform, pointing you to official, safe links for education, careers, tools, lifestyle, housing, transport, and more.
                     </p>
                 </div>
                 <div>
@@ -700,6 +700,28 @@
                     { name: "Johannesburg Public Library Services", url: "https://www.joburg.org.za/services_/Pages/Library%20and%20Information%20Services/Library%20Services.aspx", target: "_blank", badge: "Gauteng", type: "Public Libraries" },
                     { name: "eThekwini Municipal Libraries", url: "https://www.durban.gov.za/City_Services/library/Pages/default.aspx", target: "_blank", badge: "KwaZulu-Natal", type: "Municipal Libraries" },
                     { name: "South African Library for the Blind", url: "https://www.salb.org.za", target: "_blank", badge: "Accessible Reading", type: "Special Library" }
+                ]
+            },
+            {
+                id: "jobs",
+                name: "Job Portals & Careers",
+                icon: "fa-briefcase",
+                desc: "Top South African job search engines, recruitment hubs, and employment portals.",
+                badge: "Careers",
+                links: [
+                    { name: "Pnet South Africa", url: "https://www.pnet.co.za", target: "_blank", badge: "National", type: "Job Board" },
+                    { name: "Careers24", url: "https://www.careers24.com", target: "_blank", badge: "Media24", type: "Job Board" },
+                    { name: "CareerJunction", url: "https://www.careerjunction.co.za", target: "_blank", badge: "National", type: "Job Search Engine" },
+                    { name: "Indeed South Africa", url: "https://za.indeed.com", target: "_blank", badge: "Global", type: "Job Aggregator" },
+                    { name: "LinkedIn Jobs SA", url: "https://www.linkedin.com/jobs", target: "_blank", badge: "Professional", type: "Networking & Jobs" },
+                    { name: "Government Jobs (DPSA)", url: "https://www.dpsa.gov.za/dpsa2g/vacancies.asp", target: "_blank", badge: "Public Sector", type: "Government Circulars" },
+                    { name: "Job Mail South Africa", url: "https://www.jobmail.co.za", target: "_blank", badge: "General", type: "Classified Jobs" },
+                    { name: "Bizcommunity Recruitment", url: "https://www.bizcommunity.com/Jobs", target: "_blank", badge: "Media & Tech", type: "Industry Jobs" },
+                    { name: "StudentVillage Internships", url: "https://studentvillage.co.za", target: "_blank", badge: "Youth", type: "Internships & Grad" },
+                    { name: "OfferZen", url: "https://www.offerzen.com", target: "_blank", badge: "Tech & Software", type: "Developer Marketplace" },
+                    { name: "BestJobs South Africa", url: "https://www.bestjobs.co.za", target: "_blank", badge: "National", type: "Job Portal" },
+                    { name: "Executive Placements", url: "https://www.executiveplacements.com", target: "_blank", badge: "Corporate", type: "Management Jobs" },
+                    { name: "SA Government Vacancies", url: "https://www.gov.za/about-government/vacancies", target: "_blank", badge: "Government", type: "Public Vacancies" }
                 ]
             }
         ];
