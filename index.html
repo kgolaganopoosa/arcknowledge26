@@ -101,7 +101,7 @@
                     Unlock anything South African, curated in one vibrant place.
                 </h1>
                 <p class="text-gray-400 text-sm sm:text-base mb-6 leading-relaxed">
-                    Looking for universities, job portals, TVET colleges, grocery deliveries, top local tech outlets, study loans, or student accommodation? Arcknowledge connects you instantly to original, official sources.
+                    Looking for universities, job portals, CV builders, TVET colleges, grocery deliveries, top local tech outlets, study loans, or student accommodation? Arcknowledge connects you instantly to original, official sources.
                 </p>
 
                 <!-- Dynamic Search -->
@@ -111,7 +111,7 @@
                         type="text" 
                         id="searchInput" 
                         oninput="filterCategories()"
-                        placeholder="Search for 'jobs', 'universities', 'bursaries', 'tvet'..." 
+                        placeholder="Search for 'cv', 'jobs', 'universities', 'bursaries', 'tvet'..." 
                         class="w-full pl-12 pr-4 py-3.5 bg-ramp-cardDark border border-ramp-darkBorder text-white rounded-xl font-medium focus:ring-2 focus:ring-ramp-lime focus:border-ramp-lime outline-none transition-all shadow-inner placeholder:text-gray-500"
                     >
                 </div>
@@ -127,7 +127,7 @@
                     <h2 class="font-bold text-lg text-ramp-dark flex items-center gap-2">
                         <i class="fa-solid fa-shapes text-ramp-dark"></i> Browse Directories
                     </h2>
-                    <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">9 Categories Loaded</span>
+                    <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">10 Categories Loaded</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="categoriesGrid">
@@ -700,6 +700,21 @@
                     { name: "Johannesburg Public Library Services", url: "https://www.joburg.org.za/services_/Pages/Library%20and%20Information%20Services/Library%20Services.aspx", target: "_blank", badge: "Gauteng", type: "Public Libraries" },
                     { name: "eThekwini Municipal Libraries", url: "https://www.durban.gov.za/City_Services/library/Pages/default.aspx", target: "_blank", badge: "KwaZulu-Natal", type: "Municipal Libraries" },
                     { name: "South African Library for the Blind", url: "https://www.salb.org.za", target: "_blank", badge: "Accessible Reading", type: "Special Library" }
+                ]
+            },
+            {
+                id: "cv-builders",
+                name: "Free CV Builders & Resumes",
+                icon: "fa-file-invoice",
+                desc: "Free online tools to build, format, and export professional CVs and cover letters.",
+                badge: "Career Tools",
+                links: [
+                    { name: "Canva Resume Builder", url: "https://www.canva.com/resumes/templates/", target: "_blank", badge: "Free / Templates", type: "Visual & Modern" },
+                    { name: "Novoresume Free Builder", url: "https://novoresume.com", target: "_blank", badge: "Free Tier", type: "Professional Layouts" },
+                    { name: "Reactive Resume (100% Free)", url: "https://rxresu.me", target: "_blank", badge: "Open Source", type: "No Ads / Free PDF" },
+                    { name: "FlowCV Free Builder", url: "https://flowcv.com", target: "_blank", badge: "Free First CV", type: "Modern Design" },
+                    { name: "Zety Resume Generator", url: "https://zety.com", target: "_blank", badge: "Freemium", type: "Step-by-Step" },
+                    { name: "Resume.com Free Builder", url: "https://www.resume.com", target: "_blank", badge: "100% Free", type: "Quick & Simple" }
                 ]
             },
             {
