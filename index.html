@@ -71,6 +71,10 @@
                     <span class="text-[10px] block text-ramp-textMuted font-bold tracking-widest uppercase -mt-1">Student Kit SA</span>
                 </div>
             </div>
+            <button id="headerFavoritesButton" onclick="toggleFavoritesView()" aria-pressed="false" class="flex items-center gap-1.5 rounded-lg border border-ramp-border px-2 sm:px-3 py-2 text-xs sm:text-sm font-bold text-ramp-dark hover:border-ramp-dark transition-colors">
+                <i class="fa-solid fa-heart text-rose-500"></i>
+                <span id="headerFavoritesLabel">Favorites (0)</span>
+            </button>
         </div>
     </header>
 
@@ -107,7 +111,7 @@
                         type="text" 
                         id="searchInput" 
                         oninput="filterCategories()"
-                        placeholder="Search for 'universities', 'bursaries', 'accommodation', 'textbooks'..." 
+                        placeholder="Search names, tags, subjects, locations, or services..." 
                         class="w-full pl-12 pr-4 py-3.5 bg-ramp-cardDark border border-ramp-darkBorder text-white rounded-xl font-medium focus:ring-2 focus:ring-ramp-lime focus:border-ramp-lime outline-none transition-all shadow-inner placeholder:text-gray-500"
                     >
                 </div>
@@ -120,7 +124,7 @@
                 <h2 class="font-bold text-lg text-ramp-dark flex items-center gap-2">
                     <i class="fa-solid fa-shapes text-ramp-dark"></i> Student Kit Categories & Portals
                 </h2>
-                <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">25 Categories Loaded</span>
+                <span id="categoryCount" class="text-xs bg-gray-200/70 text-gray-700 font-semibold px-2.5 py-1 rounded-md">35 Categories Loaded</span>
             </div>
 
             <!-- Categories Accordion Dropdown List -->
@@ -174,7 +178,7 @@
     </footer>
 
     <!-- Persistent Floating Bottom Menu -->
-    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-md bg-ramp-dark/90 backdrop-blur-md border border-ramp-darkBorder rounded-2xl shadow-2xl px-6 py-3 flex items-center justify-between text-white">
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-lg bg-ramp-dark/90 backdrop-blur-md border border-ramp-darkBorder rounded-2xl shadow-2xl px-4 sm:px-6 py-3 flex items-center justify-between text-white">
         <!-- Left: Home Button -->
         <button onclick="scrollToTop()" class="flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
             <i class="fa-solid fa-house text-lg"></i>
@@ -185,6 +189,11 @@
         <button onclick="focusSearch()" class="flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
             <i class="fa-solid fa-magnifying-glass text-lg"></i>
             <span class="text-[10px] font-bold tracking-wide">Search</span>
+        </button>
+
+        <button id="bottomFavoritesButton" onclick="toggleFavoritesView()" aria-pressed="false" class="flex flex-col items-center justify-center gap-1 hover:text-ramp-lime transition-colors cursor-pointer">
+            <i class="fa-solid fa-heart text-lg"></i>
+            <span id="bottomFavoritesLabel" class="text-[10px] font-bold tracking-wide">Favorites (0)</span>
         </button>
 
         <!-- Right: Notifications Button with Counter -->
@@ -270,10 +279,11 @@
                 name: "Universities",
                 icon: "fa-university",
                 desc: "Official South African public universities.",
+                tags: ["higher education", "campus", "degree", "admissions", "applications", "tertiary study"],
                 badge: "Higher Ed",
                 links: [
-                    { name: "University of Cape Town (UCT)", url: "https://www.uct.ac.za", target: "_blank", badge: "WC", type: "Public Uni" },
-                    { name: "University of the Witwatersrand (Wits)", url: "https://www.wits.ac.za", target: "_blank", badge: "GP", type: "Public Uni" },
+                    { name: "University of Cape Town (UCT)", url: "https://www.uct.ac.za", target: "_blank", badge: "WC", type: "Public Uni", tags: ["cape town", "western cape", "admissions"] },
+                    { name: "University of the Witwatersrand (Wits)", url: "https://www.wits.ac.za", target: "_blank", badge: "GP", type: "Public Uni", tags: ["wits", "witwatersrand", "joburg", "johannesburg", "gauteng"] },
                     { name: "University of Pretoria (UP)", url: "https://www.up.ac.za", target: "_blank", badge: "GP", type: "Public Uni" },
                     { name: "Stellenbosch University (SU)", url: "https://www.sun.ac.za", target: "_blank", badge: "WC", type: "Public Uni" },
                     { name: "University of Johannesburg (UJ)", url: "https://www.uj.ac.za", target: "_blank", badge: "GP", type: "Public Uni" },
@@ -427,9 +437,10 @@
                 name: "Bursaries & Student Loans",
                 icon: "fa-hand-holding-dollar",
                 desc: "Tuition funding, student aid schemes, and crowd-sourced fees.",
+                tags: ["scholarships", "financial aid", "student funding", "tuition", "fees", "grants", "loans", "nsfas"],
                 badge: "Financing",
                 links: [
-                    { name: "NSFAS Application Portal", url: "https://www.nsfas.org.za", target: "_blank", badge: "Government", type: "Financial Aid" },
+                    { name: "NSFAS Application Portal", url: "https://www.nsfas.org.za", target: "_blank", badge: "Government", type: "Financial Aid", tags: ["allowance", "application", "student aid", "funding"] },
                     { name: "Funza Lushaka (Teaching)", url: "http://www.funzalushaka.doe.gov.za", target: "_blank", badge: "Teaching", type: "Bursary Scheme" },
                     { name: "ISFAP Funding Portal", url: "https://www.isfap.co.za", target: "_blank", badge: "Missing Middle", type: "Support" },
                     { name: "Fundi Student Loans", url: "https://www.fundi.co.za", target: "_blank", badge: "Private", type: "Study Loan" },
@@ -457,9 +468,10 @@
                 name: "Student Accommodation",
                 icon: "fa-hotel",
                 desc: "Accredited private student housing and off-campus digs.",
+                tags: ["housing", "residence", "res", "digs", "rent", "rooms", "flat", "roommates", "student living"],
                 badge: "Housing",
                 links: [
-                    { name: "DigsConnect Room Finder", url: "https://www.digsconnect.com", target: "_blank", badge: "National", type: "Aggregator" },
+                    { name: "DigsConnect Room Finder", url: "https://www.digsconnect.com", target: "_blank", badge: "National", type: "Aggregator", tags: ["digs", "rooms", "rentals", "roommates", "housing"] },
                     { name: "South Point Accommodation", url: "https://www.staysouthpoint.co.za", target: "_blank", badge: "Gauteng/KZN/EC", type: "Student Residence" },
                     { name: "Respublica Student Living", url: "https://www.respublica.co.za", target: "_blank", badge: "GP/WC/KZN", type: "Student Residence" },
                     { name: "Campus Key Homes", url: "https://www.campuskey.co.za", target: "_blank", badge: "National", type: "Premium Living" },
@@ -504,6 +516,7 @@
                 name: "Textbook Stores",
                 icon: "fa-book-open",
                 desc: "New, used, and digital textbook outlets.",
+                tags: ["books", "study materials", "academic resources", "used books", "e-books", "learning materials"],
                 badge: "Books",
                 links: [
                     { name: "Van Schaik Bookstore", url: "https://www.vanschaik.com", target: "_blank", badge: "National", type: "Retail Store" },
@@ -519,6 +532,50 @@
                     { name: "The Learning Store", url: "https://www.thelearningstore.co.za", target: "_blank", badge: "Online", type: "Educational Resources" },
                     { name: "Cambridge University Press SA", url: "https://www.cambridge.org/za", target: "_blank", badge: "Educational", type: "School Books" },
                     { name: "Oxford University Press South Africa", url: "https://global.oup.com/africa/", target: "_blank", badge: "Educational", type: "Academic Books" }
+                ]
+            },
+            {
+                id: "study-tools",
+                name: "Study & Productivity Tools",
+                icon: "fa-pen-to-square",
+                desc: "Tools for research, writing, referencing, and organising coursework.",
+                tags: ["assignments", "essays", "citations", "referencing", "productivity", "note taking", "office software"],
+                badge: "Study Smarter",
+                links: [
+                    { name: "Google Scholar", url: "https://scholar.google.com", target: "_blank", badge: "Research", type: "Academic Search" },
+                    { name: "Zotero", url: "https://www.zotero.org", target: "_blank", badge: "Free Tool", type: "Reference Manager" },
+                    { name: "Microsoft 365 Education", url: "https://www.microsoft.com/en-us/education/products/office", target: "_blank", badge: "Education", type: "Office Suite" },
+                    { name: "Overleaf", url: "https://www.overleaf.com", target: "_blank", badge: "Free Tier", type: "Collaborative Writing" },
+                    { name: "LibreOffice", url: "https://www.libreoffice.org", target: "_blank", badge: "Free & Open Source", type: "Office Suite" }
+                ]
+            },
+            {
+                id: "open-learning",
+                name: "Free Learning & Research Resources",
+                icon: "fa-book-open-reader",
+                desc: "Open educational materials, online lessons, and African research.",
+                tags: ["free courses", "open access", "study help", "tutorials", "academic papers", "journals", "textbooks"],
+                badge: "Open Learning",
+                links: [
+                    { name: "Siyavula", url: "https://www.siyavula.com", target: "_blank", badge: "South Africa", type: "Open Textbooks & Practice" },
+                    { name: "OpenStax", url: "https://openstax.org", target: "_blank", badge: "Free Textbooks", type: "Open Education" },
+                    { name: "Khan Academy", url: "https://www.khanacademy.org", target: "_blank", badge: "Free Learning", type: "Online Lessons" },
+                    { name: "SciELO South Africa", url: "https://www.scielo.org.za", target: "_blank", badge: "South Africa", type: "Open Access Research" },
+                    { name: "African Journals Online", url: "https://www.ajol.info", target: "_blank", badge: "Africa", type: "Research Journals" }
+                ]
+            },
+            {
+                id: "student-wellbeing",
+                name: "Student Health & Wellbeing",
+                icon: "fa-heart-pulse",
+                desc: "Mental health support and trusted public health information.",
+                tags: ["counselling", "counseling", "mental health", "wellness", "support", "stress", "health services"],
+                badge: "Wellbeing",
+                links: [
+                    { name: "Higher Health", url: "https://higherhealth.ac.za", target: "_blank", badge: "South Africa", type: "Student Health & Wellness" },
+                    { name: "South African Depression and Anxiety Group (SADAG)", url: "https://www.sadag.org", target: "_blank", badge: "South Africa", type: "Mental Health Support" },
+                    { name: "Lifeline South Africa", url: "https://lifelinesa.co.za", target: "_blank", badge: "South Africa", type: "Counselling & Support" },
+                    { name: "National Department of Health", url: "https://www.health.gov.za", target: "_blank", badge: "Government", type: "Health Information" }
                 ]
             },
             {
@@ -812,6 +869,7 @@
                 name: "Transportation & Rides",
                 icon: "fa-train-subway",
                 desc: "Local urban transit systems, ridesharing services, and timelines.",
+                tags: ["commute", "bus", "train", "taxi", "rideshare", "e-hailing", "public transport"],
                 badge: "Commute",
                 links: [
                     { name: "Gautrain Travel Portal", url: "https://www.gautrain.co.za", target: "_blank", badge: "Gauteng Rail", type: "High-Speed Rail" },
@@ -1066,25 +1124,95 @@
             }
         };
 
+        function getSearchableText(...values) {
+            return values.flat(Infinity).filter(value => typeof value === "string").join(" ").toLowerCase();
+        }
+
+        function matchesSearch(searchableText, query) {
+            const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+            return terms.every(term => searchableText.includes(term));
+        }
+
+        const favoritesStorageKey = "arcknowledge-favorites";
+        const favorites = new Set(JSON.parse(localStorage.getItem(favoritesStorageKey) || "[]"));
+        let showingFavorites = false;
+
+        function getFavoriteId(category, link) {
+            return `${category.id}:${link.name}:${link.url}`;
+        }
+
+        function updateFavoritesNavigation() {
+            const count = favorites.size;
+            document.getElementById("headerFavoritesLabel").textContent = `Favorites (${count})`;
+            document.getElementById("bottomFavoritesLabel").textContent = `Favorites (${count})`;
+            for (const id of ["headerFavoritesButton", "bottomFavoritesButton"]) {
+                document.getElementById(id).setAttribute("aria-pressed", String(showingFavorites));
+            }
+        }
+
+        function toggleFavoritesView() {
+            showingFavorites = !showingFavorites;
+            updateFavoritesNavigation();
+            renderCategories(document.getElementById("searchInput").value);
+        }
+
+        function toggleFavorite(categoryId, linkName, linkUrl) {
+            const category = directoryData.find(item => item.id === categoryId);
+            const link = category && category.links.find(item => item.name === linkName && item.url === linkUrl);
+            if (!category || !link) {
+                console.error(`Cannot update favorite: entry not found in category "${categoryId}".`);
+                return;
+            }
+
+            const favoriteId = getFavoriteId(category, link);
+            const updatedFavorites = new Set(favorites);
+            if (updatedFavorites.has(favoriteId)) {
+                updatedFavorites.delete(favoriteId);
+            } else {
+                updatedFavorites.add(favoriteId);
+            }
+
+            try {
+                localStorage.setItem(favoritesStorageKey, JSON.stringify([...updatedFavorites]));
+            } catch (error) {
+                console.error("Unable to save favorites to local storage.", error);
+                alert("Your favorite could not be saved. Check your browser storage settings and try again.");
+                return;
+            }
+
+            favorites.clear();
+            updatedFavorites.forEach(id => favorites.add(id));
+            updateFavoritesNavigation();
+            renderCategories(document.getElementById("searchInput").value);
+        }
+
         // Render Categories as Dropdown Accordions with Internal Search Bars
         function renderCategories(filterText = "") {
             const container = document.getElementById("categoriesAccordionContainer");
             container.innerHTML = "";
             
-            const filtered = directoryData.filter(cat => 
-                cat.name.toLowerCase().includes(filterText.toLowerCase()) || 
-                cat.desc.toLowerCase().includes(filterText.toLowerCase()) ||
-                cat.links.some(l => l.name.toLowerCase().includes(filterText.toLowerCase()))
-            );
+            const filtered = directoryData.map(cat => {
+                const categoryText = getSearchableText(cat.name, cat.desc, cat.badge, cat.tags);
+                const categoryMatches = matchesSearch(categoryText, filterText);
+                const links = cat.links.filter(link => {
+                    if (showingFavorites && !favorites.has(getFavoriteId(cat, link))) return false;
+                    if (categoryMatches || !filterText) return true;
+                    const linkText = getSearchableText(link.name, link.type, link.badge, link.url, link.tags);
+                    return matchesSearch(linkText, filterText);
+                });
+                return links.length ? { ...cat, links } : null;
+            }).filter(Boolean);
 
-            document.getElementById("categoryCount").innerText = `${filtered.length} Categories Found`;
+            document.getElementById("categoryCount").innerText = showingFavorites
+                ? `${filtered.length} Favorite Categories`
+                : `${filtered.length} Categories Found`;
 
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="py-12 text-center text-gray-400 bg-white rounded-2xl border border-ramp-border">
-                        <i class="fa-solid fa-folder-open text-4xl mb-2"></i>
-                        <p class="font-semibold text-ramp-dark">No matching categories found</p>
-                        <p class="text-xs">Try searching another keyword (e.g. "NSFAS", "UCT", "Digs").</p>
+                        <i class="fa-solid ${showingFavorites ? "fa-heart" : "fa-folder-open"} text-4xl mb-2"></i>
+                        <p class="font-semibold text-ramp-dark">${showingFavorites ? "No favorites yet" : "No matching categories found"}</p>
+                        <p class="text-xs">${showingFavorites ? "Use the heart on any entry to save it here." : 'Try searching another keyword (e.g. "NSFAS", "UCT", "Digs").'}</p>
                     </div>
                 `;
                 return;
@@ -1136,6 +1264,13 @@
                         class="w-full pl-10 pr-4 py-2.5 bg-white border border-ramp-border text-ramp-dark text-xs rounded-xl font-medium focus:ring-2 focus:ring-ramp-dark outline-none transition-all shadow-sm placeholder:text-gray-400"
                     >
                 `;
+                const matchingLinks = cat.links.filter(link => matchesSearch(
+                    getSearchableText(link.name, link.type, link.badge, link.url, link.tags),
+                    filterText
+                ));
+                if (filterText && matchingLinks.length > 0) {
+                    searchContainer.querySelector("input").value = filterText;
+                }
                 body.appendChild(searchContainer);
 
                 // Links List Container
@@ -1146,9 +1281,15 @@
                 cat.links.forEach(lnk => {
                     const linkCard = document.createElement("div");
                     linkCard.className = "link-item bg-white border border-ramp-border rounded-xl p-3.5 transition-all shadow-sm flex flex-col justify-between gap-3 hover:border-gray-300";
-                    linkCard.setAttribute("data-name", lnk.name.toLowerCase());
-                    linkCard.setAttribute("data-type", lnk.type.toLowerCase());
-                    linkCard.setAttribute("data-badge", lnk.badge.toLowerCase());
+                    linkCard.setAttribute("data-search", getSearchableText(lnk.name, lnk.type, lnk.badge, lnk.url, lnk.tags));
+                    const isFavorite = favorites.has(getFavoriteId(cat, lnk));
+                    const favoriteButton = document.createElement("button");
+                    favoriteButton.type = "button";
+                    favoriteButton.className = `favorite-toggle shrink-0 rounded-full p-1.5 transition-colors ${isFavorite ? "text-rose-500" : "text-gray-400 hover:text-rose-500"}`;
+                    favoriteButton.setAttribute("aria-label", `${isFavorite ? "Remove from" : "Add to"} favorites: ${lnk.name}`);
+                    favoriteButton.setAttribute("aria-pressed", String(isFavorite));
+                    favoriteButton.innerHTML = `<i class="fa-${isFavorite ? "solid" : "regular"} fa-heart"></i>`;
+                    favoriteButton.onclick = () => toggleFavorite(cat.id, lnk.name, lnk.url);
 
                     linkCard.innerHTML = `
                         <div>
@@ -1162,6 +1303,7 @@
                             Visit Official Platform <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                         </a>
                     `;
+                    linkCard.querySelector(".flex.items-start.justify-between").appendChild(favoriteButton);
                     linksList.appendChild(linkCard);
                 });
 
@@ -1188,16 +1330,12 @@
 
         // Filter individual category links using its internal search bar
         function filterCategoryLinks(catId) {
-            const query = document.getElementById(`search-${catId}`).value.toLowerCase();
+            const query = document.getElementById(`search-${catId}`).value;
             const linksContainer = document.getElementById(`links-${catId}`);
             const items = linksContainer.getElementsByClassName("link-item");
 
             for (let item of items) {
-                const name = item.getAttribute("data-name");
-                const type = item.getAttribute("data-type");
-                const badge = item.getAttribute("data-badge");
-
-                if (name.includes(query) || type.includes(query) || badge.includes(query)) {
+                if (matchesSearch(item.getAttribute("data-search"), query)) {
                     item.style.display = "flex";
                 } else {
                     item.style.display = "none";
@@ -1209,6 +1347,12 @@
         function filterCategories() {
             const text = document.getElementById("searchInput").value;
             renderCategories(text);
+            directoryData.forEach(cat => {
+                const searchInput = document.getElementById(`search-${cat.id}`);
+                if (searchInput && searchInput.value) {
+                    filterCategoryLinks(cat.id);
+                }
+            });
         }
 
         // Modal triggers
@@ -1314,6 +1458,7 @@
         });
 
         // Init App
+        updateFavoritesNavigation();
         renderCategories();
     </script>
 </body>
